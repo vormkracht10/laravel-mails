@@ -1,6 +1,7 @@
 <?php
 
 use Vormkracht10\Mails\Models\Mail;
+use Vormkracht10\Mails\Models\MailEvent;
 
 return [
 
@@ -57,7 +58,7 @@ return [
 
     'notifications' => [
 
-        // Possible notification channels: discord, mail, slack
+        // Possible notification channels: discord, mail, slack, telegram
 
         // Get notified when a bounce occurred
 
@@ -73,6 +74,10 @@ return [
             // Slack Webhook URL(s)
             'slack' => [
                 // 'https://hooks.slack.com/services/...',
+            ],
+            // Telegram channel ID('s)
+            'telegram' => [
+                // 1234567890,
             ],
         ],
 
@@ -92,6 +97,10 @@ return [
             'slack' => [
                 // 'https://hooks.slack.com/services/...',
             ],
+            // Telegram channel ID('s)
+            'telegram' => [
+                // 1234567890,
+            ],
         ],
 
         // Get notified when a spam complaint occurred
@@ -109,6 +118,11 @@ return [
             'slack' => [
                 // 'https://hooks.slack.com/services/...',
             ],
+            // Telegram channel ID('s)
+            'telegram' => [
+                // 1234567890,
+            ],
         ],
     ],
+
 ];

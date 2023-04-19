@@ -3,6 +3,7 @@
 namespace Vormkracht10\Mails\Commands;
 
 use Illuminate\Console\Command;
+use Vormkracht10\Mails\Models\Mail;
 
 class PruneMailCommand extends Command
 {
@@ -12,8 +13,6 @@ class PruneMailCommand extends Command
 
     public function handle(): int
     {
-        // TODO: prune mail
-
         $this->call('model:prune', [
             '--model' => [Mail::class],
         ]);

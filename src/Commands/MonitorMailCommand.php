@@ -4,7 +4,7 @@ namespace Vormkracht10\Mails\Commands;
 
 use Illuminate\Console\Command;
 
-class MonitorBounceRateMailCommand extends Command
+class MonitorMailCommand extends Command
 {
     public $signature = 'mail:monitor';
 

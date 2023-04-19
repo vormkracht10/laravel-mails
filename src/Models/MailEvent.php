@@ -4,6 +4,7 @@ namespace Vormkracht10\Mails\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Wnx\Sends\Database\Factories\MailEventFactory;
 
 class MailEvent extends Model
 {

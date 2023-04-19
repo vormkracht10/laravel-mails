@@ -2,6 +2,6 @@
 
 namespace Vormkracht10\Mails\Actions;
 
-class ResendMail
+class RecordMailEvent
 {
 }

@@ -2,7 +2,7 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
-class LogMailEvent
+class LogSentMail
 {
     /**
      * Create the event listener.

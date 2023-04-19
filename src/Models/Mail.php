@@ -4,6 +4,8 @@ namespace Vormkracht10\Mails\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Wnx\Sends\Database\Factories\MailFactory;
 
 class Mail extends Model
 {
@@ -40,25 +42,25 @@ class Mail extends Model
         'to' => 'json',
         'cc' => 'json',
         'bcc' => 'json',
-        'sent_at' => 'immutable_datetime',
-        'delivered_at' => 'immutable_datetime',
+        'sent_at' => 'datetime',
+        'delivered_at' => 'datetime',
         'opens' => 'integer',
-        'last_opened_at' => 'immutable_datetime',
+        'last_opened_at' => 'datetime',
         'clicks' => 'integer',
-        'last_clicked_at' => 'immutable_datetime',
-        'complained_at' => 'immutable_datetime',
-        'bounced_at' => 'immutable_datetime',
-        'permanent_bounced_at' => 'immutable_datetime',
-        'rejected_at' => 'immutable_datetime',
+        'last_clicked_at' => 'datetime',
+        'complained_at' => 'datetime',
+        'bounced_at' => 'datetime',
+        'permanent_bounced_at' => 'datetime',
+        'rejected_at' => 'datetime',
     ];
 
-    protected static function newFactory()
+    protected static function newFactory(): MailFactory
     {
         return new MailFactory();
     }
 
-    public function events(): void
+    public function events(): HasMany
     {
-        $this->hasMany(config('mails.models.event'));
+        return $this->HasMany(config('mails.models.event'));
     }
 }
