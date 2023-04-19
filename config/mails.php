@@ -18,6 +18,7 @@ return [
 
     'tables' => [
         'mails' => 'mails',
+        'attachments' => 'mail_attachments',
         'events' => 'mail_events',
         'polymorph' => 'mailables',
     ],
