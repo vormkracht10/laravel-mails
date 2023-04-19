@@ -2,7 +2,7 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
-class NotifyOnHighBounceRate
+class NotifyOnHighBounce
 {
     /**
      * Create the event listener.

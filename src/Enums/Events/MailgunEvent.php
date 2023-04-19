@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Events;
+namespace Vormkracht10\Mails\Enums\Events;
 
 enum MailgunEvent: string
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails;
+namespace Vormkracht10\Mails\Traits;
 
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
