@@ -64,7 +64,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Vormkracht10\\Mails\\PackageServiceProvider"
+                "Vormkracht10\\Mails\\MailsServiceProvider"
             ]
         }
     },

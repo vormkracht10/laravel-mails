@@ -13,7 +13,7 @@ use Vormkracht10\Mails\Commands\WebhooksMailCommand;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
 
-class LaravelMailsServiceProvider extends PackageServiceProvider
+class MailsServiceProvider extends PackageServiceProvider
 {
     public function register(): void
     {

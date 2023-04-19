@@ -4,7 +4,7 @@ namespace Vormkracht10\Mails\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Vormkracht10\Mails\LaravelMailsServiceProvider;
+use Vormkracht10\Mails\MailsServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,14 +13,14 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Vormkracht10\\LaravelMails\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Vormkracht10\\Mails\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            LaravelMailsServiceProvider::class,
+            MailsServiceProvider::class,
         ];
     }
 
