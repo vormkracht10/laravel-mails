@@ -54,10 +54,8 @@ class HighBounceRateNotification extends Notification implements ShouldQueue
 
     public function toSlack(): SlackMessage
     {
-        return SlackMessage::create($this->getMessage(), [
-            'title' => $this->getTitle(),
-            'color' => 0xF44336,
-        ]);
+        return (new SlackMessage)
+            ->content($this->getMessage());
     }
 
     public function toTelegram(): TelegramMessage
