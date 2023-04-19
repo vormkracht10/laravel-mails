@@ -2,7 +2,7 @@
 
 namespace Vormkracht10\Mails\Enums\Events;
 
-enum MailgunEvent: string
+enum Mailgun: string
 {
     case CLICKED = 'clicked';
     case COMPLAINED = 'complained';
