@@ -1,6 +1,7 @@
 <?php
 
 use Vormkracht10\Mails\Models\Mail;
+use Vormkracht10\Mails\Models\MailAttachment;
 use Vormkracht10\Mails\Models\MailEvent;
 
 return [
@@ -10,6 +11,7 @@ return [
     'models' => [
         'mail' => Mail::class,
         'event' => MailEvent::class,
+        'attachment' => MailAttachment::class,
     ],
 
     // Table names for saving sent emails and polymorphic relations to database
@@ -30,6 +32,7 @@ return [
 
     // Logging mails
     'logging' => [
+
         // Enable logging of all sent mails to database
 
         'enable' => true,
@@ -55,6 +58,14 @@ return [
             'complaints' => true,
             'deliveries' => true,
             'opens' => true,
+        ],
+
+        // Enable saving mail attachments to disk
+
+        'attachments' => [
+            'enable' => false,
+            'disk' => env('FILESYSTEM_DISK', 'local'),
+            'path' => 'mails/attachments',
         ],
     ],
 
