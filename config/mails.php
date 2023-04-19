@@ -75,67 +75,49 @@ return [
 
         // Possible notification channels: discord, mail, slack, telegram
 
+        'channels' => [
+            // 'mail' => 'mail:support@vormkracht10.nl',
+            // 'discord' => 'discord:1234567890',
+            // 'slack' => 'slack:https://hooks.slack.com/services/...',
+            // 'telegram' => 'telegram:1234567890',
+        ],
+
         // Get notified when a bounce occurred
 
-        'bounces' => [
-            // Email addresses
-            'mail' => [
-                // 'info@example.com',
+        'events' => [
+            'default' => [
+                'notify' => [
+                    // 'mail',
+                    // 'discord',
+                    // 'slack',
+                    // 'telegram',
+                ],
             ],
-            // Discord channel ID('s)
-            'discord' => [
-                // 1234567890,
+            'bounces' => [
+                // 'notify' => [
+                //     'mail',
+                //     'discord',
+                //     'slack',
+                //     'telegram',
+                // ],
             ],
-            // Slack Webhook URL(s)
-            'slack' => [
-                // 'https://hooks.slack.com/services/...',
+            'bouncerate' => [
+                'treshold' => 1, // in %
+                // 'notify' => [
+                //     'mail',
+                //     'discord',
+                //     'slack',
+                //     'telegram',
+                // ],
             ],
-            // Telegram channel ID('s)
-            'telegram' => [
-                // 1234567890,
-            ],
-        ],
-
-        // Get notified when bouncerate is too high
-
-        'bouncerate' => [
-            'treshold' => 1, // in %
-            // Email addresses
-            'mail' => [
-                // 'info@example.com',
-            ],
-            // Discord channel ID('s)
-            'discord' => [
-                // 1234567890,
-            ],
-            // Slack Webhook URL(s)
-            'slack' => [
-                // 'https://hooks.slack.com/services/...',
-            ],
-            // Telegram channel ID('s)
-            'telegram' => [
-                // 1234567890,
-            ],
-        ],
-
-        // Get notified when a spam complaint occurred
-
-        'complaints' => [
-            // Email addresses
-            'mail' => [
-                // 'info@example.com',
-            ],
-            // Discord channel ID('s)
-            'discord' => [
-                // 1234567890,
-            ],
-            // Slack Webhook URL(s)
-            'slack' => [
-                // 'https://hooks.slack.com/services/...',
-            ],
-            // Telegram channel ID('s)
-            'telegram' => [
-                // 1234567890,
+            // Get notified when a spam complaint occurred
+            'complaints' => [
+                // 'notify' => [
+                //     'mail',
+                //     'discord',
+                //     'slack',
+                //     'telegram',
+                // ],
             ],
         ],
     ],
