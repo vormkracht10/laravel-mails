@@ -15,24 +15,10 @@ class PostmarkWebhookController
 {
     public function __invoke(Request $request): JsonResponse
     {
-        if ($request->string('record_type') == Postmark::CLICKED) {
-            event(MailClicked::class);
-        }
+        $event = $this->events()[$request->input('record_type')] ?? null;
 
-        if ($request->string('record_type') == Postmark::COMPLAINED) {
-            event(MailComplained::class);
-        }
-
-        if ($request->string('record_type') == Postmark::DELIVERED) {
-            event(MailDelivered::class);
-        }
-
-        if ($request->string('record_type') == Postmark::HARD_BOUNCED) {
-            event(MailBounced::class);
-        }
-
-        if ($request->string('record_type') == Postmark::OPENED) {
-            event(MailOpened::class);
+        if (! is_null($event)) {
+            event($event, ['payload' => $request->input()]);
         }
 
         return response()
