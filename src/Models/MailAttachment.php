@@ -4,7 +4,7 @@ namespace Vormkracht10\Mails\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Wnx\Sends\Database\Factories\MailFactory;
 
 class MailAttachment extends Model
@@ -28,7 +28,7 @@ class MailAttachment extends Model
         return new MailFactory();
     }
 
-    public function mail(): HasMany
+    public function mail(): BelongsTo
     {
         return $this->belongsTo(config('mails.models.mail'));
     }

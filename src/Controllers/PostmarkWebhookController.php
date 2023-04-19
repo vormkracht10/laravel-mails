@@ -2,18 +2,18 @@
 
 namespace Vormkracht10\Mails\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Vormkracht10\Mails\Enums\Events\PostmarkEvent;
 use Vormkracht10\Mails\Events\MailBounced;
 use Vormkracht10\Mails\Events\MailClicked;
 use Vormkracht10\Mails\Events\MailComplained;
 use Vormkracht10\Mails\Events\MailDelivered;
 use Vormkracht10\Mails\Events\MailOpened;
-use Vormkracht10\Mails\Events\PostmarkEvent;
 
 class PostmarkWebhookController
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): JsonResponse
     {
         $payload = $request->input();
 
@@ -37,7 +37,7 @@ class PostmarkWebhookController
             event(MailOpened::class);
         }
 
-        return response('', 202)
-            ->json();
+        return response()
+            ->json('', 202);
     }
 }
