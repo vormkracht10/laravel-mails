@@ -1,19 +1,18 @@
-# Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app.
+# Laravel Mails
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/vormkracht10/laravel-mails/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/vormkracht10/laravel-mails/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/vormkracht10/laravel-mails/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/vormkracht10/laravel-mails/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app. Common use cases are provided in this package:
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-mails.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-mails)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+-   Log all sent emails with only specific attributes
+-   Collect feedback about the delivery from email providers using webhooks
+-   Relate sent emails to Eloquent models
+-   Get automatically notified when email bounces
+-   Prune logging of emails periodically
+-   Resend logged email to another recipient
 
 ## Installation
 
@@ -76,8 +75,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
-- [Mark van Eijk](https://github.com/markvaneijk)
-- [All Contributors](../../contributors)
+-   [Mark van Eijk](https://github.com/markvaneijk)
+-   [All Contributors](../../contributors)
 
 ## License
 
