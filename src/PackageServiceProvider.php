@@ -29,16 +29,16 @@ class LaravelMailsServiceProvider extends PackageServiceProvider
             ->name('laravel-mails')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigrations([
+            ->hasMigrations(
                 'create_mailables_table',
                 'create_mails_events_table',
                 'create_mails_table',
-            ])
-            ->hasCommands([
+            )
+            ->hasCommands(
                 MonitorMailCommand::class,
                 PruneMailCommand::class,
                 ResendMailCommand::class,
                 WebhooksMailCommand::class,
-            ]);
+            );
     }
 }

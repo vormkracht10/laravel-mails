@@ -11,7 +11,16 @@ class LogMail
 {
     public function execute(MessageSending|MessageSent $event)
     {
+        $mail = $this->newMailModelInstance();
+        $mail->fill($this->getOnlyConfiguredAttributes($event));
+        $mail->save();
+    }
 
+    public function newMailModelInstance()
+    {
+        $model = config('mails.models.mail');
+
+        return new $model;
     }
 
     public function getOnlyConfiguredAttributes(MessageSent|MessageSending $event): array
@@ -58,11 +67,11 @@ class LogMail
 
     protected function getCustomUuid(MessageSending|MessageSent $event): ?string
     {
-        if (! $event->message->getHeaders()->has((string) config('mails.headers.uuid'))) {
+        if (! $event->message->getHeaders()->has(config('mails.headers.uuid'))) {
             return null;
         }
 
-        $headerValue = $event->message->getHeaders()->get((string) config('mails.headers.uuid'));
+        $headerValue = $event->message->getHeaders()->get(config('mails.headers.uuid'));
 
         if (is_null($headerValue)) {
             return null;

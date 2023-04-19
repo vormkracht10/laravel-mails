@@ -12,7 +12,8 @@ class MonitorMailCommand extends Command
 
     public function handle(): int
     {
-        // TODO: notify when bounce rate is high
+        // TODO: check for high bounce rate
+        // TODO: check for mails that are sent in the app, but not delivered
 
         return self::SUCCESS;
     }

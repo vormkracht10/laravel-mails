@@ -29,7 +29,7 @@ return [
 
     // Encrypt all attributes saved to database
 
-    'encrypt' => false,
+    'encryption' => false,
 
     // Logging mails
     'logging' => [
@@ -66,7 +66,7 @@ return [
         'attachments' => [
             'enable' => false,
             'disk' => env('FILESYSTEM_DISK', 'local'),
-            'path' => 'mails/attachments',
+            'root' => 'mails/attachments',
         ],
     ],
 
