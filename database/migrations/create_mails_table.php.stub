@@ -20,16 +20,15 @@ return new class extends Migration
             $table->json('bcc')->nullable();
             $table->text('html')->nullable();
             $table->text('text')->nullable();
+            $table->bigInteger('opens')->nullable();
+            $table->bigInteger('clicks')->nullable();
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
-            $table->bigInteger('opens')->nullable();
             $table->timestamp('last_opened_at')->nullable();
-            $table->bigInteger('clicks')->nullable();
             $table->timestamp('last_clicked_at')->nullable();
             $table->timestamp('complained_at')->nullable();
-            $table->timestamp('bounced_at')->nullable();
-            $table->timestamp('permanent_bounced_at')->nullable();
-            $table->timestamp('rejected_at')->nullable();
+            $table->timestamp('soft_bounced_at')->nullable();
+            $table->timestamp('hard_bounced_at')->nullable();
             $table->timestamps();
         });
     }

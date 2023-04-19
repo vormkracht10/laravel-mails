@@ -10,6 +10,7 @@ use Vormkracht10\Mails\Commands\MonitorMailCommand;
 use Vormkracht10\Mails\Commands\PruneMailCommand;
 use Vormkracht10\Mails\Commands\ResendMailCommand;
 use Vormkracht10\Mails\Commands\WebhooksMailCommand;
+use Vormkracht10\Mails\Listeners\AttachMailLogUuid;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
 
@@ -19,6 +20,7 @@ class MailsServiceProvider extends PackageServiceProvider
     {
         parent::register();
 
+        $this->app['events']->listen(MessageSending::class, AttachMailLogUuid::class);
         $this->app['events']->listen(MessageSending::class, LogSendingMail::class);
         $this->app['events']->listen(MessageSent::class, LogSentMail::class);
     }
@@ -31,6 +33,7 @@ class MailsServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigrations(
                 'create_mailables_table',
+                'create_mails_attachments_table',
                 'create_mails_events_table',
                 'create_mails_table',
             )

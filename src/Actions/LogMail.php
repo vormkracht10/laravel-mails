@@ -9,11 +9,19 @@ use Symfony\Component\Mime\Address;
 
 class LogMail
 {
-    public function execute(MessageSending|MessageSent $event)
+    public function execute(MessageSending|MessageSent $event): void
     {
         $mail = $this->newMailModelInstance();
-        $mail->fill($this->getOnlyConfiguredAttributes($event));
-        $mail->save();
+
+        if ($event instanceof MessageSending) {
+            $mail->fill($this->getOnlyConfiguredAttributes($event));
+            $mail->save();
+        }
+
+        if ($event instanceof MessageSent) {
+            $mail->firstWhere('uuid', $this->getCustomUuid($event))
+                ?->update($this->getOnlyConfiguredAttributes($event));
+        }
     }
 
     public function newMailModelInstance()
@@ -23,7 +31,7 @@ class LogMail
         return new $model;
     }
 
-    public function getOnlyConfiguredAttributes(MessageSent|MessageSending $event): array
+    public function getOnlyConfiguredAttributes(MessageSending|MessageSent $event): array
     {
         return collect($this->getDefaultLogAttributes($event))
             ->only($this->getConfiguredAttributes())
@@ -36,9 +44,9 @@ class LogMail
         return (array) config('mails.logging.attributes');
     }
 
-    public function getDefaultLogAttributes(MessageSent|MessageSending $event): array
+    public function getDefaultLogAttributes(MessageSending|MessageSent $event): array
     {
-        $attributes = [
+        return [
             'subject' => $event->message->getSubject(),
             'from' => $this->getAddressesValue($event->message->getFrom()),
             'reply_to' => $this->getAddressesValue($event->message->getReplyTo()),
@@ -48,20 +56,14 @@ class LogMail
             'html' => $event->message->getHtmlBody(),
             'text' => $event->message->getTextBody(),
         ];
-
-        if ($event instanceof MessageSent) {
-            $attributes['sent_at'] = now();
-        }
-
-        return $attributes;
     }
 
-    public function getMandatoryAttributes(MessageSent|MessageSending $event): array
+    public function getMandatoryAttributes(MessageSending|MessageSent $event): array
     {
         return [
             'uuid' => $this->getCustomUuid($event),
             // 'mail_class' => $this->getMailClassHeaderValue($event),
-            'sent_at' => now(),
+            'sent_at' => $event instanceof MessageSent ? now() : null,
         ];
     }
 

@@ -18,8 +18,8 @@ return [
 
     'tables' => [
         'mails' => 'mails',
-        'attachments' => 'mail_attachments',
-        'events' => 'mail_events',
+        'attachments' => 'mails_attachments',
+        'events' => 'mails_events',
         'polymorph' => 'mailables',
     ],
 
@@ -42,13 +42,13 @@ return [
 
         'attributes' => [
             'subject',
-            'body_html',
-            'body_text',
             'from',
             'to',
             'reply_to',
             'cc',
             'bcc',
+            'html',
+            'text',
         ],
 
         // Track following events using webhooks from email provider
