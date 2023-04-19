@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\LaravelMails;
+namespace Vormkracht10\Mails;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Vormkracht10\LaravelMails\Commands\LaravelMailsCommand;
+use Vormkracht10\Mails\Commands\LaravelMailsCommand;
 
 class LaravelMailsServiceProvider extends PackageServiceProvider
 {
@@ -19,7 +19,7 @@ class LaravelMailsServiceProvider extends PackageServiceProvider
             ->name('laravel-mails')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_laravel-mails_table')
+            ->hasMigration('create_mails_table')
             ->hasCommand(LaravelMailsCommand::class);
     }
 }

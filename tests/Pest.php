@@ -1,5 +1,5 @@
 <?php
 
-use Vormkracht10\LaravelMails\Tests\TestCase;
+use Vormkracht10\Mails\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);

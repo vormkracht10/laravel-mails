@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\LaravelMails\Tests;
+namespace Vormkracht10\Mails\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Vormkracht10\LaravelMails\LaravelMailsServiceProvider;
+use Vormkracht10\Mails\LaravelMailsServiceProvider;
 
 class TestCase extends Orchestra
 {

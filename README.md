@@ -51,7 +51,7 @@ php artisan vendor:publish --tag="laravel-mails-views"
 ## Usage
 
 ```php
-$laravelMails = new Vormkracht10\LaravelMails();
+$laravelMails = new Vormkracht10\Mails();
 echo $laravelMails->echoPhrase('Hello, Vormkracht10!');
 ```
 
