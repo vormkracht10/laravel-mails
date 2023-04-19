@@ -2,6 +2,9 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
+use Illuminate\Mail\Events\MessageSending;
+use Vormkracht10\Mails\Actions\LogMail;
+
 class LogSendingMail
 {
     /**
@@ -15,8 +18,8 @@ class LogSendingMail
     /**
      * Handle the event.
      */
-    public function handle($event): void
+    public function handle(MessageSending $event): void
     {
-        // Access the order using $event->order...
+        (new LogMail)->execute($event);
     }
 }

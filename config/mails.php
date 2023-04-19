@@ -20,6 +20,10 @@ return [
         'polymorph' => 'mailables',
     ],
 
+    'headers' => [
+        'uuid' => 'X-Laravel-Mails-UUID',
+    ],
+
     // Encrypt all attributes saved to database
 
     'encrypt' => false,

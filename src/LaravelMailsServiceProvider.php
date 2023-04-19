@@ -17,10 +17,10 @@ class LaravelMailsServiceProvider extends PackageServiceProvider
 {
     public function register(): void
     {
+        parent::register();
+
         $this->app['events']->listen(MessageSending::class, LogSendingMail::class);
         $this->app['events']->listen(MessageSent::class, LogSentMail::class);
-
-        parent::register();
     }
 
     public function configurePackage(Package $package): void

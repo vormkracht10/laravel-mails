@@ -13,12 +13,13 @@ return new class extends Migration
             $table->string('uuid')->nullable()->index();
             $table->string('mail_class')->nullable()->index();
             $table->string('subject')->nullable();
-            $table->text('content')->nullable();
             $table->json('from')->nullable();
             $table->json('reply_to')->nullable();
             $table->json('to')->nullable();
             $table->json('cc')->nullable();
             $table->json('bcc')->nullable();
+            $table->text('html')->nullable();
+            $table->text('text')->nullable();
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->bigInteger('opens')->nullable();
