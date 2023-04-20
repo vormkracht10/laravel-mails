@@ -23,6 +23,7 @@ return new class extends Migration
             $table->bigInteger('opens')->nullable();
             $table->bigInteger('clicks')->nullable();
             $table->timestamp('sent_at')->nullable();
+            $table->timestamp('resent_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('last_opened_at')->nullable();
             $table->timestamp('last_clicked_at')->nullable();

@@ -18,7 +18,10 @@ class MailgunWebhookController
         $event = $this->events()[$request->input('event')] ?? null;
 
         if (! is_null($event)) {
-            event($event, ['payload' => $request->input()]);
+            event($event, [
+                'provider' => 'mailgun',
+                'payload' => $request->input(),
+            ]);
         }
 
         return response()

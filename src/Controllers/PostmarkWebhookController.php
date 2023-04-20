@@ -9,6 +9,7 @@ use Vormkracht10\Mails\Events\MailBounced;
 use Vormkracht10\Mails\Events\MailClicked;
 use Vormkracht10\Mails\Events\MailComplained;
 use Vormkracht10\Mails\Events\MailDelivered;
+use Vormkracht10\Mails\Events\MailEvent;
 use Vormkracht10\Mails\Events\MailOpened;
 
 class PostmarkWebhookController
@@ -18,6 +19,11 @@ class PostmarkWebhookController
         $event = $this->events()[$request->input('RecordType')] ?? null;
 
         if (! is_null($event)) {
+            event(MailEvent::class, [
+                'provider' => 'postmark',
+                'payload' => $request->input(),
+            ]);
+
             event($event, [
                 'provider' => 'postmark',
                 'payload' => $request->input(),

@@ -12,8 +12,14 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(config('mails.models.mail'));
             $table->string('type');
-            $table->string('ip')->nullable();
+            $table->string('ip_address')->nullable();
             $table->string('hostname')->nullable();
+            $table->string('platform')->nullable();
+            $table->string('os')->nullable();
+            $table->string('browser')->nullable();
+            $table->string('user_agent')->nullable();
+            $table->json('country_code')->nullable();
+            $table->json('city')->nullable();
             $table->json('payload')->nullable();
             $table->timestamps();
             $table->timestamp('occurred_at')->nullable();

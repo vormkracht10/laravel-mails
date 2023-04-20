@@ -2,21 +2,16 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
+use Vormkracht10\Mails\Facades\MailProvider;
+
 class LogMailEvent
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        // ...
-    }
-
     /**
      * Handle the event.
      */
     public function handle($event): void
     {
-        // Access the order using $event->order...
+        MailProvider::with($event->provider)
+            ->record($event);
     }
 }
