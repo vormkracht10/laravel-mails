@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create(config('mails.tables.mails'), function (Blueprint $table) {
+        Schema::create(config('mails.table_names.mails'), function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->nullable()->index();
             $table->string('mail_class')->nullable()->index();

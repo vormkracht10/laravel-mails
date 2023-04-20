@@ -11,19 +11,46 @@ class LogMail
 {
     public function execute(MessageSending|MessageSent $event): void
     {
+        if (! config('mails.logging.enabled')) {
+            return;
+        }
+
         $mail = $this->newMailModelInstance();
 
         if ($event instanceof MessageSending) {
             $mail->fill($this->getOnlyConfiguredAttributes($event));
             $mail->save();
+
+            collect($event->message->getAttachments())->each(function ($attachment) use ($mail) {
+                dd(invade($attachment)->disposition);
+                $mail->attachments()->create([
+                    'disk' => config('mails.logging.attachments.disk'),
+                    'uuid' => $attachment->getContentId(),
+                    'filename' => $attachment->getFilename(),
+                    'mime' => $attachment->getContentType(),
+                    'size' => strlen($attachment->getBody()),
+                ]);
+            });
         }
 
         if ($event instanceof MessageSent) {
             $mail->firstWhere('uuid', $this->getCustomUuid($event))
                 ?->update($this->getOnlyConfiguredAttributes($event));
+
+            collect($event->message->getAttachments())->each(function ($attachment) use ($mail) {
+                $mail->attachments()->create([
+                    'disk' => config('mails.logging.attachments.disk'),
+                    'filename' => $attachment->getFilename(),
+                    'mime' => $attachment->getContentType(),
+                    'size' => strlen($attachment->getBody()),
+                ]);
+            });
         }
     }
 
+    /**
+     * @return \Vormkracht10\Mails\Models\Mail
+     */
     public function newMailModelInstance()
     {
         $model = config('mails.models.mail');

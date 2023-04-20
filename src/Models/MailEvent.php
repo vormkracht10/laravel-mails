@@ -23,6 +23,11 @@ class MailEvent extends Model
         'occurred_at' => 'datetime',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        $this->table = config('mails.table_names.events') ?: parent::getTable();
+    }
+
     protected static function newFactory()
     {
         return new MailEventFactory();

@@ -12,16 +12,27 @@ class MailAttachment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'disk',
+        'uuid',
         'filename',
+        'mime',
+        'inline',
         'size',
-        'body',
     ];
 
     protected $casts = [
+        'disk' => 'string',
+        'uuid' => 'string',
         'filename' => 'string',
+        'mime' => 'string',
+        'inline' => 'boolean',
         'size' => 'integer',
-        'body' => 'string',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        $this->table = config('mails.table_names.attachments') ?: parent::getTable();
+    }
 
     protected static function newFactory(): MailFactory
     {

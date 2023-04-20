@@ -7,6 +7,29 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Wnx\Sends\Database\Factories\MailFactory;
 
+/**
+ * @property-read string $uuid
+ * @property-read string $mail_class
+ * @property-read string $subject
+ * @property-read ?string $content
+ * @property-read array $from
+ * @property-read array $reply_to
+ * @property-read array $to
+ * @property-read array $cc
+ * @property-read array $bcc
+ * @property int $opens
+ * @property int $clicks
+ * @property ?Carbon $sent_at
+ * @property ?Carbon $delivered_at
+ * @property ?Carbon $last_opened_at
+ * @property ?Carbon $last_clicked_at
+ * @property ?Carbon $complained_at
+ * @property ?Carbon $soft_bounced_at
+ * @property ?Carbon $hard_bounced_at
+ *
+ * @method static Builder forUuid(string $uuid)
+ * @method static Builder forMailClass(string $mailClass)
+ */
 class Mail extends Model
 {
     use HasFactory;
@@ -53,13 +76,23 @@ class Mail extends Model
         'hard_bounced_at' => 'datetime',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        $this->table = config('mails.table_names.mails') ?: parent::getTable();
+    }
+
     protected static function newFactory(): MailFactory
     {
         return new MailFactory();
     }
 
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(config('mails.models.attachment'));
+    }
+
     public function events(): HasMany
     {
-        return $this->HasMany(config('mails.models.event'));
+        return $this->hasMany(config('mails.models.event'));
     }
 }

@@ -16,7 +16,7 @@ return [
 
     // Table names for saving sent emails and polymorphic relations to database
 
-    'tables' => [
+    'table_names' => [
         'mails' => 'mails',
         'attachments' => 'mails_attachments',
         'events' => 'mails_events',
@@ -36,7 +36,7 @@ return [
 
         // Enable logging of all sent mails to database
 
-        'enable' => true,
+        'enabled' => true,
 
         // Specify attributes to log in database
 
@@ -64,7 +64,7 @@ return [
         // Enable saving mail attachments to disk
 
         'attachments' => [
-            'enable' => false,
+            'enabled' => false,
             'disk' => env('FILESYSTEM_DISK', 'local'),
             'root' => 'mails/attachments',
         ],

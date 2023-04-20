@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create(config('mails.tables.mail_events'), function (Blueprint $table) {
+        Schema::create(config('mails.table_names.mail_events'), function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(config('mails.models.mail'));
             $table->string('type');

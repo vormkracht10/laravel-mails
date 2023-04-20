@@ -8,11 +8,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create(config('mails.tables.attachments'), function (Blueprint $table) {
+        Schema::create(config('mails.table_names.attachments'), function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(config('mails.models.mail'));
             $table->string('disk');
+            $table->string('uuid');
             $table->string('filename');
+            $table->string('mime');
+            $table->boolean('inline', false);
             $table->bigInteger('size');
             $table->timestamps();
         });
