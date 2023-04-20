@@ -27,20 +27,20 @@ return [
         'uuid' => 'X-Laravel-Mails-UUID',
     ],
 
-    'routes' => [
-        'prefix' => 'webhooks/mails',
+    'webhooks' => [
+        'routes' => [
+            'prefix' => 'webhooks/mails',
+        ],
+
+        'queue' => env('MAILS_QUEUE_WEBHOOKS', true),
     ],
-
-    // Encrypt all attributes saved to database
-
-    'encryption' => false,
 
     // Logging mails
     'logging' => [
 
         // Enable logging of all sent mails to database
 
-        'enabled' => true,
+        'enabled' => env('MAILS_LOGGING_ENABLED', true),
 
         // Specify attributes to log in database
 
@@ -55,6 +55,10 @@ return [
             'text',
         ],
 
+        // Encrypt all attributes saved to database
+
+        'encrypted' => env('MAILS_ENCRYPTED', true),
+
         // Track following events using webhooks from email provider
 
         'tracking' => [
@@ -68,7 +72,7 @@ return [
         // Enable saving mail attachments to disk
 
         'attachments' => [
-            'enabled' => false,
+            'enabled' => env('MAILS_LOGGING_ATTACHMENTS_ENABLED', true),
             'disk' => env('FILESYSTEM_DISK', 'local'),
             'root' => 'mails/attachments',
         ],
@@ -115,7 +119,6 @@ return [
                 //     'telegram',
                 // ],
             ],
-            // Get notified when a spam complaint occurred
             'complaints' => [
                 // 'notify' => [
                 //     'mail',

@@ -9,9 +9,25 @@ class LogMailEvent
     /**
      * Handle the event.
      */
-    public function handle($event): void
+    public function handle($provider, $payload): void
     {
-        MailProvider::with($event->provider)
-            ->record($event);
+        if (config('mails.webhooks.queue')) {
+            $this->dispatch($provider, $payload);
+
+            return;
+        }
+
+        $this->record($provider, $payload);
+    }
+
+    private function dispatch($provider, $payload): void
+    {
+        dispatch(fn () => $this->record($provider, $payload));
+    }
+
+    private function record($provider, $payload): void
+    {
+        MailProvider::with($provider)
+            ->record($payload);
     }
 }

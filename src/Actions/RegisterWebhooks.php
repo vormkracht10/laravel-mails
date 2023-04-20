@@ -20,7 +20,7 @@ class RegisterWebhooks
     {
         $trackingConfig = (array) config('mails.logging.tracking');
 
-        $openTrigger = new WebhookConfigurationOpenTrigger($trackingConfig['opens'], $trackingConfig['opens']);
+        $openTrigger = new WebhookConfigurationOpenTrigger($trackingConfig['opens'], false);
         $clickTrigger = new WebhookConfigurationClickTrigger($trackingConfig['clicks']);
         $deliveryTrigger = new WebhookConfigurationDeliveryTrigger($trackingConfig['deliveries']);
         $bounceTrigger = new WebhookConfigurationBounceTrigger($trackingConfig['bounces'], $trackingConfig['bounces']);

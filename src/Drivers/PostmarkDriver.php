@@ -2,7 +2,6 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
-use Illuminate\Support\Facades\DB;
 use Vormkracht10\Mails\Enums\Events\Postmark;
 
 class PostmarkDriver
@@ -17,15 +16,15 @@ class PostmarkDriver
         $this->mailEventModel = config('mails.models.event');
     }
 
-    public function getUuidFromPayload($event)
+    public function getUuidFromPayload($payload)
     {
-        return $event->payload['Metadata'][config('mails.headers.uuid')];
+        return $payload['Metadata'][config('mails.headers.uuid')];
     }
 
-    public function getMailFromEvent($event)
+    public function getMailFromPayload($payload)
     {
-        return (new $model)
-            ->firstWhere('uuid', $this->getUuidFromPayload($event));
+        return (new $this->mailModel)
+            ->firstWhere('uuid', $this->getUuidFromPayload($payload));
     }
 
     public function events()
@@ -39,55 +38,56 @@ class PostmarkDriver
         ];
     }
 
-    public function record($event): void
+    public function record($payload): void
     {
-        $type = $event->payload['RecordType'];
+        $type = $payload['RecordType'];
         $method = $this->events()[$type] ?? null;
 
         if (method_exists($this, $method)) {
-            $this->{$method}($event);
+            $mail = $this->getMailFromPayload($payload);
+
+            if (is_null($mail)) {
+                return;
+            }
+
+            $this->{$method}($mail, $payload);
         }
     }
 
-    public function clicked($event): void
+    public function clicked($mail, $payload): void
     {
-        $this->getMailFromEvent($event)
-            ?->update([
-                'last_clicked_at' => $event->payload['ReceivedAt'],
-                'clicks' => DB::raw('clicks + 1'),
-            ]);
+        $mail->update([
+            'last_clicked_at' => $payload['ReceivedAt'],
+            'clicks' => $mail->clicks + 1,
+        ]);
     }
 
-    public function complained($event): void
+    public function complained($mail, $payload): void
     {
-        $this->getMailFromEvent($event)
-            ?->update([
-                'complained_at' => $event->payload['BouncedAt'],
-            ]);
+        $mail->update([
+            'complained_at' => $payload['BouncedAt'],
+        ]);
     }
 
-    public function delivered($event): void
+    public function delivered($mail, $payload): void
     {
-        $this->getMailFromEvent($event)
-            ?->update([
-                'delivered_at' => $event->payload['ReceivedAt'],
-            ]);
+        $mail->update([
+            'delivered_at' => $payload['DeliveredAt'],
+        ]);
     }
 
-    public function bounced($event): void
+    public function bounced($mail, $payload): void
     {
-        $this->getMailFromEvent($event)
-            ?->update([
-                'hard_bounced_at' => $event->payload['BouncedAt'],
-            ]);
+        $mail->update([
+            'hard_bounced_at' => $payload['BouncedAt'],
+        ]);
     }
 
-    public function opened($event): void
+    public function opened($mail, $payload): void
     {
-        $this->getMailFromEvent($event)
-            ?->update([
-                'last_opened_at' => $event->payload['ReceivedAt'],
-                'opens' => DB::raw('opens + 1'),
-            ]);
+        $mail->update([
+            'last_opened_at' => $payload['ReceivedAt'],
+            'opens' => $mail->opens + 1,
+        ]);
     }
 }

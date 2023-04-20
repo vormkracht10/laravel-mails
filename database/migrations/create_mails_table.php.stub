@@ -20,8 +20,8 @@ return new class extends Migration
             $table->json('bcc')->nullable();
             $table->text('html')->nullable();
             $table->text('text')->nullable();
-            $table->bigInteger('opens')->nullable();
-            $table->bigInteger('clicks')->nullable();
+            $table->unsignedBigInteger('opens')->default(0);
+            $table->unsignedBigInteger('clicks')->default(0);
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('resent_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
