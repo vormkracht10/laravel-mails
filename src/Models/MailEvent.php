@@ -16,9 +16,11 @@ class MailEvent extends Model
         'ip',
         'hostname',
         'payload',
+        'occurred_at',
     ];
 
     protected $casts = [
+        'payload' => 'object',
         'created_at' => 'datetime',
         'occurred_at' => 'datetime',
     ];

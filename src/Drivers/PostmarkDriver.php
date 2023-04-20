@@ -51,7 +51,20 @@ class PostmarkDriver
             }
 
             $this->{$method}($mail, $payload);
+
+            $this->logEvent($mail, $method, $payload);
         }
+    }
+
+    public function logEvent($mail, $method, $payload): void
+    {
+        $mail->events()->create([
+            'type' => $method,
+            // 'ip_address' => '',
+            // 'hostname' => '',
+            'payload' => $payload,
+            'occurred_at' => $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now(),
+        ]);
     }
 
     public function clicked($mail, $payload): void

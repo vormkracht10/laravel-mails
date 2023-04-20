@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('os')->nullable();
             $table->string('browser')->nullable();
             $table->string('user_agent')->nullable();
-            $table->json('country_code')->nullable();
-            $table->json('city')->nullable();
+            $table->char('country_code', 2)->nullable();
+            $table->string('city')->nullable();
             $table->json('payload')->nullable();
             $table->timestamps();
             $table->timestamp('occurred_at')->nullable();
