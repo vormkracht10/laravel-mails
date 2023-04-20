@@ -5,6 +5,7 @@ namespace Vormkracht10\Mails\Actions;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Mime\Address;
 
 class LogMail
@@ -21,30 +22,13 @@ class LogMail
             $mail->fill($this->getOnlyConfiguredAttributes($event));
             $mail->save();
 
-            collect($event->message->getAttachments())->each(function ($attachment) use ($mail) {
-                dd(invade($attachment)->disposition);
-                $mail->attachments()->create([
-                    'disk' => config('mails.logging.attachments.disk'),
-                    'uuid' => $attachment->getContentId(),
-                    'filename' => $attachment->getFilename(),
-                    'mime' => $attachment->getContentType(),
-                    'size' => strlen($attachment->getBody()),
-                ]);
-            });
+            $this->collectAttachments($mail, $event->message->getAttachments());
         }
 
         if ($event instanceof MessageSent) {
-            $mail->firstWhere('uuid', $this->getCustomUuid($event))
-                ?->update($this->getOnlyConfiguredAttributes($event));
+            $mail = $mail->firstWhere('uuid', $this->getCustomUuid($event));
 
-            collect($event->message->getAttachments())->each(function ($attachment) use ($mail) {
-                $mail->attachments()->create([
-                    'disk' => config('mails.logging.attachments.disk'),
-                    'filename' => $attachment->getFilename(),
-                    'mime' => $attachment->getContentType(),
-                    'size' => strlen($attachment->getBody()),
-                ]);
-            });
+            $mail->update($this->getOnlyConfiguredAttributes($event));
         }
     }
 
@@ -115,5 +99,35 @@ class LogMail
             ->flatMap(fn (Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
 
         return $addresses->count() > 0 ? $addresses : null;
+    }
+
+    /**
+     * @param \Vormkracht10\Mails\Models\Mail
+     */
+    public function collectAttachments($mail, $attachments): void
+    {
+        collect($attachments)->each(function ($attachment) use ($mail) {
+            $attachmentModel = $mail->attachments()->create([
+                'disk' => config('mails.logging.attachments.disk'),
+                'uuid' => $attachment->getContentId(),
+                'filename' => $attachment->getFilename(),
+                'mime' => $attachment->getContentType(),
+                'inline' => ! str_contains($attachment->getFilename() ?: '', '.'), // workaround, because disposition is a private property
+                'size' => strlen($attachment->getBody()),
+            ]);
+
+            $this->saveAttachment($attachmentModel, $attachment);
+        });
+    }
+
+    public function saveAttachment($attachmentModel, $attachment): void
+    {
+        Storage::disk($attachmentModel->disk)
+            ->put($this->getAttachmentStoragePath($attachmentModel->id), $attachment->getBody(), 'private');
+    }
+
+    public function getAttachmentStoragePath(string $filename): string
+    {
+        return rtrim(config('mails.logging.attachments.root'), '/').'/'.$filename;
     }
 }
