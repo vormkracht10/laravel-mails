@@ -10,15 +10,27 @@ use Vormkracht10\Mails\Commands\MonitorMailCommand;
 use Vormkracht10\Mails\Commands\PruneMailCommand;
 use Vormkracht10\Mails\Commands\ResendMailCommand;
 use Vormkracht10\Mails\Commands\WebhooksMailCommand;
+use Vormkracht10\Mails\Events\MailBounced;
+use Vormkracht10\Mails\Events\MailClicked;
+use Vormkracht10\Mails\Events\MailComplained;
+use Vormkracht10\Mails\Events\MailDelivered;
+use Vormkracht10\Mails\Events\MailOpened;
 use Vormkracht10\Mails\Listeners\AttachMailLogUuid;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
+use Vormkracht10\Mails\Listeners\Postmark\RecordPostmarkEvent;
 
 class MailsServiceProvider extends PackageServiceProvider
 {
     public function register(): void
     {
         parent::register();
+
+        $this->app['events']->listen(MailBounced::class, RecordPostmarkEvent::class);
+        $this->app['events']->listen(MailClicked::class, RecordPostmarkEvent::class);
+        $this->app['events']->listen(MailComplained::class, RecordPostmarkEvent::class);
+        $this->app['events']->listen(MailDelivered::class, RecordPostmarkEvent::class);
+        $this->app['events']->listen(MailOpened::class, RecordPostmarkEvent::class);
 
         $this->app['events']->listen(MessageSending::class, AttachMailLogUuid::class);
         $this->app['events']->listen(MessageSending::class, LogSendingMail::class);
@@ -37,6 +49,7 @@ class MailsServiceProvider extends PackageServiceProvider
                 'create_mails_events_table',
                 'create_mails_table',
             )
+            ->hasRoutes('webhooks')
             ->hasCommands(
                 MonitorMailCommand::class,
                 PruneMailCommand::class,

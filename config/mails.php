@@ -27,6 +27,10 @@ return [
         'uuid' => 'X-Laravel-Mails-UUID',
     ],
 
+    'routes' => [
+        'prefix' => 'webhooks/mails',
+    ],
+
     // Encrypt all attributes saved to database
 
     'encryption' => false,

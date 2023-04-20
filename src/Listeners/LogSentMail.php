@@ -20,6 +20,6 @@ class LogSentMail
      */
     public function handle(MessageSent $event): void
     {
-        (new LogMail)->execute($event);
+        (new LogMail)($event);
     }
 }

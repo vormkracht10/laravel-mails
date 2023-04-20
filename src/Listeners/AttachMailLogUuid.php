@@ -20,6 +20,6 @@ class AttachMailLogUuid
      */
     public function handle(MessageSending $event): void
     {
-        (new AttachUuid)->execute($event);
+        (new AttachUuid)($event);
     }
 }

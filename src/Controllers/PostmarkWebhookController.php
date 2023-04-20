@@ -15,10 +15,13 @@ class PostmarkWebhookController
 {
     public function __invoke(Request $request): JsonResponse
     {
-        $event = $this->events()[$request->input('record_type')] ?? null;
+        $event = $this->events()[$request->input('RecordType')] ?? null;
 
         if (! is_null($event)) {
-            event($event, ['payload' => $request->input()]);
+            event($event, [
+                'provider' => 'postmark',
+                'payload' => $request->input(),
+            ]);
         }
 
         return response()

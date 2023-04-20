@@ -7,10 +7,13 @@ use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Mime\Address;
+use Vormkracht10\Mails\Shared\AsAction;
 
 class LogMail
 {
-    public function execute(MessageSending|MessageSent $event): void
+    use AsAction;
+
+    public function handle(MessageSending|MessageSent $event): void
     {
         if (! config('mails.logging.enabled')) {
             return;
