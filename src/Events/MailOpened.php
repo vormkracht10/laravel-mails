@@ -14,7 +14,8 @@ class MailOpened
      * Create a new event instance.
      */
     public function __construct(
-        public $mail
+        public string $provider,
+        public $payload
     ) {
     }
 }
