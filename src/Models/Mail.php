@@ -5,7 +5,7 @@ namespace Vormkracht10\Mails\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Wnx\Sends\Database\Factories\MailFactory;
+use Vormkracht10\Mails\Database\Factories\MailFactory;
 
 /**
  * @property-read string $uuid

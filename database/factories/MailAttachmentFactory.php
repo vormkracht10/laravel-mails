@@ -3,11 +3,11 @@
 namespace Vormkracht10\Mails\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Vormkracht10\Mails\Models\MailEvent;
+use Vormkracht10\Mails\Models\MailAttachment;
 
-class MailEventFactory extends Factory
+class MailAttachmentFactory extends Factory
 {
-    protected $model = MailEvent::class;
+    protected $model = MailAttachment::class;
 
     public function definition()
     {

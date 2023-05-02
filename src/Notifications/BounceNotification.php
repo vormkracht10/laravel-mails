@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Servers\Notifications;
+namespace Vormkracht10\Mails\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

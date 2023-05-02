@@ -1,6 +1,6 @@
 <?php
 
-namespace Wnx\Sends\Database\Factories;
+namespace Vormkracht10\Mails\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Vormkracht10\Mails\Models\Mail;
