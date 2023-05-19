@@ -5,12 +5,12 @@ namespace Vormkracht10\Mails\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Vormkracht10\Mails\Enums\Events\Postmark;
-use Vormkracht10\Mails\Events\MailBounced;
-use Vormkracht10\Mails\Events\MailClicked;
-use Vormkracht10\Mails\Events\MailComplained;
-use Vormkracht10\Mails\Events\MailDelivered;
 use Vormkracht10\Mails\Events\MailEvent;
-use Vormkracht10\Mails\Events\MailOpened;
+use Vormkracht10\Mails\Events\WebhookBounced;
+use Vormkracht10\Mails\Events\WebhookClicked;
+use Vormkracht10\Mails\Events\WebhookComplained;
+use Vormkracht10\Mails\Events\WebhookDelivered;
+use Vormkracht10\Mails\Events\WebhookOpened;
 
 class PostmarkWebhookController
 {
@@ -37,11 +37,11 @@ class PostmarkWebhookController
     public function events(): array
     {
         return [
-            Postmark::CLICKED->value => MailClicked::class,
-            Postmark::COMPLAINED->value => MailComplained::class,
-            Postmark::DELIVERED->value => MailDelivered::class,
-            Postmark::HARD_BOUNCED->value => MailBounced::class,
-            Postmark::OPENED->value => MailOpened::class,
+            Postmark::CLICKED->value => WebhookClicked::class,
+            Postmark::COMPLAINED->value => WebhookComplained::class,
+            Postmark::DELIVERED->value => WebhookDelivered::class,
+            Postmark::HARD_BOUNCED->value => WebhookBounced::class,
+            Postmark::OPENED->value => WebhookOpened::class,
         ];
     }
 }

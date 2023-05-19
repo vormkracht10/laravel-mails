@@ -5,11 +5,11 @@ namespace Vormkracht10\Mails\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Vormkracht10\Mails\Enums\Events\Mailgun;
-use Vormkracht10\Mails\Events\MailBounced;
-use Vormkracht10\Mails\Events\MailClicked;
-use Vormkracht10\Mails\Events\MailComplained;
-use Vormkracht10\Mails\Events\MailDelivered;
-use Vormkracht10\Mails\Events\MailOpened;
+use Vormkracht10\Mails\Events\WebhookBounced;
+use Vormkracht10\Mails\Events\WebhookClicked;
+use Vormkracht10\Mails\Events\WebhookComplained;
+use Vormkracht10\Mails\Events\WebhookDelivered;
+use Vormkracht10\Mails\Events\WebhookOpened;
 
 class MailgunWebhookController
 {
@@ -31,11 +31,11 @@ class MailgunWebhookController
     public function events(): array
     {
         return [
-            Mailgun::CLICKED->value => MailClicked::class,
-            Mailgun::COMPLAINED->value => MailComplained::class,
-            Mailgun::DELIVERED->value => MailDelivered::class,
-            Mailgun::HARD_BOUNCED->value => MailBounced::class,
-            Mailgun::OPENED->value => MailOpened::class,
+            Mailgun::CLICKED->value => WebhookClicked::class,
+            Mailgun::COMPLAINED->value => WebhookComplained::class,
+            Mailgun::DELIVERED->value => WebhookDelivered::class,
+            Mailgun::HARD_BOUNCED->value => WebhookBounced::class,
+            Mailgun::OPENED->value => WebhookOpened::class,
         ];
     }
 }

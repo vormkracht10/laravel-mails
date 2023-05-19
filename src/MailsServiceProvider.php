@@ -11,11 +11,17 @@ use Vormkracht10\Mails\Commands\PruneMailCommand;
 use Vormkracht10\Mails\Commands\ResendMailCommand;
 use Vormkracht10\Mails\Commands\WebhooksMailCommand;
 use Vormkracht10\Mails\Contracts\MailProviderContract;
+use Vormkracht10\Mails\Events\MailBounced;
+use Vormkracht10\Mails\Events\MailClicked;
+use Vormkracht10\Mails\Events\MailComplained;
+use Vormkracht10\Mails\Events\MailDelivered;
 use Vormkracht10\Mails\Events\MailEvent;
+use Vormkracht10\Mails\Events\MailOpened;
 use Vormkracht10\Mails\Listeners\AttachMailLogUuid;
 use Vormkracht10\Mails\Listeners\LogMailEvent;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
+use Vormkracht10\Mails\Listeners\NotifyOnBounce;
 use Vormkracht10\Mails\Managers\MailProviderManager;
 
 class MailsServiceProvider extends PackageServiceProvider
@@ -29,6 +35,12 @@ class MailsServiceProvider extends PackageServiceProvider
         $this->app['events']->listen(MessageSending::class, AttachMailLogUuid::class);
         $this->app['events']->listen(MessageSending::class, LogSendingMail::class);
         $this->app['events']->listen(MessageSent::class, LogSentMail::class);
+
+        $this->app['events']->listen(MailBounced::class, NotifyOnBounce::class);
+        $this->app['events']->listen(MailClicked::class, NotifyOnBounce::class);
+        $this->app['events']->listen(MailComplained::class, NotifyOnBounce::class);
+        $this->app['events']->listen(MailDelivered::class, NotifyOnBounce::class);
+        $this->app['events']->listen(MailOpened::class, NotifyOnBounce::class);
     }
 
     public function boot(): void

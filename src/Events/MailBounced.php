@@ -5,6 +5,7 @@ namespace Vormkracht10\Mails\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Vormkracht10\Mails\Models\MailEvent;
 
 class MailBounced
 {
@@ -14,8 +15,7 @@ class MailBounced
      * Create a new event instance.
      */
     public function __construct(
-        public string $provider,
-        public $payload
+        public MailEvent $mailEvent
     ) {
     }
 }

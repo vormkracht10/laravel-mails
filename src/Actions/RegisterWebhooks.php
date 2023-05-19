@@ -40,7 +40,6 @@ class RegisterWebhooks
         $outboundWebhooks = collect($client->getWebhookConfigurations('outbound')['webhooks'] ?? []);
 
         if ($outboundWebhooks->where('url', $url)->count() === 0) {
-
             $client->createWebhookConfiguration($url, null, null, null, $triggers);
         } else {
             // ... Webhook for outbound messages already exists

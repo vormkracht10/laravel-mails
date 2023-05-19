@@ -2,21 +2,22 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
+use Illuminate\Support\Facades\Notification;
+use Vormkracht10\Mails\Notifications\BounceNotification;
+
 class NotifyOnBounce
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        // ...
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle($event): void
     {
-        // Access the order using $event->order...
+        logger()->debug('xxx');
+
+        if (null !== $notificationChannels = config('mails.notifications.events.bounce.notify')) {
+            collect($notificationChannels)->each(function ($channel) {
+                collect(array_wrap($channel))->each(function ($account, $route) {
+                    Notification::route($route, $account)
+                        ->send(new BounceNotification($event->mail));
+                });
+            });
+        }
     }
 }

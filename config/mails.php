@@ -32,7 +32,7 @@ return [
             'prefix' => 'webhooks/mails',
         ],
 
-        'queue' => env('MAILS_QUEUE_WEBHOOKS', true),
+        'queue' => env('MAILS_QUEUE_WEBHOOKS', false),
     ],
 
     // Logging mails
@@ -85,10 +85,10 @@ return [
         // Possible notification channels: discord, mail, slack, telegram
 
         'channels' => [
-            // 'mail' => 'mail:support@vormkracht10.nl',
-            // 'discord' => 'discord:1234567890',
-            // 'slack' => 'slack:https://hooks.slack.com/services/...',
-            // 'telegram' => 'telegram:1234567890',
+            'mail' => ['m@rkvaneijk.nl'],
+            // 'discord' => ['1234567890'],
+            // 'slack' => ['https://hooks.slack.com/services/...'],
+            // 'telegram' => ['1234567890'],
         ],
 
         // Get notified when a bounce occurred
@@ -102,13 +102,13 @@ return [
                     // 'telegram',
                 ],
             ],
-            'bounces' => [
-                // 'notify' => [
-                //     'mail',
-                //     'discord',
-                //     'slack',
-                //     'telegram',
-                // ],
+            'bounce' => [
+                'notify' => [
+                    'mail',
+                    //     'discord',
+                    //     'slack',
+                    //     'telegram',
+                ],
             ],
             'bouncerate' => [
                 'treshold' => 1, // in %
@@ -119,7 +119,24 @@ return [
                 //     'telegram',
                 // ],
             ],
-            'complaints' => [
+            'deliveryrate' => [
+                'treshold' => 99, // in %
+                // 'notify' => [
+                //     'mail',
+                //     'discord',
+                //     'slack',
+                //     'telegram',
+                // ],
+            ],
+            'complaint' => [
+                // 'notify' => [
+                //     'mail',
+                //     'discord',
+                //     'slack',
+                //     'telegram',
+                // ],
+            ],
+            'unsent' => [
                 // 'notify' => [
                 //     'mail',
                 //     'discord',

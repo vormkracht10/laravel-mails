@@ -3,6 +3,8 @@
 namespace Vormkracht10\Mails\Drivers;
 
 use Vormkracht10\Mails\Enums\Events\Postmark;
+use Vormkracht10\Mails\Events\MailEventLogged;
+use Vormkracht10\Mails\Models\Mail;
 
 class PostmarkDriver
 {
@@ -16,18 +18,18 @@ class PostmarkDriver
         $this->mailEventModel = config('mails.models.event');
     }
 
-    public function getUuidFromPayload($payload)
+    public function getUuidFromPayload(array $payload): string
     {
         return $payload['Metadata'][config('mails.headers.uuid')];
     }
 
-    public function getMailFromPayload($payload)
+    public function getMailFromPayload(array $payload): Mail
     {
         return (new $this->mailModel)
             ->firstWhere('uuid', $this->getUuidFromPayload($payload));
     }
 
-    public function events()
+    public function events(): array
     {
         return [
             Postmark::CLICKED->value => 'clicked',
@@ -38,7 +40,7 @@ class PostmarkDriver
         ];
     }
 
-    public function record($payload): void
+    public function record(array $payload): void
     {
         $type = $payload['RecordType'];
         $method = $this->events()[$type] ?? null;
@@ -56,15 +58,21 @@ class PostmarkDriver
         }
     }
 
-    public function logEvent($mail, $method, $payload): void
+    public function logEvent(Mail $mail, string $method, array $payload): void
     {
-        $mail->events()->create([
+        $mailEvent = $mail->events()->create([
             'type' => $method,
             // 'ip_address' => '',
             // 'hostname' => '',
             'payload' => $payload,
             'occurred_at' => $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now(),
         ]);
+
+        event(MailEventLogged::class, $mailEvent);
+
+        $eventClass = '\Vormkracht10\Mails\Events\Mail'.ucfirst($method);
+
+        event(new $eventClass, $mailEvent);
     }
 
     public function clicked($mail, $payload): void

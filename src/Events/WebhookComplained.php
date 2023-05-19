@@ -5,9 +5,8 @@ namespace Vormkracht10\Mails\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Vormkracht10\Mails\Models\MailEvent;
 
-class MailComplained
+class WebhookComplained
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -15,7 +14,8 @@ class MailComplained
      * Create a new event instance.
      */
     public function __construct(
-        public MailEvent $mailEvent
+        public string $provider,
+        public $payload
     ) {
     }
 }

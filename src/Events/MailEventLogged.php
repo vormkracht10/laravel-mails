@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Vormkracht10\Mails\Models\MailEvent;
 
-class MailComplained
+class MailEventLogged
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
