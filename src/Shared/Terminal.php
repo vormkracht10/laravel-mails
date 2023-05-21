@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Shared;
+namespace Vormkracht10\Mails\Shared;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\OutputStyle;
