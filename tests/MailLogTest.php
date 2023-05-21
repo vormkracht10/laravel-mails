@@ -3,6 +3,7 @@
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use function Pest\Laravel\assertDatabaseHas;
+use Vormkracht10\Mails\Models\Mail as MailModel;
 
 it('can log sent mails', function () {
     Mail::send([], [], function (Message $message) {
@@ -15,7 +16,7 @@ it('can log sent mails', function () {
             ->html('<p>HTML</p>');
     });
 
-    assertDatabaseHas(config('mails.table_names.mails'), [
+    assertDatabaseHas((new MailModel)->getTable(), [
         'from' => json_encode(['local@computer.nl' => null]),
         'to' => json_encode(['mark@vormkracht10.nl' => null]),
         'cc' => json_encode(['cc@vk10.nl' => null]),
