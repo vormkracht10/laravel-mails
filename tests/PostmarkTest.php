@@ -8,7 +8,7 @@ use function Pest\Laravel\post;
 use Vormkracht10\Mails\Enums\Events\Mapping;
 use Vormkracht10\Mails\Models\Mail as MailModel;
 
-it('can receive incoming delivered webhook from postmark', function () {
+it('can receive incoming delivery webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
         $message->to('mark@vormkracht10.nl')
             ->from('local@computer.nl')
@@ -40,7 +40,7 @@ it('can receive incoming delivered webhook from postmark', function () {
     ]);
 });
 
-it('can receive incoming bounced webhook from postmark', function () {
+it('can receive incoming bounce webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
         $message->to('mark@vormkracht10.nl')
             ->from('local@computer.nl')
@@ -83,7 +83,7 @@ it('can receive incoming bounced webhook from postmark', function () {
     ]);
 });
 
-it('can receive incoming complained webhook from postmark', function () {
+it('can receive incoming complaint webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
         $message->to('mark@vormkracht10.nl')
             ->from('local@computer.nl')
@@ -126,7 +126,7 @@ it('can receive incoming complained webhook from postmark', function () {
     ]);
 });
 
-it('can receive incoming opened webhook from postmark', function () {
+it('can receive incoming open webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
         $message->to('mark@vormkracht10.nl')
             ->from('local@computer.nl')
@@ -180,7 +180,7 @@ it('can receive incoming opened webhook from postmark', function () {
     ]);
 });
 
-it('can receive incoming clicked webhook from postmark', function () {
+it('can receive incoming click webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
         $message->to('mark@vormkracht10.nl')
             ->from('local@computer.nl')

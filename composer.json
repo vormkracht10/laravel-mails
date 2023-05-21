@@ -46,7 +46,10 @@
     "autoload-dev": {
         "psr-4": {
             "Vormkracht10\\Mails\\Tests\\": "tests"
-        }
+        },
+        "files": [
+            "helpers.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
