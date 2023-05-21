@@ -4,6 +4,7 @@ namespace Vormkracht10\Mails\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordMessage;
@@ -24,9 +25,10 @@ class BounceNotification extends Notification implements ShouldQueue
     public function via(): array
     {
         return [
-            'discord',
-            'slack',
-            'telegram',
+            // 'discord',
+            'mail',
+            // 'slack',
+            // 'telegram',
         ];
     }
 
@@ -42,6 +44,13 @@ class BounceNotification extends Notification implements ShouldQueue
         ]);
 
         return $emoji.' mail has bounced';
+    }
+
+    public function toMail(): MailMessage
+    {
+        return (new MailMessage)
+            ->greeting($this->getTitle())
+            ->line($this->getMessage());
     }
 
     public function toDiscord(): DiscordMessage

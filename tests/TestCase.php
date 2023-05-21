@@ -3,6 +3,7 @@
 namespace Vormkracht10\Mails\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use NotificationChannels\Discord\DiscordServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Vormkracht10\Mails\MailsServiceProvider;
 
@@ -20,6 +21,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
+            DiscordServiceProvider::class,
             MailsServiceProvider::class,
         ];
     }

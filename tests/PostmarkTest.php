@@ -34,7 +34,7 @@ it('can receive incoming delivery webhook from postmark', function () {
         'Tag' => 'welcome-email',
         'DeliveredAt' => '2023-05-19T22:09:32Z',
         'Details' => 'Test delivery webhook details',
-    ]);
+    ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::DELIVERY->value,
@@ -77,7 +77,7 @@ it('can receive incoming bounce webhook from postmark', function () {
         'CanActivate' => true,
         'Subject' => 'Test subject',
         'Content' => 'Test content',
-    ]);
+    ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::BOUNCE->value,
@@ -120,7 +120,7 @@ it('can receive incoming complaint webhook from postmark', function () {
         'CanActivate' => false,
         'Subject' => 'Test subject',
         'Content' => 'Test content',
-    ]);
+    ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::COMPLAINT->value,
@@ -174,7 +174,7 @@ it('can receive incoming open webhook from postmark', function () {
         'ReceivedAt' => '2023-05-21T02:51:39Z',
         'Tag' => 'welcome-email',
         'Recipient' => 'john@example.com',
-    ]);
+    ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::OPEN->value,
@@ -228,7 +228,7 @@ it('can receive incoming click webhook from postmark', function () {
         'ReceivedAt' => '2023-05-21T02:51:39Z',
         'Tag' => 'welcome-email',
         'Recipient' => 'john@example.com',
-    ]);
+    ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::CLICK->value,

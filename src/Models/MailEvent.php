@@ -37,7 +37,10 @@ class MailEvent extends Model
     {
         static::creating(function (MailEvent $mailEvent) {
             event(MailEventLogged::class, $mailEvent);
-            event($mailEvent->eventClass, $mailEvent);
+
+            $eventClass = $mailEvent->eventClass;
+
+            $eventClass::dispatch($mailEvent);
         });
     }
 
@@ -58,6 +61,6 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return '\Vormkracht10\Mails\Events\Mail'.$this->pastTenseName.'::class';
+        return 'Vormkracht10\Mails\Events\Mail'.$this->pastTenceName;
     }
 }
