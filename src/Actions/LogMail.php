@@ -13,10 +13,10 @@ class LogMail
 {
     use AsAction;
 
-    public function handle(MessageSending|MessageSent $event): void
+    public function handle(MessageSending|MessageSent $event): mixed
     {
         if (! config('mails.logging.enabled')) {
-            return;
+            return null;
         }
 
         $mail = $this->newMailModelInstance();
@@ -33,6 +33,8 @@ class LogMail
 
             $mail->update($this->getOnlyConfiguredAttributes($event));
         }
+
+        return null;
     }
 
     /**
