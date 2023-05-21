@@ -7,6 +7,7 @@ use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\post;
 use Vormkracht10\Mails\Enums\Events\Mapping;
 use Vormkracht10\Mails\Models\Mail as MailModel;
+use Vormkracht10\Mails\Models\MailEvent;
 
 it('can receive incoming delivery webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
@@ -35,7 +36,7 @@ it('can receive incoming delivery webhook from postmark', function () {
         'Details' => 'Test delivery webhook details',
     ]);
 
-    assertDatabaseHas(config('mails.table_names.events'), [
+    assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::DELIVERY->value,
     ]);
 });
@@ -78,7 +79,7 @@ it('can receive incoming bounce webhook from postmark', function () {
         'Content' => 'Test content',
     ]);
 
-    assertDatabaseHas(config('mails.table_names.events'), [
+    assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::BOUNCE->value,
     ]);
 });
@@ -121,7 +122,7 @@ it('can receive incoming complaint webhook from postmark', function () {
         'Content' => 'Test content',
     ]);
 
-    assertDatabaseHas(config('mails.table_names.events'), [
+    assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::COMPLAINT->value,
     ]);
 });
@@ -175,7 +176,7 @@ it('can receive incoming open webhook from postmark', function () {
         'Recipient' => 'john@example.com',
     ]);
 
-    assertDatabaseHas(config('mails.table_names.events'), [
+    assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::OPEN->value,
     ]);
 });
@@ -229,7 +230,7 @@ it('can receive incoming click webhook from postmark', function () {
         'Recipient' => 'john@example.com',
     ]);
 
-    assertDatabaseHas(config('mails.table_names.events'), [
+    assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::CLICK->value,
     ]);
 });
