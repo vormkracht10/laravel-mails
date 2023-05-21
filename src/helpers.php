@@ -2,7 +2,7 @@
 
 namespace Vormkracht10\Mails;
 
-use App\Shared\Terminal;
+use Vormkracht10\Mails\Shared\Terminal;
 
 if (! function_exists('console')) {
     function console(): Terminal
