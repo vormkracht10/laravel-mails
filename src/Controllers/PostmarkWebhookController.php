@@ -37,11 +37,11 @@ class PostmarkWebhookController
     public function events(): array
     {
         return [
-            Postmark::CLICKED->value => WebhookClicked::class,
-            Postmark::COMPLAINED->value => WebhookComplained::class,
-            Postmark::DELIVERED->value => WebhookDelivered::class,
-            Postmark::HARD_BOUNCED->value => WebhookBounced::class,
-            Postmark::OPENED->value => WebhookOpened::class,
+            Postmark::CLICK->value => WebhookClicked::class,
+            Postmark::COMPLAINT->value => WebhookComplained::class,
+            Postmark::DELIVERY->value => WebhookDelivered::class,
+            Postmark::HARD_BOUNCE->value => WebhookBounced::class,
+            Postmark::OPEN->value => WebhookOpened::class,
         ];
     }
 }

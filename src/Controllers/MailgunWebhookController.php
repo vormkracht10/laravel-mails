@@ -31,11 +31,11 @@ class MailgunWebhookController
     public function events(): array
     {
         return [
-            Mailgun::CLICKED->value => WebhookClicked::class,
-            Mailgun::COMPLAINED->value => WebhookComplained::class,
-            Mailgun::DELIVERED->value => WebhookDelivered::class,
-            Mailgun::HARD_BOUNCED->value => WebhookBounced::class,
-            Mailgun::OPENED->value => WebhookOpened::class,
+            Mailgun::CLICK->value => WebhookClicked::class,
+            Mailgun::COMPLAINT->value => WebhookComplained::class,
+            Mailgun::DELIVERY->value => WebhookDelivered::class,
+            Mailgun::HARD_BOUNCE->value => WebhookBounced::class,
+            Mailgun::OPEN->value => WebhookOpened::class,
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
+use Vormkracht10\Mails\Enums\Events\Mapping;
 use Vormkracht10\Mails\Enums\Events\Postmark;
 use Vormkracht10\Mails\Events\MailEventLogged;
 use Vormkracht10\Mails\Models\Mail;
@@ -32,11 +33,11 @@ class PostmarkDriver
     public function events(): array
     {
         return [
-            Postmark::CLICKED->value => 'clicked',
-            Postmark::COMPLAINED->value => 'complained',
-            Postmark::DELIVERED->value => 'delivered',
-            Postmark::HARD_BOUNCED->value => 'bounced',
-            Postmark::OPENED->value => 'opened',
+            Postmark::CLICK->value => Mapping::CLICK->value,
+            Postmark::COMPLAINT->value => Mapping::COMPLAINT->value,
+            Postmark::DELIVERY->value => Mapping::DELIVERY->value,
+            Postmark::HARD_BOUNCE->value => Mapping::BOUNCE->value,
+            Postmark::OPEN->value => Mapping::OPEN->value,
         ];
     }
 
@@ -75,7 +76,7 @@ class PostmarkDriver
         event(new $eventClass, $mailEvent);
     }
 
-    public function clicked($mail, $payload): void
+    public function click($mail, $payload): void
     {
         $mail->update([
             'last_clicked_at' => $payload['ReceivedAt'],
@@ -83,28 +84,28 @@ class PostmarkDriver
         ]);
     }
 
-    public function complained($mail, $payload): void
+    public function complaint($mail, $payload): void
     {
         $mail->update([
             'complained_at' => $payload['BouncedAt'],
         ]);
     }
 
-    public function delivered($mail, $payload): void
+    public function delivery($mail, $payload): void
     {
         $mail->update([
             'delivered_at' => $payload['DeliveredAt'],
         ]);
     }
 
-    public function bounced($mail, $payload): void
+    public function bounce($mail, $payload): void
     {
         $mail->update([
             'hard_bounced_at' => $payload['BouncedAt'],
         ]);
     }
 
-    public function opened($mail, $payload): void
+    public function open($mail, $payload): void
     {
         $mail->update([
             'last_opened_at' => $payload['ReceivedAt'],

@@ -3,6 +3,7 @@
 namespace Vormkracht10\Mails\Drivers;
 
 use Vormkracht10\Mails\Enums\Events\Mailgun;
+use Vormkracht10\Mails\Enums\Events\Mapping;
 
 class MailgunDriver
 {
@@ -19,11 +20,11 @@ class MailgunDriver
     public function events()
     {
         return [
-            Mailgun::CLICKED->value => 'clicked',
-            Mailgun::COMPLAINED->value => 'complained',
-            Mailgun::DELIVERED->value => 'delivered',
-            Mailgun::HARD_BOUNCED->value => 'bounced',
-            Mailgun::OPENED->value => 'opened',
+            Mailgun::CLICK->value => Mapping::CLICK->value,
+            Mailgun::COMPLAINT->value => Mapping::COMPLAINT->value,
+            Mailgun::DELIVERY->value => Mapping::DELIVERY->value,
+            Mailgun::HARD_BOUNCE->value => Mapping::BOUNCE->value,
+            Mailgun::OPEN->value => Mapping::OPEN->value,
         ];
     }
 }
