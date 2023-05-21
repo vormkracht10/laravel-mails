@@ -104,9 +104,6 @@ class LogMail
         return $addresses->count() > 0 ? $addresses : null;
     }
 
-    /**
-     * @param \Vormkracht10\Mails\Models\Mail
-     */
     public function collectAttachments($mail, $attachments): void
     {
         collect($attachments)->each(function ($attachment) use ($mail) {

@@ -9,13 +9,11 @@ class NotifyOnBounce
 {
     public function handle($event): void
     {
-        logger()->debug('xxx');
-
         if (null !== $notificationChannels = config('mails.notifications.events.bounce.notify')) {
-            collect($notificationChannels)->each(function ($channel) {
-                collect(array_wrap($channel))->each(function ($account, $route) {
+            collect($notificationChannels)->each(function ($channel) use ($event) {
+                collect(array_wrap($channel))->each(function ($account, $route) use ($event) {
                     Notification::route($route, $account)
-                        ->send(new BounceNotification($event->mail));
+                        ->notify(new BounceNotification($event->mail));
                 });
             });
         }

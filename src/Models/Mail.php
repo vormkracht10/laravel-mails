@@ -78,7 +78,7 @@ class Mail extends Model
         'hard_bounced_at' => 'datetime',
     ];
 
-    public function __construct(array $attributes = [])
+    public function __construct()
     {
         $this->table = config('mails.table_names.mails') ?: parent::getTable();
     }

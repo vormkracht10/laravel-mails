@@ -24,7 +24,7 @@ class PostmarkDriver
         return $payload['Metadata'][config('mails.headers.uuid')];
     }
 
-    public function getMailFromPayload(array $payload): Mail
+    public function getMailFromPayload(array $payload): ?Mail
     {
         return (new $this->mailModel)
             ->firstWhere('uuid', $this->getUuidFromPayload($payload));

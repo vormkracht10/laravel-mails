@@ -5,6 +5,7 @@ namespace Vormkracht10\Mails\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Vormkracht10\Mails\Database\Factories\MailAttachmentFactory;
 
 class MailAttachment extends Model
 {
@@ -28,12 +29,12 @@ class MailAttachment extends Model
         'size' => 'integer',
     ];
 
-    public function __construct(array $attributes = [])
+    public function __construct()
     {
         $this->table = config('mails.table_names.attachments') ?: parent::getTable();
     }
 
-    protected static function newFactory(): MailFactory
+    protected static function newFactory(): MailAttachmentFactory
     {
         return new MailAttachmentFactory();
     }
