@@ -48,7 +48,7 @@
             "Vormkracht10\\Mails\\Tests\\": "tests"
         },
         "files": [
-            "src/helpers.php"
+            "helpers.php"
         ]
     },
     "scripts": {
