@@ -9,13 +9,25 @@ class MailEventFactory extends Factory
 {
     protected $model = MailEvent::class;
 
-    public function definition()
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
     {
         return [
-            'type' => '...',
-            'ip' => '',
-            'hostname' => '',
-            'payload' => '',
+            'type' => 'delivery',
+            'payload' => [],
         ];
+    }
+
+    public function bounce(): Factory
+    {
+        return $this->state(function () {
+            return [
+                'type' => 'bounce',
+            ];
+        });
     }
 }

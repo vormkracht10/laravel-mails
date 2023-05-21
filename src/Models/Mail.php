@@ -2,6 +2,7 @@
 
 namespace Vormkracht10\Mails\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -78,14 +79,14 @@ class Mail extends Model
         'hard_bounced_at' => 'datetime',
     ];
 
-    public function __construct()
+    public function getTable()
     {
-        $this->table = config('mails.table_names.mails') ?: parent::getTable();
+        return config('mails.table_names.mails');
     }
 
-    protected static function newFactory(): MailFactory
+    protected static function newFactory(): Factory
     {
-        return new MailFactory();
+        return MailFactory::new();
     }
 
     public function attachments(): HasMany

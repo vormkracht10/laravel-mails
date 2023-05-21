@@ -2,6 +2,7 @@
 
 namespace Vormkracht10\Mails\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,14 +30,14 @@ class MailAttachment extends Model
         'size' => 'integer',
     ];
 
-    public function __construct()
+    public function getTable()
     {
-        $this->table = config('mails.table_names.attachments') ?: parent::getTable();
+        return config('mails.table_names.attachments');
     }
 
-    protected static function newFactory(): MailAttachmentFactory
+    protected static function newFactory(): Factory
     {
-        return new MailAttachmentFactory();
+        return MailAttachmentFactory::new();
     }
 
     public function mail(): BelongsTo

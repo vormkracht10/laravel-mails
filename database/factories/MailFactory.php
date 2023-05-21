@@ -9,12 +9,17 @@ class MailFactory extends Factory
 {
     protected $model = Mail::class;
 
-    public function definition()
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
     {
         return [
             'uuid' => $this->faker->uuid,
             'mail_class' => '',
-            'subject' => $this->faker->sentence(6),
+            'subject' => $this->faker->sentence(5),
             'from' => [
                 $this->faker->email => $this->faker->firstName(),
             ],
@@ -26,13 +31,11 @@ class MailFactory extends Factory
             'bcc' => null,
             'sent_at' => now(),
             'delivered_at' => null,
-            'opens' => null,
             'last_opened_at' => null,
-            'clicks' => null,
             'last_clicked_at' => null,
             'complained_at' => null,
-            'permanent_bounced_at' => null,
-            'rejected_at' => null,
+            'soft_bounced_at' => null,
+            'hard_bounced_at' => null,
         ];
     }
 

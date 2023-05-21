@@ -2,17 +2,20 @@
 
 namespace Vormkracht10\Mails\Models;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
+use Vormkracht10\Mails\Enums\Events\MappingPastTense;
+use Vormkracht10\Mails\Events\MailEventLogged;
 
 class MailEvent extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'type',
         'mail_id',
+        'type',
         'ip',
         'hostname',
         'payload',
@@ -25,18 +28,36 @@ class MailEvent extends Model
         'occurred_at' => 'datetime',
     ];
 
-    public function __construct()
+    public function getTable()
     {
-        $this->table = config('mails.table_names.events') ?: parent::getTable();
+        return config('mails.table_names.events');
     }
 
-    protected static function newFactory()
+    protected static function booted(): void
     {
-        return new MailEventFactory();
+        static::creating(function (MailEvent $mailEvent) {
+            event(MailEventLogged::class, $mailEvent);
+            event($mailEvent->eventClass, $mailEvent);
+        });
     }
 
-    public function mail(): void
+    protected static function newFactory(): Factory
     {
-        $this->belongsTo(config('mails.models.mail'));
+        return MailEventFactory::new();
+    }
+
+    public function mail()
+    {
+        return $this->belongsTo(config('mails.models.mail'));
+    }
+
+    protected function getPastTenceNameAttribute(): string
+    {
+        return ucfirst(MappingPastTense::fromName($this->attributes['type'])->value);
+    }
+
+    protected function getEventClassAttribute(): string
+    {
+        return '\Vormkracht10\Mails\Events\Mail'.$this->pastTenseName.'::class';
     }
 }

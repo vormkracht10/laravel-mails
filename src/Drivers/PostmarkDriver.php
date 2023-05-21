@@ -4,9 +4,7 @@ namespace Vormkracht10\Mails\Drivers;
 
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\Events\Mapping;
-use Vormkracht10\Mails\Enums\Events\MappingPastTense;
 use Vormkracht10\Mails\Enums\Events\Postmark;
-use Vormkracht10\Mails\Events\MailEventLogged;
 use Vormkracht10\Mails\Models\Mail;
 
 class PostmarkDriver implements MailDriverContract
@@ -70,14 +68,6 @@ class PostmarkDriver implements MailDriverContract
             'payload' => $payload,
             'occurred_at' => $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now(),
         ]);
-
-        event(MailEventLogged::class, $mailEvent);
-
-        $mailEventNamePastTense = ucfirst(MappingPastTense::fromName($method)->value);
-
-        $eventClass = '\Vormkracht10\Mails\Events\Mail'.$mailEventNamePastTense;
-
-        event($eventClass, $mailEvent);
     }
 
     public function click($mail, $payload): void
