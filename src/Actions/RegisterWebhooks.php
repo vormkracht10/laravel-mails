@@ -32,7 +32,7 @@ class RegisterWebhooks
         $token = (string) config('services.postmark.token');
         $client = new PostmarkClient($token);
 
-        $broadcastStream = collect((array) ($client->listMessageStreams()['messagestreams'] ?? []));
+        $broadcastStream = collect($client->listMessageStreams()['messagestreams'] ?? []);
 
         if ($broadcastStream->where('ID', 'broadcast')->count() === 0) {
             $client->createMessageStream('broadcast', 'Broadcasts', 'Default Broadcast Stream');
@@ -40,7 +40,7 @@ class RegisterWebhooks
             console()->info('Broadcast stream already exists');
         }
 
-        $outboundWebhooks = collect((array) ($client->getWebhookConfigurations('outbound')['webhooks'] ?? []));
+        $outboundWebhooks = collect($client->getWebhookConfigurations('outbound')['webhooks'] ?? []);
 
         if ($outboundWebhooks->where('url', $url)->count() === 0) {
             $client->createWebhookConfiguration($url, null, null, null, $triggers);
@@ -48,7 +48,7 @@ class RegisterWebhooks
             console()->info('Outbound webhook already exists');
         }
 
-        $broadcastWebhooks = collect((array) ($client->getWebhookConfigurations('broadcast')['webhooks'] ?? []));
+        $broadcastWebhooks = collect($client->getWebhookConfigurations('broadcast')['webhooks'] ?? []);
 
         if ($broadcastWebhooks->where('url', $url)->count() === 0) {
             $client->createWebhookConfiguration($url, 'broadcast', null, null, $triggers);
