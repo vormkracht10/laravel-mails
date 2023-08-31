@@ -14,6 +14,10 @@ Laravel Mails can collect everything you might want to track about the mails tha
 -   Prune logging of emails periodically
 -   Resend logged email to another recipient
 
+## Why this package
+
+Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark, Mailgun or Resend email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
+
 ## Installation
 
 You can install the package via composer:
