@@ -8,6 +8,7 @@
 Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app. Common use cases are provided in this package:
 
 -   Log all sent emails with only specific attributes
+-   View all sent emails in the browser using the viewer
 -   Collect feedback about the delivery from email providers using webhooks
 -   Relate sent emails to Eloquent models
 -   Get automatically notified when email bounces
