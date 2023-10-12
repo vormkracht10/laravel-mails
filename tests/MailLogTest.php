@@ -2,8 +2,9 @@
 
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
-use function Pest\Laravel\assertDatabaseHas;
 use Vormkracht10\Mails\Models\Mail as MailModel;
+
+use function Pest\Laravel\assertDatabaseHas;
 
 it('can log sent mails', function () {
     Mail::send([], [], function (Message $message) {

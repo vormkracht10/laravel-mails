@@ -3,11 +3,12 @@
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\post;
 use Vormkracht10\Mails\Enums\Events\Mapping;
 use Vormkracht10\Mails\Models\Mail as MailModel;
 use Vormkracht10\Mails\Models\MailEvent;
+
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\post;
 
 it('can receive incoming delivery webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
