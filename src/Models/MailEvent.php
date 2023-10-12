@@ -30,7 +30,7 @@ class MailEvent extends Model
 
     public function getTable()
     {
-        return config('mails.table_names.events');
+        return config('mails.database.tables.events');
     }
 
     protected static function booted(): void

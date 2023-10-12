@@ -32,7 +32,7 @@ class MailAttachment extends Model
 
     public function getTable()
     {
-        return config('mails.table_names.attachments');
+        return config('mails.database.tables.attachments');
     }
 
     protected static function newFactory(): Factory

@@ -2,9 +2,12 @@
 
 namespace Vormkracht10\Mails\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Prunable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Vormkracht10\Mails\Database\Factories\MailFactory;
 
@@ -33,7 +36,7 @@ use Vormkracht10\Mails\Database\Factories\MailFactory;
  */
 class Mail extends Model
 {
-    use HasFactory;
+    use HasFactory, Prunable;
 
     protected $fillable = [
         'uuid',
@@ -81,12 +84,25 @@ class Mail extends Model
 
     public function getTable()
     {
-        return config('mails.table_names.mails');
+        return config('mails.database.tables.mails');
     }
 
     protected static function newFactory(): Factory
     {
         return MailFactory::new();
+    }
+
+    public function prunable(): Builder
+    {
+        $pruneAfter = config('mails.database.pruning.after', 30);
+
+        return static::where('created_at', '<=', now()->subDays($pruneAfter));
+    }
+
+    public function pruning(): void
+    {
+        $this->attachments()->delete();
+        $this->events()->delete();
     }
 
     public function attachments(): HasMany
