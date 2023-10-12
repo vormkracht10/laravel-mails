@@ -30,6 +30,8 @@ use Vormkracht10\Mails\Database\Factories\MailFactory;
  * @property ?Carbon $complained_at
  * @property ?Carbon $soft_bounced_at
  * @property ?Carbon $hard_bounced_at
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
  *
  * @method static Builder forUuid(string $uuid)
  * @method static Builder forMailClass(string $mailClass)
@@ -80,6 +82,8 @@ class Mail extends Model
         'complained_at' => 'datetime',
         'soft_bounced_at' => 'datetime',
         'hard_bounced_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function getTable()

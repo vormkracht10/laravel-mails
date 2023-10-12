@@ -9,6 +9,9 @@ use Vormkracht10\Mails\Database\Factories\MailEventFactory;
 use Vormkracht10\Mails\Enums\Events\MappingPastTense;
 use Vormkracht10\Mails\Events\MailEventLogged;
 
+/**
+ * @property Mail $mail
+ */
 class MailEvent extends Model
 {
     use HasFactory;

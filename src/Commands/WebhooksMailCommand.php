@@ -13,7 +13,7 @@ class WebhooksMailCommand extends Command
 
     public function handle(): int
     {
-        (new RegisterWebhooks)();
+        (new RegisterWebhooks)->handle();
 
         $this->comment('All done');
 
