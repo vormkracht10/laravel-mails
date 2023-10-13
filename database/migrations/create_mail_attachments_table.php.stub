@@ -10,7 +10,9 @@ return new class extends Migration
     {
         Schema::create(config('mails.database.tables.attachments', 'mail_attachments'), function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(config('mails.models.mail'));
+            $table->foreignIdFor(config('mails.models.mail'))
+                ->constrained()
+                ->cascadeOnDelete();
             $table->string('disk');
             $table->string('uuid');
             $table->string('filename');
