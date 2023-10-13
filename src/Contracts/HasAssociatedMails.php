@@ -13,7 +13,7 @@ interface HasAssociatedMails
     public function events(): HasManyThrough;
 
     /**
-     * @param Model|Model[] $mail
+     * @param  Model|Model[]  $mail
      */
     public function associateMail($mail): static;
 }

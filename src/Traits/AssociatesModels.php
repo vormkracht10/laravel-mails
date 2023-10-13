@@ -26,23 +26,21 @@ trait AssociatesModels
     }
 
     /**
-     * @param array<Model&HasAssociatedMails> $models
+     * @param  array<Model&HasAssociatedMails>  $models
      */
     public function associateMany(array $models): void
     {
         $header = $this->getEncryptedAssociatedModelsHeader($models);
 
-        $this->withSymfonyMessage(fn (Email $message) =>
-            $message->getHeaders()->addTextHeader(
-                config('mails.headers.associate'),
-                $header,
-            ),
+        $this->withSymfonyMessage(fn (Email $message) => $message->getHeaders()->addTextHeader(
+            config('mails.headers.associate'),
+            $header,
+        ),
         );
     }
 
     /**
-     * @param array<Model> $models
-     * @return string
+     * @param  array<Model>  $models
      */
     protected function getEncryptedAssociatedModelsHeader(array $models): string
     {

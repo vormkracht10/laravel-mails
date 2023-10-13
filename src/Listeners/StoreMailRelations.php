@@ -11,7 +11,7 @@ use Symfony\Component\Mime\Email;
 
 class StoreMailRelations implements ShouldQueue
 {
-    use SerializesAndRestoresModelIdentifiers, Queueable;
+    use Queueable, SerializesAndRestoresModelIdentifiers;
 
     public function handle(MessageSending $event): void
     {

@@ -10,6 +10,7 @@ use Vormkracht10\Mails\Models\Mail;
 
 /**
  * @implements HasAssociatedMails
+ *
  * @mixin Model
  */
 trait HasMails
@@ -25,7 +26,7 @@ trait HasMails
     }
 
     /**
-     * @param Mail|Mail[] $mail
+     * @param  Mail|Mail[]  $mail
      */
     public function associateMail($mail): static
     {
