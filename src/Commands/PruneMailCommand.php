@@ -13,6 +13,12 @@ class PruneMailCommand extends Command
 
     public function handle(): int
     {
+        if (! $this->shouldPrune()) {
+            $this->components->warn('Pruning has been disabled in the config');
+
+            return self::SUCCESS;
+        }
+
         $this->call('model:prune', [
             '--model' => [Mail::class],
         ]);
@@ -20,5 +26,10 @@ class PruneMailCommand extends Command
         $this->comment('All done');
 
         return self::SUCCESS;
+    }
+
+    protected function shouldPrune(): bool
+    {
+        return config('mails.database.pruning.enabled', false);
     }
 }

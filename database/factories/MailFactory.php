@@ -9,12 +9,7 @@ class MailFactory extends Factory
 {
     protected $model = Mail::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
             'uuid' => $this->faker->uuid,

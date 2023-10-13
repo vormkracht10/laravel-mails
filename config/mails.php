@@ -16,11 +16,18 @@ return [
 
     // Table names for saving sent emails and polymorphic relations to database
 
-    'table_names' => [
-        'mails' => 'mails',
-        'attachments' => 'mails_attachments',
-        'events' => 'mails_events',
-        'polymorph' => 'mailables',
+    'database' => [
+        'tables' => [
+            'mails' => 'mails',
+            'attachments' => 'mail_attachments',
+            'events' => 'mail_events',
+            'polymorph' => 'mailables',
+        ],
+
+        'pruning' => [
+            'enabled' => true,
+            'after' => 30, // days
+        ],
     ],
 
     'headers' => [

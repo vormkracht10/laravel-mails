@@ -2,8 +2,11 @@
 
 namespace Vormkracht10\Mails\Models;
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Vormkracht10\Mails\Database\Factories\MailFactory;
@@ -27,13 +30,15 @@ use Vormkracht10\Mails\Database\Factories\MailFactory;
  * @property ?Carbon $complained_at
  * @property ?Carbon $soft_bounced_at
  * @property ?Carbon $hard_bounced_at
+ * @property ?Carbon $created_at
+ * @property ?Carbon $updated_at
  *
  * @method static Builder forUuid(string $uuid)
  * @method static Builder forMailClass(string $mailClass)
  */
 class Mail extends Model
 {
-    use HasFactory;
+    use HasFactory, MassPrunable;
 
     protected $fillable = [
         'uuid',
@@ -77,16 +82,25 @@ class Mail extends Model
         'complained_at' => 'datetime',
         'soft_bounced_at' => 'datetime',
         'hard_bounced_at' => 'datetime',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
 
     public function getTable()
     {
-        return config('mails.table_names.mails');
+        return config('mails.database.tables.mails');
     }
 
     protected static function newFactory(): Factory
     {
         return MailFactory::new();
+    }
+
+    public function prunable(): Builder
+    {
+        $pruneAfter = config('mails.database.pruning.after', 30);
+
+        return static::where('created_at', '<=', now()->subDays($pruneAfter));
     }
 
     public function attachments(): HasMany
