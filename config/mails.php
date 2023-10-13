@@ -31,7 +31,8 @@ return [
     ],
 
     'headers' => [
-        'uuid' => 'X-Laravel-Mails-UUID',
+        'uuid' => 'X-Mails-UUID',
+        'associate' => 'X-Mails-Associated-Models',
     ],
 
     'webhooks' => [

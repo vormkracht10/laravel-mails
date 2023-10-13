@@ -18,11 +18,12 @@ use Vormkracht10\Mails\Listeners\LogMailEvent;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
 use Vormkracht10\Mails\Listeners\NotifyOnBounce;
+use Vormkracht10\Mails\Listeners\StoreMailRelations;
 use Vormkracht10\Mails\Managers\MailProviderManager;
 
 class MailsServiceProvider extends PackageServiceProvider
 {
-    public function registeringPackage()
+    public function registeringPackage(): void
     {
         $this->app['events']->listen(MailEvent::class, LogMailEvent::class);
 
@@ -31,9 +32,11 @@ class MailsServiceProvider extends PackageServiceProvider
         $this->app['events']->listen(MessageSent::class, LogSentMail::class);
 
         $this->app['events']->listen(MailBounced::class, NotifyOnBounce::class);
+
+        $this->app['events']->listen(MessageSending::class, StoreMailRelations::class);
     }
 
-    public function bootingPackage()
+    public function bootingPackage(): void
     {
         $this->app->singleton(MailProviderContract::class, fn ($app) => new MailProviderManager($app));
     }
