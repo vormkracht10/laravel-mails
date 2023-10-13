@@ -18,27 +18,26 @@ use Vormkracht10\Mails\Listeners\LogMailEvent;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
 use Vormkracht10\Mails\Listeners\NotifyOnBounce;
+use Vormkracht10\Mails\Listeners\StoreMailRelations;
 use Vormkracht10\Mails\Managers\MailProviderManager;
 
 class MailsServiceProvider extends PackageServiceProvider
 {
-    public function register(): void
+    public function registeringPackage(): void
     {
-        parent::register();
+        $this->app['events']->listen(MailEvent::class, LogMailEvent::class);
 
-        app('events')->listen(MailEvent::class, LogMailEvent::class);
+        $this->app['events']->listen(MessageSending::class, AttachMailLogUuid::class);
+        $this->app['events']->listen(MessageSending::class, LogSendingMail::class);
+        $this->app['events']->listen(MessageSent::class, LogSentMail::class);
 
-        app('events')->listen(MessageSending::class, AttachMailLogUuid::class);
-        app('events')->listen(MessageSending::class, LogSendingMail::class);
-        app('events')->listen(MessageSent::class, LogSentMail::class);
+        $this->app['events']->listen(MailBounced::class, NotifyOnBounce::class);
 
-        app('events')->listen(MailBounced::class, NotifyOnBounce::class);
+        $this->app['events']->listen(MessageSending::class, StoreMailRelations::class);
     }
 
-    public function boot(): void
+    public function bootingPackage(): void
     {
-        parent::boot();
-
         $this->app->singleton(MailProviderContract::class, fn ($app) => new MailProviderManager($app));
     }
 
@@ -50,8 +49,8 @@ class MailsServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasMigrations(
                 'create_mailables_table',
-                'create_mails_attachments_table',
-                'create_mails_events_table',
+                'create_mail_attachments_table',
+                'create_mail_events_table',
                 'create_mails_table',
             )
             ->hasRoutes('webhooks')

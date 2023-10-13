@@ -9,6 +9,9 @@ use Vormkracht10\Mails\Database\Factories\MailEventFactory;
 use Vormkracht10\Mails\Enums\Events\MappingPastTense;
 use Vormkracht10\Mails\Events\MailEventLogged;
 
+/**
+ * @property Mail $mail
+ */
 class MailEvent extends Model
 {
     use HasFactory;
@@ -30,7 +33,7 @@ class MailEvent extends Model
 
     public function getTable()
     {
-        return config('mails.table_names.events');
+        return config('mails.database.tables.events');
     }
 
     protected static function booted(): void

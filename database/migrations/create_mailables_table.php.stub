@@ -8,9 +8,11 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create(config('mails.table_names.polymorph'), function (Blueprint $table) {
+        Schema::create(config('mails.database.tables.polymorph'), function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('mail_id')->index();
+            $table->foreignIdFor(config('mails.models.mail'))
+                ->constrained()
+                ->cascadeOnDelete();
             $table->morphs('mailable');
         });
     }

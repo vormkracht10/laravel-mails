@@ -39,10 +39,10 @@ class TestCase extends Orchestra
         $migration = include __DIR__.'/../database/migrations/create_mailables_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/create_mails_attachments_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_mail_attachments_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/create_mails_events_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_mail_events_table.php.stub';
         $migration->up();
 
         $migration = include __DIR__.'/../database/migrations/create_mails_table.php.stub';
