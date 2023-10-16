@@ -9,8 +9,6 @@ use Vormkracht10\Mails\Contracts\HasAssociatedMails;
 use Vormkracht10\Mails\Models\Mail;
 
 /**
- * @implements HasAssociatedMails
- *
  * @mixin Model
  */
 trait HasMails
