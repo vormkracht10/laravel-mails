@@ -17,6 +17,10 @@ class StoreMailRelations implements ShouldQueue
     {
         $message = $event->message;
 
+        if (! $this->shouldAssociateModels($message)) {
+            return;
+        }
+
         $models = $this->getAssociatedModels($message);
 
         $mail = $this->getMailModel($message);
@@ -30,9 +34,19 @@ class StoreMailRelations implements ShouldQueue
         }
     }
 
-    protected function getAssociatedModels(Email $message): array
+    protected function shouldAssociateModels(Email $message): bool
     {
-        $encrypted = $this->getHeaderBody($message, config('mails.headers.associate'));
+        return $message->getHeaders()->has(
+            $this->getAssociatedHeaderName(),
+        );
+    }
+
+    protected function getAssociatedModels(Email $message): array|false
+    {
+        $encrypted = $this->getHeaderBody(
+            $message,
+            $this->getAssociatedHeaderName(),
+        );
 
         $payload = decrypt($encrypted);
 
@@ -51,5 +65,10 @@ class StoreMailRelations implements ShouldQueue
     protected function getHeaderBody(Email $message, string $header): mixed
     {
         return $message->getHeaders()->getHeaderBody($header);
+    }
+
+    protected function getAssociatedHeaderName(): string
+    {
+        return config('mails.headers.associate', 'X-Mails-Associated-Models');
     }
 }
