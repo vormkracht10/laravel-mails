@@ -35,8 +35,7 @@ trait AssociatesModels
         $this->withSymfonyMessage(fn (Email $message) => $message->getHeaders()->addTextHeader(
             config('mails.headers.associate'),
             $header,
-        ),
-        );
+        ));
     }
 
     /**
