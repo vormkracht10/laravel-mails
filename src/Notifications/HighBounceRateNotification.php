@@ -9,10 +9,11 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Telegram\TelegramMessage;
 use Vormkracht10\Mails\Models\Mail;
+use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 class HighBounceRateNotification extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, HasDynamicDrivers;
 
     protected Mail $mail;
 
@@ -21,18 +22,9 @@ class HighBounceRateNotification extends Notification implements ShouldQueue
         $this->mail = $mail;
     }
 
-    public function via(): array
-    {
-        return [
-            'discord',
-            'slack',
-            'telegram',
-        ];
-    }
-
     public function getTitle(): string
     {
-        return '';
+        return 'Your app has a high mail bounce rate!';
     }
 
     public function getMessage(): string

@@ -13,13 +13,13 @@ class MonitorMailCommand extends Command
 
     public function handle(): int
     {
-        if (null !== $bounceRateTreshold = config('mails.notifications.events.bouncerate.treshold')) {
+        if (null !== $bounceRateTreshold = config('mails.events.bouncerate.treshold')) {
             if ($this->getBounceRate() >= $bounceRateTreshold) {
                 // TODO: notify
             }
         }
 
-        if (null !== $deliveryRateTreshold = config('mails.notifications.events.deliveryrate.treshold')) {
+        if (null !== $deliveryRateTreshold = config('mails.events.deliveryrate.treshold')) {
 
             if ($this->getDeliveryRate() <= $deliveryRateTreshold) {
                 // TODO: notify

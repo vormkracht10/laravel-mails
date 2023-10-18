@@ -10,10 +10,11 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Telegram\TelegramMessage;
 use Vormkracht10\Mails\Models\Mail;
+use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 class BounceNotification extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, HasDynamicDrivers;
 
     protected Mail $mail;
 
@@ -22,19 +23,9 @@ class BounceNotification extends Notification implements ShouldQueue
         $this->mail = $mail;
     }
 
-    public function via(): array
-    {
-        return [
-            // 'discord',
-            'mail',
-            // 'slack',
-            // 'telegram',
-        ];
-    }
-
     public function getTitle(): string
     {
-        return '';
+        return 'A Mail Has Bounced!';
     }
 
     public function getMessage(): string
@@ -43,7 +34,7 @@ class BounceNotification extends Notification implements ShouldQueue
             '🔥', '🧯', '‼️', '⁉️', '🔴', '📣', '😅', '🥵',
         ]);
 
-        return $emoji.' mail has bounced';
+        return join(' ', [$emoji, 'mail has bounced']);
     }
 
     public function toMail(): MailMessage

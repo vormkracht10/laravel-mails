@@ -3,6 +3,7 @@
 namespace Vormkracht10\Mails\Actions;
 
 use Illuminate\Console\Concerns\InteractsWithIO;
+use Illuminate\Console\View\Components\Factory;
 use Illuminate\Support\Facades\URL;
 use Postmark\Models\Webhooks\WebhookConfigurationBounceTrigger;
 use Postmark\Models\Webhooks\WebhookConfigurationClickTrigger;
@@ -17,7 +18,7 @@ class RegisterWebhooks
 {
     use AsAction, InteractsWithIO;
 
-    public function handle()
+    public function handle(Factory $components)
     {
         $trackingConfig = (array) config('mails.logging.tracking');
 
@@ -38,7 +39,7 @@ class RegisterWebhooks
         if ($broadcastStream->where('ID', 'broadcast')->count() === 0) {
             $client->createMessageStream('broadcast', 'Broadcasts', 'Default Broadcast Stream');
         } else {
-            $this->components->info('Broadcast stream already exists');
+            $components->info('Broadcast stream already exists');
         }
 
         $outboundWebhooks = collect($client->getWebhookConfigurations('outbound')['webhooks'] ?? []);
@@ -46,7 +47,7 @@ class RegisterWebhooks
         if ($outboundWebhooks->where('url', $url)->count() === 0) {
             $client->createWebhookConfiguration($url, null, null, null, $triggers);
         } else {
-            $this->components->info('Outbound webhook already exists');
+            $components->info('Outbound webhook already exists');
         }
 
         $broadcastWebhooks = collect($client->getWebhookConfigurations('broadcast')['webhooks'] ?? []);
@@ -54,7 +55,7 @@ class RegisterWebhooks
         if ($broadcastWebhooks->where('url', $url)->count() === 0) {
             $client->createWebhookConfiguration($url, 'broadcast', null, null, $triggers);
         } else {
-            $this->components->info('Broadcast webhook already exists');
+            $components->info('Broadcast webhook already exists');
         }
     }
 }
