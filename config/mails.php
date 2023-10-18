@@ -113,11 +113,11 @@ return [
 
         'default' => [
             'notify' => [
-//                'mail',
-//                'discord',
-//                'slack',
-//                'telegram'
-            ]
+                //                'mail',
+                //                'discord',
+                //                'slack',
+                //                'telegram'
+            ],
         ],
 
         'bounce' => [

@@ -18,20 +18,22 @@ class NotifyOnBounce
         foreach ($channels as $channel) {
             $notification = new BounceNotification($event->mailEvent->mail);
 
-            $key = join('.', ['mails', 'notifications', $channel, 'to']);
+            $key = implode('.', ['mails', 'notifications', $channel, 'to']);
 
             $accounts = array_wrap(
                 config($key, []),
             );
 
-            if (empty($accounts)) continue;
+            if (empty($accounts)) {
+                continue;
+            }
 
             $this->send($notification, $channel, $accounts);
         }
     }
 
     /**
-     * @param HasDynamicDrivers $notification
+     * @param  HasDynamicDrivers  $notification
      */
     protected function send(mixed $notification, string $channel, array $to): void
     {

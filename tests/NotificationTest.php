@@ -10,7 +10,7 @@ beforeEach(fn () => config([
     ],
     'mails.notifications.mail.to' => [
         'm@rkvaneijk.nl',
-    ]
+    ],
 ]));
 
 it('will send notification on bounce', function () {

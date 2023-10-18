@@ -14,7 +14,7 @@ use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 class BounceNotification extends Notification implements ShouldQueue
 {
-    use Queueable, HasDynamicDrivers;
+    use HasDynamicDrivers, Queueable;
 
     protected Mail $mail;
 
@@ -34,7 +34,7 @@ class BounceNotification extends Notification implements ShouldQueue
             '🔥', '🧯', '‼️', '⁉️', '🔴', '📣', '😅', '🥵',
         ]);
 
-        return join(' ', [$emoji, 'mail has bounced']);
+        return implode(' ', [$emoji, 'mail has bounced']);
     }
 
     public function toMail(): MailMessage

@@ -13,7 +13,7 @@ use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 class HighBounceRateNotification extends Notification implements ShouldQueue
 {
-    use Queueable, HasDynamicDrivers;
+    use HasDynamicDrivers, Queueable;
 
     protected Mail $mail;
 

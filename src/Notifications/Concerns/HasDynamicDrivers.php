@@ -12,7 +12,7 @@ trait HasDynamicDrivers
     }
 
     /**
-     * @param string|string[] $drivers
+     * @param  string|string[]  $drivers
      */
     public function on($drivers, bool $merge = false): static
     {
