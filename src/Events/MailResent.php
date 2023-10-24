@@ -16,5 +16,6 @@ class MailResent
     public function __construct(
         public string $provider,
         public $payload
-    ) {}
+    ) {
+    }
 }

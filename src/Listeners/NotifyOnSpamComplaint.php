@@ -2,8 +2,6 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
-use Illuminate\Support\Facades\Log;
-
 class NotifyOnSpamComplaint
 {
     /**

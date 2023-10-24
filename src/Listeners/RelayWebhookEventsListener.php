@@ -2,9 +2,7 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
-use Illuminate\Support\Facades\Log;
 use Vormkracht10\Mails\Enums\WebhookEventType;
-use Vormkracht10\Mails\Events\MailBounced;
 use Vormkracht10\Mails\Events\WebhookBounced;
 use Vormkracht10\Mails\Events\WebhookClicked;
 use Vormkracht10\Mails\Events\WebhookComplained;

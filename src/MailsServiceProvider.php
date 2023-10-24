@@ -12,7 +12,6 @@ use Vormkracht10\Mails\Commands\ResendMailCommand;
 use Vormkracht10\Mails\Commands\WebhooksMailCommand;
 use Vormkracht10\Mails\Contracts\MailProviderContract;
 use Vormkracht10\Mails\Events\MailBounced;
-use Vormkracht10\Mails\Events\MailEvent;
 use Vormkracht10\Mails\Events\WebhookEvent;
 use Vormkracht10\Mails\Listeners\AttachMailLogUuid;
 use Vormkracht10\Mails\Listeners\LogMailEvent;
