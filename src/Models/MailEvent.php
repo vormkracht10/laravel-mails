@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
 use Vormkracht10\Mails\Enums\Events\MappingPastTense;
+use Vormkracht10\Mails\Enums\WebhookEventType;
 use Vormkracht10\Mails\Events\MailEventLogged;
 
 /**
@@ -29,6 +30,7 @@ class MailEvent extends Model
         'payload' => 'object',
         'created_at' => 'datetime',
         'occurred_at' => 'datetime',
+        'type' => WebhookEventType::class,
     ];
 
     public function getTable()
@@ -57,13 +59,13 @@ class MailEvent extends Model
         return $this->belongsTo(config('mails.models.mail'));
     }
 
-    protected function getPastTenceNameAttribute(): string
+    protected function getPastTenseNameAttribute(): string
     {
         return ucfirst(MappingPastTense::fromName($this->attributes['type'])->value);
     }
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail'.$this->pastTenceName;
+        return 'Vormkracht10\Mails\Events\Mail'.$this->past_tense_name;
     }
 }

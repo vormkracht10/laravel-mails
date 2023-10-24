@@ -2,6 +2,8 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
+use Illuminate\Support\Facades\Log;
+
 class NotifyOnSpamComplaint
 {
     /**
@@ -9,7 +11,7 @@ class NotifyOnSpamComplaint
      */
     public function __construct()
     {
-        // ...
+        //
     }
 
     /**
@@ -17,6 +19,6 @@ class NotifyOnSpamComplaint
      */
     public function handle($event): void
     {
-        // Access the order using $event->order...
+        //
     }
 }

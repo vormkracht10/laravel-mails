@@ -5,6 +5,7 @@ namespace Vormkracht10\Mails\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Vormkracht10\Mails\Enums\Provider;
 
 class WebhookClicked
 {
@@ -14,8 +15,7 @@ class WebhookClicked
      * Create a new event instance.
      */
     public function __construct(
-        public string $provider,
+        public Provider $provider,
         public $payload
-    ) {
-    }
+    ) {}
 }

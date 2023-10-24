@@ -13,11 +13,13 @@ use Vormkracht10\Mails\Commands\WebhooksMailCommand;
 use Vormkracht10\Mails\Contracts\MailProviderContract;
 use Vormkracht10\Mails\Events\MailBounced;
 use Vormkracht10\Mails\Events\MailEvent;
+use Vormkracht10\Mails\Events\WebhookEvent;
 use Vormkracht10\Mails\Listeners\AttachMailLogUuid;
 use Vormkracht10\Mails\Listeners\LogMailEvent;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
 use Vormkracht10\Mails\Listeners\NotifyOnBounce;
+use Vormkracht10\Mails\Listeners\RelayWebhookEventsListener;
 use Vormkracht10\Mails\Listeners\StoreMailRelations;
 use Vormkracht10\Mails\Managers\MailProviderManager;
 
@@ -25,7 +27,8 @@ class MailsServiceProvider extends PackageServiceProvider
 {
     public function registeringPackage(): void
     {
-        $this->app['events']->listen(MailEvent::class, LogMailEvent::class);
+        $this->app['events']->listen(WebhookEvent::class, LogMailEvent::class);
+        $this->app['events']->listen(WebhookEvent::class, RelayWebhookEventsListener::class);
 
         $this->app['events']->listen(MessageSending::class, AttachMailLogUuid::class);
         $this->app['events']->listen(MessageSending::class, LogSendingMail::class);
