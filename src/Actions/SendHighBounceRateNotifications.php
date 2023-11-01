@@ -16,24 +16,14 @@ class SendHighBounceRateNotifications
      */
     public function handle($rate, $threshold): void
     {
-        if (! $channels = config('mails.events.bouncerate.notify')) {
+        if (! $channels = config('mails.events.bounce.notify')) {
             return;
         }
 
+        $notification = new HighBounceRateNotification($rate, $threshold);
+
         foreach ($channels as $channel) {
-            $notification = new HighBounceRateNotification($rate, $threshold);
-
-            $key = implode('.', ['mails', 'notifications', $channel, 'to']);
-
-            $accounts = array_wrap(
-                config($key, []),
-            );
-
-            if (empty($accounts)) {
-                continue;
-            }
-
-            $this->send($notification, $channel, $accounts);
+            $this->send($notification, $channel);
         }
     }
 }

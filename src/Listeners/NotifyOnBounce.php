@@ -16,20 +16,10 @@ class NotifyOnBounce
             return;
         }
 
+        $notification = new BounceNotification($event->mailEvent->mail);
+
         foreach ($channels as $channel) {
-            $notification = new BounceNotification($event->mailEvent->mail);
-
-            $key = implode('.', ['mails', 'notifications', $channel, 'to']);
-
-            $accounts = array_wrap(
-                config($key, []),
-            );
-
-            if (empty($accounts)) {
-                continue;
-            }
-
-            $this->send($notification, $channel, $accounts);
+            $this->send($notification, $channel);
         }
     }
 }

@@ -4,6 +4,7 @@ namespace Vormkracht10\Mails\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordMessage;
@@ -41,6 +42,13 @@ class HighBounceRateNotification extends Notification implements ShouldQueue
         ]);
 
         return "{$emoji} your app has a bounce rate of {$this->rate}%, the configured max is set at {$this->threshold}";
+    }
+
+    public function toMail(): MailMessage
+    {
+        return (new MailMessage)
+            ->greeting($this->getTitle())
+            ->line($this->getMessage());
     }
 
     public function toDiscord(): DiscordMessage

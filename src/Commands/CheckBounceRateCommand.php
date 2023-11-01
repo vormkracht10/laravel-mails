@@ -44,7 +44,7 @@ class CheckBounceRateCommand extends Command
             ->orWhereNotNull('soft_bounced_at')
             ->count();
 
-        $rate = ($bounced / $all) * 100;
+        $rate = round(($bounced / $all) * 100, 2);
 
         if ($rate > $threshold) {
             (new SendHighBounceRateNotifications)($rate, $threshold);

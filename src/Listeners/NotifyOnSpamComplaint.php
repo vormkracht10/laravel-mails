@@ -15,24 +15,14 @@ class NotifyOnSpamComplaint
      */
     public function handle(MailComplained $event): void
     {
-        if (! $channels = config('mails.events.complaint.notify')) {
+        if (! $channels = config('mails.events.bounce.notify')) {
             return;
         }
 
+        $notification = new SpamComplaintNotification($event->mailEvent->mail);
+
         foreach ($channels as $channel) {
-            $notification = new SpamComplaintNotification($event->mailEvent->mail);
-
-            $key = implode('.', ['mails', 'notifications', $channel, 'to']);
-
-            $accounts = array_wrap(
-                config($key, []),
-            );
-
-            if (empty($accounts)) {
-                continue;
-            }
-
-            $this->send($notification, $channel, $accounts);
+            $this->send($notification, $channel);
         }
     }
 }
