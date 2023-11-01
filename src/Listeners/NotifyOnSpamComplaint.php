@@ -21,8 +21,6 @@ class NotifyOnSpamComplaint
 
         $notification = new SpamComplaintNotification($event->mailEvent->mail);
 
-        foreach ($channels as $channel) {
-            $this->send($notification, $channel);
-        }
+        $this->send($notification, $channels);
     }
 }

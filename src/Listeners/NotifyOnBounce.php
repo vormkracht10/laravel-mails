@@ -18,8 +18,6 @@ class NotifyOnBounce
 
         $notification = new BounceNotification($event->mailEvent->mail);
 
-        foreach ($channels as $channel) {
-            $this->send($notification, $channel);
-        }
+        $this->send($notification, $channels);
     }
 }

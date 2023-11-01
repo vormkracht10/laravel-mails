@@ -91,7 +91,7 @@ return [
 
     'notifications' => [
         'mail' => [
-            'to' => ['david@vk10.nl'],
+            'to' => ['test@example.com'],
         ],
 
         'discord' => [
