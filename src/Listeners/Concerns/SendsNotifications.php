@@ -4,7 +4,6 @@ namespace Vormkracht10\Mails\Listeners\Concerns;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Notification as Notifications;
-use Vormkracht10\Mails\Notifications\BounceNotification;
 use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 trait SendsNotifications
