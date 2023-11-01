@@ -11,10 +11,10 @@ trait SendsNotifications
     /**
      * @param  HasDynamicDrivers & Notification  $notification
      */
-    public function send(Notification $notification, array $on): void
+    public function send(Notification $notification, array $channels): void
     {
-        foreach ($on as $channel) {
-            $key = implode('.', ['mails', 'notifications', $on, 'to']);
+        foreach ($channels as $channel) {
+            $key = implode('.', ['mails', 'notifications', $channel, 'to']);
 
             $accounts = array_wrap(
                 config($key, []),
@@ -25,7 +25,7 @@ trait SendsNotifications
             }
 
             Notifications::route($channel, $accounts)->notify(
-                $notification->on($on),
+                $notification->on($channel),
             );
         }
     }

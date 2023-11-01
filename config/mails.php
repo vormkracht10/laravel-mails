@@ -95,38 +95,25 @@ return [
         ],
 
         'discord' => [
-            'to' => ['1234567890'],
+            // 'to' => ['1234567890'],
         ],
 
         'slack' => [
-            'to' => ['https://hooks.slack.com/services/...'],
+            // 'to' => ['https://hooks.slack.com/services/...'],
         ],
 
         'telegram' => [
-            'to' => ['1234567890'],
+            // 'to' => ['1234567890'],
         ],
     ],
 
     'events' => [
-        'default' => [
-            'notify' => [
-                //                'mail',
-                //                'discord',
-                //                'slack',
-                //                'telegram'
-            ],
-        ],
-
         'bounce' => [
-            'notify' => [
-                'mail',
-            ],
+            'notify' => ['mail'],
         ],
 
         'bouncerate' => [
-            'notify' => [
-                //
-            ],
+            'notify' => [],
 
             'retain' => 30, // days
 
