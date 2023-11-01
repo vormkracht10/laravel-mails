@@ -16,5 +16,6 @@ class MailOpened
      */
     public function __construct(
         public MailEvent $mailEvent
-    ) {}
+    ) {
+    }
 }

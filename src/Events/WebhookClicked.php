@@ -17,5 +17,6 @@ class WebhookClicked
     public function __construct(
         public Provider $provider,
         public $payload
-    ) {}
+    ) {
+    }
 }

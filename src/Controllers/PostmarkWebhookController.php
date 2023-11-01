@@ -2,19 +2,11 @@
 
 namespace Vormkracht10\Mails\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
-use Vormkracht10\Mails\Enums\Events\Postmark;
 use Vormkracht10\Mails\Enums\Provider;
 use Vormkracht10\Mails\Enums\WebhookEventType;
-use Vormkracht10\Mails\Events\WebhookBounced;
-use Vormkracht10\Mails\Events\WebhookClicked;
-use Vormkracht10\Mails\Events\WebhookComplained;
-use Vormkracht10\Mails\Events\WebhookDelivered;
 use Vormkracht10\Mails\Events\WebhookEvent;
-use Vormkracht10\Mails\Events\WebhookOpened;
 use Vormkracht10\Mails\Facades\MailProvider;
 
 class PostmarkWebhookController
