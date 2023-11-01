@@ -90,7 +90,6 @@ return [
     // Notifications for important mail events
 
     'notifications' => [
-
         'mail' => [
             'to' => ['david@vk10.nl'],
         ],
@@ -106,11 +105,9 @@ return [
         'telegram' => [
             'to' => ['1234567890'],
         ],
-
     ],
 
     'events' => [
-
         'default' => [
             'notify' => [
                 //                'mail',
@@ -127,7 +124,13 @@ return [
         ],
 
         'bouncerate' => [
-            'treshold' => 1,
+            'notify' => [
+                //
+            ],
+
+            'retain' => 30, // days
+
+            'treshold' => 1, // %
         ],
 
         'deliveryrate' => [
@@ -141,7 +144,6 @@ return [
         'unsent' => [
             //
         ],
-
     ],
 
 ];

@@ -6,13 +6,13 @@ use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Vormkracht10\Mails\Commands\CheckBounceRateCommand;
 use Vormkracht10\Mails\Commands\MonitorMailCommand;
 use Vormkracht10\Mails\Commands\PruneMailCommand;
 use Vormkracht10\Mails\Commands\ResendMailCommand;
 use Vormkracht10\Mails\Commands\WebhooksMailCommand;
 use Vormkracht10\Mails\Contracts\MailProviderContract;
 use Vormkracht10\Mails\Events\MailBounced;
-use Vormkracht10\Mails\Events\MailEvent;
 use Vormkracht10\Mails\Events\WebhookEvent;
 use Vormkracht10\Mails\Listeners\AttachMailLogUuid;
 use Vormkracht10\Mails\Listeners\LogMailEvent;
@@ -62,6 +62,7 @@ class MailsServiceProvider extends PackageServiceProvider
                 PruneMailCommand::class,
                 ResendMailCommand::class,
                 WebhooksMailCommand::class,
+                CheckBounceRateCommand::class,
             );
     }
 }

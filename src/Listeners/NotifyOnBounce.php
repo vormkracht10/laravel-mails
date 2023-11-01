@@ -2,13 +2,14 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
-use Illuminate\Support\Facades\Notification;
 use Vormkracht10\Mails\Events\MailBounced;
+use Vormkracht10\Mails\Listeners\Concerns\SendsNotifications;
 use Vormkracht10\Mails\Notifications\BounceNotification;
-use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 class NotifyOnBounce
 {
+    use SendsNotifications;
+
     public function handle(MailBounced $event): void
     {
         if (! $channels = config('mails.events.bounce.notify')) {
@@ -30,15 +31,5 @@ class NotifyOnBounce
 
             $this->send($notification, $channel, $accounts);
         }
-    }
-
-    /**
-     * @param  HasDynamicDrivers  $notification
-     */
-    protected function send(mixed $notification, string $channel, array $to): void
-    {
-        Notification::route($channel, $to)->notify(
-            $notification->on($channel),
-        );
     }
 }

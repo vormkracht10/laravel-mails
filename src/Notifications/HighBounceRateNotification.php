@@ -8,18 +8,25 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Telegram\TelegramMessage;
-use Vormkracht10\Mails\Models\Mail;
 use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 class HighBounceRateNotification extends Notification implements ShouldQueue
 {
     use HasDynamicDrivers, Queueable;
 
-    protected Mail $mail;
+    protected $rate;
 
-    public function __construct(Mail $mail)
+    protected $threshold;
+
+    /**
+     * @param float|int $rate
+     * @param float|int $threshold
+     */
+    public function __construct($rate, $threshold)
     {
-        $this->mail = $mail;
+        $this->rate = $rate;
+
+        $this->threshold = $threshold;
     }
 
     public function getTitle(): string
@@ -33,7 +40,7 @@ class HighBounceRateNotification extends Notification implements ShouldQueue
             '🔥', '🧯', '‼️', '⁉️', '🔴', '📣', '😅', '🥵',
         ]);
 
-        return $emoji.' mail has bounced';
+        return "{$emoji} your app has a bounce rate of {$this->rate}%, the configured max is set at {$this->threshold}";
     }
 
     public function toDiscord(): DiscordMessage
