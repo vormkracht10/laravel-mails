@@ -16,7 +16,7 @@ class SendHighBounceRateNotifications
      */
     public function handle($rate, $threshold): void
     {
-        if (! $channels = config('mails.events.bounce.notify')) {
+        if (! $channels = config('mails.events.bouncerate.notify')) {
             return;
         }
 

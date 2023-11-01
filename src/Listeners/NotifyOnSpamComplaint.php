@@ -15,7 +15,7 @@ class NotifyOnSpamComplaint
      */
     public function handle(MailComplained $event): void
     {
-        if (! $channels = config('mails.events.bounce.notify')) {
+        if (! $channels = config('mails.events.complaint.notify')) {
             return;
         }
 
