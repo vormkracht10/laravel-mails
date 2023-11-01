@@ -22,8 +22,6 @@ class SendHighBounceRateNotifications
 
         $notification = new HighBounceRateNotification($rate, $threshold);
 
-        foreach ($channels as $channel) {
-            $this->send($notification, $channel);
-        }
+        $this->send($notification, $channels);
     }
 }

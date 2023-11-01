@@ -11,20 +11,22 @@ trait SendsNotifications
     /**
      * @param  HasDynamicDrivers & Notification  $notification
      */
-    public function send(Notification $notification, $on): void
+    public function send(Notification $notification, array $on): void
     {
-        $key = implode('.', ['mails', 'notifications', $on, 'to']);
+        foreach ($on as $channel) {
+            $key = implode('.', ['mails', 'notifications', $on, 'to']);
 
-        $accounts = array_wrap(
-            config($key, []),
-        );
+            $accounts = array_wrap(
+                config($key, []),
+            );
 
-        if (empty($accounts)) {
-            return;
+            if (empty($accounts)) {
+                return;
+            }
+
+            Notifications::route($channel, $accounts)->notify(
+                $notification->on($on),
+            );
         }
-
-        Notifications::route($on, $accounts)->notify(
-            $notification->on($on),
-        );
     }
 }
