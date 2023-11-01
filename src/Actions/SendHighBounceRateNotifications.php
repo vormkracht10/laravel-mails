@@ -11,8 +11,8 @@ class SendHighBounceRateNotifications
     use AsAction, SendsNotifications;
 
     /**
-     * @param float|int $rate
-     * @param float|int $threshold
+     * @param  float|int  $rate
+     * @param  float|int  $threshold
      */
     public function handle($rate, $threshold): void
     {

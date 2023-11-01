@@ -19,8 +19,8 @@ class HighBounceRateNotification extends Notification implements ShouldQueue
     protected $threshold;
 
     /**
-     * @param float|int $rate
-     * @param float|int $threshold
+     * @param  float|int  $rate
+     * @param  float|int  $threshold
      */
     public function __construct($rate, $threshold)
     {

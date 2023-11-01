@@ -9,8 +9,7 @@ use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 trait SendsNotifications
 {
     /**
-     * @param HasDynamicDrivers & Notification $notification
-     * @return void
+     * @param  HasDynamicDrivers & Notification  $notification
      */
     public function send(Notification $notification, $on, array $to): void
     {
