@@ -32,6 +32,7 @@ return [
 
     'headers' => [
         'uuid' => 'X-Mails-UUID',
+
         'associate' => 'X-Mails-Associated-Models',
     ],
 
@@ -89,69 +90,46 @@ return [
     // Notifications for important mail events
 
     'notifications' => [
-
-        // Possible notification channels: discord, mail, slack, telegram
-
-        'channels' => [
-            'mail' => ['m@rkvaneijk.nl'],
-            // 'discord' => ['1234567890'],
-            // 'slack' => ['https://hooks.slack.com/services/...'],
-            // 'telegram' => ['1234567890'],
+        'mail' => [
+            'to' => ['test@example.com'],
         ],
 
-        // Get notified when a bounce occurred
+        'discord' => [
+            // 'to' => ['1234567890'],
+        ],
 
-        'events' => [
-            'default' => [
-                'notify' => [
-                    // 'mail',
-                    // 'discord',
-                    // 'slack',
-                    // 'telegram',
-                ],
-            ],
-            'bounce' => [
-                'notify' => [
-                    'mail',
-                    //     'discord',
-                    //     'slack',
-                    //     'telegram',
-                ],
-            ],
-            'bouncerate' => [
-                'treshold' => 1, // in %
-                // 'notify' => [
-                //     'mail',
-                //     'discord',
-                //     'slack',
-                //     'telegram',
-                // ],
-            ],
-            'deliveryrate' => [
-                'treshold' => 99, // in %
-                // 'notify' => [
-                //     'mail',
-                //     'discord',
-                //     'slack',
-                //     'telegram',
-                // ],
-            ],
-            'complaint' => [
-                // 'notify' => [
-                //     'mail',
-                //     'discord',
-                //     'slack',
-                //     'telegram',
-                // ],
-            ],
-            'unsent' => [
-                // 'notify' => [
-                //     'mail',
-                //     'discord',
-                //     'slack',
-                //     'telegram',
-                // ],
-            ],
+        'slack' => [
+            // 'to' => ['https://hooks.slack.com/services/...'],
+        ],
+
+        'telegram' => [
+            // 'to' => ['1234567890'],
+        ],
+    ],
+
+    'events' => [
+        'bounce' => [
+            'notify' => ['mail'],
+        ],
+
+        'bouncerate' => [
+            'notify' => [],
+
+            'retain' => 30, // days
+
+            'treshold' => 1, // %
+        ],
+
+        'deliveryrate' => [
+            'treshold' => 99,
+        ],
+
+        'complaint' => [
+            //
+        ],
+
+        'unsent' => [
+            //
         ],
     ],
 

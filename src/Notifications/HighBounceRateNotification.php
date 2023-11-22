@@ -4,35 +4,35 @@ namespace Vormkracht10\Mails\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Telegram\TelegramMessage;
-use Vormkracht10\Mails\Models\Mail;
+use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 class HighBounceRateNotification extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use HasDynamicDrivers, Queueable;
 
-    protected Mail $mail;
+    protected $rate;
 
-    public function __construct(Mail $mail)
+    protected $threshold;
+
+    /**
+     * @param  float|int  $rate
+     * @param  float|int  $threshold
+     */
+    public function __construct($rate, $threshold)
     {
-        $this->mail = $mail;
-    }
+        $this->rate = $rate;
 
-    public function via(): array
-    {
-        return [
-            'discord',
-            'slack',
-            'telegram',
-        ];
+        $this->threshold = $threshold;
     }
 
     public function getTitle(): string
     {
-        return '';
+        return 'Your app has a high mail bounce rate!';
     }
 
     public function getMessage(): string
@@ -41,7 +41,14 @@ class HighBounceRateNotification extends Notification implements ShouldQueue
             '🔥', '🧯', '‼️', '⁉️', '🔴', '📣', '😅', '🥵',
         ]);
 
-        return $emoji.' mail has bounced';
+        return "{$emoji} your app has a bounce rate of {$this->rate}%, the configured max is set at {$this->threshold}";
+    }
+
+    public function toMail(): MailMessage
+    {
+        return (new MailMessage)
+            ->greeting($this->getTitle())
+            ->line($this->getMessage());
     }
 
     public function toDiscord(): DiscordMessage

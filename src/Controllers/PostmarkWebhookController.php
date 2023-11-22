@@ -2,46 +2,47 @@
 
 namespace Vormkracht10\Mails\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Vormkracht10\Mails\Enums\Events\Postmark;
-use Vormkracht10\Mails\Events\MailEvent;
-use Vormkracht10\Mails\Events\WebhookBounced;
-use Vormkracht10\Mails\Events\WebhookClicked;
-use Vormkracht10\Mails\Events\WebhookComplained;
-use Vormkracht10\Mails\Events\WebhookDelivered;
-use Vormkracht10\Mails\Events\WebhookOpened;
+use Illuminate\Http\Response;
+use Vormkracht10\Mails\Enums\Provider;
+use Vormkracht10\Mails\Enums\WebhookEventType;
+use Vormkracht10\Mails\Events\WebhookEvent;
+use Vormkracht10\Mails\Facades\MailProvider;
 
 class PostmarkWebhookController
 {
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request): Response
     {
-        $event = $this->events()[$request->input('RecordType')] ?? null;
+        $type = $request->string('RecordType');
 
-        if (! is_null($event)) {
-            event(MailEvent::class, [
-                'provider' => 'postmark',
-                'payload' => $request->input(),
-            ]);
+        $type = $this->matchEvent($type);
 
-            event($event, [
-                'provider' => 'postmark',
-                'payload' => $request->input(),
-            ]);
-        }
+        $uuid = MailProvider::driver('postmark')->getUuidFromPayload(
+            $payload = $request->all(),
+        );
 
-        return response()
-            ->json('', 202);
+        $timestamp = $this->getTimestamp($payload);
+
+        WebhookEvent::dispatch(
+            Provider::Postmark, $type, $payload, $uuid, $timestamp
+        );
+
+        return response(status: 202);
     }
 
-    public function events(): array
+    protected function matchEvent(string $event): WebhookEventType
     {
-        return [
-            Postmark::CLICK->value => WebhookClicked::class,
-            Postmark::COMPLAINT->value => WebhookComplained::class,
-            Postmark::DELIVERY->value => WebhookDelivered::class,
-            Postmark::HARD_BOUNCE->value => WebhookBounced::class,
-            Postmark::OPEN->value => WebhookOpened::class,
-        ];
+        return match ($event) {
+            'Click' => WebhookEventType::CLICK,
+            'SpamComplaint' => WebhookEventType::COMPLAINT,
+            'Delivery' => WebhookEventType::DELIVERY,
+            'Bounce' => WebhookEventType::BOUNCE,
+            'Open' => WebhookEventType::OPEN,
+        };
+    }
+
+    protected function getTimestamp(array $payload)
+    {
+        return $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now();
     }
 }

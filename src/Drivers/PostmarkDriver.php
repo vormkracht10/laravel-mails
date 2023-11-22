@@ -5,6 +5,7 @@ namespace Vormkracht10\Mails\Drivers;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\Events\Mapping;
 use Vormkracht10\Mails\Enums\Events\Postmark;
+use Vormkracht10\Mails\Enums\WebhookEventType;
 use Vormkracht10\Mails\Models\Mail;
 
 class PostmarkDriver implements MailDriverContract
@@ -26,7 +27,7 @@ class PostmarkDriver implements MailDriverContract
 
     public function getMailFromPayload(array $payload): ?Mail
     {
-        return (new $this->mailModel)
+        return $this->mailModel::query()
             ->firstWhere('uuid', $this->getUuidFromPayload($payload));
     }
 
@@ -41,68 +42,65 @@ class PostmarkDriver implements MailDriverContract
         ];
     }
 
-    public function record(array $payload): void
+    public function record(Mail $mail, WebhookEventType $type, array $payload, $timestamp = null): void
     {
-        $type = $payload['RecordType'];
-        $method = $this->events()[$type] ?? null;
+        $timestamp ??= now();
+
+        $method = strtolower($type->name);
 
         if (method_exists($this, $method)) {
-            $mail = $this->getMailFromPayload($payload);
-
             if (is_null($mail)) {
                 return;
             }
 
-            $this->{$method}($mail, $payload);
+            $this->{$method}($mail, $timestamp);
 
-            $this->logEvent($mail, $method, $payload);
+            $this->logEvent($mail, $type, $payload, $timestamp);
         }
     }
 
-    public function logEvent(Mail $mail, string $method, array $payload): void
+    public function logEvent(Mail $mail, WebhookEventType $event, array $payload, $timestamp): void
     {
         $mailEvent = $mail->events()->create([
-            'type' => $method,
-            // 'ip_address' => '',
-            // 'hostname' => '',
+            'type' => $event,
             'payload' => $payload,
-            'occurred_at' => $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now(),
+            'occurred_at' => $timestamp,
         ]);
     }
 
-    public function click($mail, $payload): void
+    public function click($mail, $timestamp): void
     {
         $mail->update([
-            'last_clicked_at' => $payload['ReceivedAt'],
+            'last_clicked_at' => $timestamp,
             'clicks' => $mail->clicks + 1,
         ]);
     }
 
-    public function complaint($mail, $payload): void
+    public function complaint($mail, $timestamp): void
     {
         $mail->update([
-            'complained_at' => $payload['BouncedAt'],
+            'complained_at' => $timestamp,
         ]);
     }
 
-    public function delivery($mail, $payload): void
+    public function delivery($mail, $timestamp): void
     {
         $mail->update([
-            'delivered_at' => $payload['DeliveredAt'],
+            'delivered_at' => $timestamp,
         ]);
     }
 
-    public function bounce($mail, $payload): void
+    public function bounce($mail, $timestamp): void
     {
         $mail->update([
-            'hard_bounced_at' => $payload['BouncedAt'],
+            'hard_bounced_at' => $timestamp,
         ]);
     }
 
-    public function open($mail, $payload): void
+    public function open($mail, $timestamp): void
     {
         $mail->update([
-            'last_opened_at' => $payload['ReceivedAt'],
+            'last_opened_at' => $timestamp,
             'opens' => $mail->opens + 1,
         ]);
     }

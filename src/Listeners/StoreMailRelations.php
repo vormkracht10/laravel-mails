@@ -6,12 +6,11 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Events\MessageSending;
-use Illuminate\Queue\SerializesAndRestoresModelIdentifiers;
 use Symfony\Component\Mime\Email;
 
 class StoreMailRelations implements ShouldQueue
 {
-    use Queueable, SerializesAndRestoresModelIdentifiers;
+    use Queueable;
 
     public function handle(MessageSending $event): void
     {

@@ -2,6 +2,7 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
+use Vormkracht10\Mails\Events\WebhookEvent;
 use Vormkracht10\Mails\Facades\MailProvider;
 
 class LogMailEvent
@@ -9,25 +10,31 @@ class LogMailEvent
     /**
      * Handle the event.
      */
-    public function handle($provider, $payload): void
+    public function handle(WebhookEvent $event): void
     {
+        $mail = $event->mail();
+
+        if (! $mail) {
+            return;
+        }
+
         if (config('mails.webhooks.queue')) {
-            $this->dispatch($provider, $payload);
+            $this->dispatch($mail, $event);
 
             return;
         }
 
-        $this->record($provider, $payload);
+        $this->record($mail, $event);
     }
 
-    private function dispatch($provider, $payload): void
+    private function dispatch($mail, $event): void
     {
-        dispatch(fn () => $this->record($provider, $payload));
+        dispatch(fn () => $this->record($mail, $event));
     }
 
-    private function record($provider, $payload): void
+    private function record($mail, $event): void
     {
-        MailProvider::with($provider)
-            ->record($payload);
+        MailProvider::with($event->provider->name)
+            ->record($mail, $event->type, $event->payload, $event->timestamp);
     }
 }
