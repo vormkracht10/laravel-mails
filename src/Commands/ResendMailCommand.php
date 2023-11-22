@@ -18,7 +18,7 @@ class ResendMailCommand extends Command implements PromptsForMissingInput
         $mail = Mail::where('uuid', $this->argument('uuid'))->first();
 
         ResendMailJob::dispatch($mail,
-            ...collect($this->argument())->only(['to', 'cc', 'bcc'])->map(fn($n) => $n ?? []),
+            ...collect($this->argument())->only(['to', 'cc', 'bcc'])->map(fn ($n) => $n ?? []),
         );
 
         $this->comment('All done');

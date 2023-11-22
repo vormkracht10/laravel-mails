@@ -13,7 +13,7 @@ use Vormkracht10\Mails\Models\Mail;
 
 class ResendMailJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, InteractsWithSockets;
+    use Dispatchable, InteractsWithQueue, InteractsWithSockets, Queueable, SerializesModels;
 
     public function __construct(
         private readonly Mail $mail,
@@ -45,7 +45,7 @@ class ResendMailJob implements ShouldQueue
         }
 
         [$this->to, $this->cc, $this->bcc] = array_values(
-            collect($mail->only(['to', 'cc', 'bcc']))->map(fn($n) => $n ?? [])->toArray(),
+            collect($mail->only(['to', 'cc', 'bcc']))->map(fn ($n) => $n ?? [])->toArray(),
         );
     }
 }
