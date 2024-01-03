@@ -19,53 +19,47 @@ class ResendMailCommand extends Command implements PromptsForMissingInput
     {
         $uuid = $this->argument('uuid');
 
-        $mail = Mail::where('uuid', $uuid)->first();
+        $mail = mail::where('uuid', $uuid)->first();
 
         if (is_null($mail)) {
-            $this->components->error("Mail with UUID: \"{$uuid}\" does not exist");
+            $this->components->error("Mail with uuid: \"{$uuid}\" does not exist");
 
             return Command::FAILURE;
         }
 
         info('For the next prompts you can input multiple email addresses by separating them with a comma.');
 
-        [$to, $cc, $bcc] = $this->promptEmailInputs($mail);
+        [$to, $cc, $bcc] = $this->promptemailinputs($mail);
 
         ResendMailJob::dispatch($mail, $to, $cc, $bcc);
 
-        $this->comment('All done');
+        info('All done');
 
         return self::SUCCESS;
     }
 
     protected function promptEmailInputs(Mail $mail): array
     {
-        $to = $this->argument('to') ?: explode(',', text(
+        $to = implode(',', $this->argument('to')) ?: text(
             label: 'What email address do you want to send the mail to?',
             placeholder: 'test@example.com',
-        ));
+        );
 
-        $cc = $this->option('cc') ?: explode(',', text(
+        $cc = implode(',', $this->option('cc')) ?: text(
             label: 'What email address should be included in the cc?',
             placeholder: 'test@example.com',
-        ));
+        );
 
-        $bcc = $this->option('bcc') ?: explode(',', text(
+        $bcc = implode(',', $this->option('bcc')) ?: text(
             label: 'What email address should be included in the bcc?',
             placeholder: 'test@example.com',
-        ));
+        );
 
-        $inputs = [
-            [&$to, $mail->to],
-            [&$cc, $mail->cc ?? []],
-            [&$bcc, $mail->bcc ?? []],
-        ];
-
-        foreach ($inputs as [&$array, $default]) {
-            $array = array_filter(array_map(fn ($email) => trim($email), $array)) ?: $default;
+        foreach ([&$to, &$cc, &$bcc] as &$input) {
+            $input = array_filter(array_map(fn ($s) => trim($s), explode(' ', str_replace([',', ';'], ' ', $input))));
         }
 
-        return [$to, $cc, $bcc];
+        return [$to ?: $mail->to, $cc ?: $mail->cc ?? [], $bcc ?: $mail->bcc ?? []];
     }
 
     protected function promptForMissingArgumentsUsing()
