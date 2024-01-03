@@ -51,10 +51,10 @@ class MailsServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews()
             ->hasMigrations(
-                'create_mailables_table',
-                'create_mail_attachments_table',
-                'create_mail_events_table',
-                'create_mails_table',
+                '1_create_mails_table',
+                '2_create_mail_attachments_table',
+                '2_create_mail_events_table',
+                '2_create_mailables_table',
             )
             ->hasRoutes('webhooks')
             ->hasCommands(
