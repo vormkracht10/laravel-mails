@@ -9,16 +9,26 @@ use Vormkracht10\Mails\Models\Mail;
 
 class ResendMailCommand extends Command implements PromptsForMissingInput
 {
-    public $signature = 'mail:resend {uuid} {to?} {cc?} {bcc?}';
+    public $signature = 'mail:resend {uuid} {to?*} {--cc=*} {--bcc=*}';
 
     public $description = 'Resend mail';
 
     public function handle(): int
     {
-        $mail = Mail::where('uuid', $this->argument('uuid'))->first();
+        $uuid = $this->argument('uuid');
+
+        $mail = Mail::where('uuid', $uuid)->first();
+
+        if (is_null($mail)) {
+            $this->components->error("Mail with UUID: \"{$uuid}\" does not exist");
+
+            return Command::FAILURE;
+        }
 
         ResendMailJob::dispatch($mail,
-            ...collect($this->argument())->only(['to', 'cc', 'bcc'])->map(fn ($n) => $n ?? []),
+            $this->argument('to') ?: $mail->to,
+            $this->option('cc') ?: $mail->cc ?? [],
+            $this->option('bcc') ?: $mail->bcc ?? [],
         );
 
         $this->comment('All done');
