@@ -7,7 +7,8 @@ use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Vormkracht10\Mails\Jobs\ResendMailJob;
 use Vormkracht10\Mails\Models\Mail;
 
-use function Laravel\Prompts\{text, info};
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\text;
 
 class ResendMailCommand extends Command implements PromptsForMissingInput
 {
