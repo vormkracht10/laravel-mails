@@ -36,16 +36,16 @@ class TestCase extends Orchestra
             'prefix' => '',
         ]);
 
-        $migration = include __DIR__.'/../database/migrations/create_mailables_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/1_create_mails_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/create_mail_attachments_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/2_create_mail_attachments_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/create_mail_events_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/2_create_mail_events_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/create_mails_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/2_create_mailables_table.php.stub';
         $migration->up();
     }
 }
