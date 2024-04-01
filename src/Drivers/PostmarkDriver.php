@@ -22,7 +22,9 @@ class PostmarkDriver implements MailDriverContract
 
     public function getUuidFromPayload(array $payload): string
     {
-        return $payload['Metadata'][config('mails.headers.uuid')];
+        return $payload['Metadata'][config('mails.headers.uuid')] ??
+            $payload['Metadata'][strtolower(config('mails.headers.uuid'))] ??
+            $payload['Metadata'][strtoupper(config('mails.headers.uuid'))];
     }
 
     public function getMailFromPayload(array $payload): ?Mail
