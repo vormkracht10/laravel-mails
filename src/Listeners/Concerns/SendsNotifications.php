@@ -24,9 +24,11 @@ trait SendsNotifications
                 return;
             }
 
-            Notifications::route($channel, $accounts)->notify(
-                $notification->on($channel),
-            );
+            foreach($accounts as $route) {
+                Notifications::route($channel, $route)->notify(
+                    $notification->on($channel),
+                );
+            }
         }
     }
 }
