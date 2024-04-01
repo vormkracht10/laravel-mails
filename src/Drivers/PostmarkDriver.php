@@ -21,11 +21,12 @@ class PostmarkDriver implements MailDriverContract
         $this->uuidHeaderName = config('mails.headers.uuid');
     }
 
-    public function getUuidFromPayload(array $payload): string
+    public function getUuidFromPayload(array $payload): ?string
     {
         return $payload['Metadata'][$this->uuidHeaderName] ??
             $payload['Metadata'][strtolower($this->uuidHeaderName)] ??
-            $payload['Metadata'][strtoupper($this->uuidHeaderName)];
+            $payload['Metadata'][strtoupper($this->uuidHeaderName)] ??
+            null;
     }
 
     public function getMailFromPayload(array $payload): ?Mail
@@ -64,7 +65,7 @@ class PostmarkDriver implements MailDriverContract
 
     public function logEvent(Mail $mail, WebhookEventType $event, array $payload, $timestamp): void
     {
-        $mailEvent = $mail->events()->create([
+        $mail->events()->create([
             'type' => $event,
             'payload' => $payload,
             'occurred_at' => $timestamp,

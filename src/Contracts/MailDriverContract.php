@@ -7,7 +7,7 @@ use Vormkracht10\Mails\Models\Mail;
 
 interface MailDriverContract
 {
-    public function getUuidFromPayload(array $payload): string;
+    public function getUuidFromPayload(array $payload): ?string;
 
     public function getMailFromPayload(array $payload): ?Mail;
 

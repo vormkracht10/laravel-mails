@@ -21,6 +21,10 @@ class PostmarkWebhookController
             $payload = $request->all(),
         );
 
+        if(is_null($uuid)) {
+            return response(status: 202);
+        }
+
         $timestamp = $this->getTimestamp($payload);
 
         WebhookEvent::dispatch(
