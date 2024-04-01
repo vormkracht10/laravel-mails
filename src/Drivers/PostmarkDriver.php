@@ -18,15 +18,14 @@ class PostmarkDriver implements MailDriverContract
     {
         $this->mailModel = config('mails.models.mail');
         $this->mailEventModel = config('mails.models.event');
+        $this->uuidHeaderName = config('mails.headers.uuid');
     }
 
     public function getUuidFromPayload(array $payload): string
     {
-        $uuidHeaderName = config('mails.headers.uuid');
-
-        return $payload['Metadata'][$uuidHeaderName] ??
-            $payload['Metadata'][strtolower($uuidHeaderName)] ??
-            $payload['Metadata'][strtoupper($uuidHeaderName)];
+        return $payload['Metadata'][$this->uuidHeaderName] ??
+            $payload['Metadata'][strtolower($this->uuidHeaderName)] ??
+            $payload['Metadata'][strtoupper($this->uuidHeaderName)];
     }
 
     public function getMailFromPayload(array $payload): ?Mail
