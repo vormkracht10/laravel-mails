@@ -32,14 +32,14 @@ composer require vormkracht10/laravel-mails
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-mails-migrations"
+php artisan vendor:publish --tag="mails-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-mails-config"
+php artisan vendor:publish --tag="mails-config"
 ```
 
 This is the contents of the published config file:
@@ -52,7 +52,7 @@ return [
 Optionally, you can publish the views using
 
 ```bash
-php artisan vendor:publish --tag="laravel-mails-views"
+php artisan vendor:publish --tag="mails-views"
 ```
 
 ## Usage
