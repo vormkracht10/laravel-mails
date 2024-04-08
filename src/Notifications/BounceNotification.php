@@ -34,7 +34,7 @@ class BounceNotification extends Notification implements ShouldQueue
             '🔥', '🧯', '‼️', '⁉️', '🔴', '📣', '😅', '🥵',
         ]);
 
-        return implode(' ', [$emoji, 'mail has bounced']);
+        return "{$emoji} Mail has bounced";
     }
 
     public function toMail(): MailMessage

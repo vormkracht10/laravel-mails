@@ -22,6 +22,14 @@ trait HasDynamicDrivers
             $drivers = array_merge($this->drivers, $drivers);
         }
 
+        $via = [
+            'discord' => \NotificationChannels\Discord\DiscordChannel::class,
+        ];
+
+        $drivers = array_map(function($driver) use ($via) {
+            return $via[$driver];
+        }, $drivers);
+
         $this->drivers = $drivers;
 
         return $this;
