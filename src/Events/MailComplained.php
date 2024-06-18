@@ -16,6 +16,5 @@ class MailComplained
      */
     public function __construct(
         public MailEvent $mailEvent
-    ) {
-    }
+    ) {}
 }

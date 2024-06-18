@@ -19,8 +19,7 @@ class WebhookEvent
         public array $payload = [],
         protected ?string $mailUuid = null,
         public $timestamp = null,
-    ) {
-    }
+    ) {}
 
     public function mail(): ?Mail
     {
