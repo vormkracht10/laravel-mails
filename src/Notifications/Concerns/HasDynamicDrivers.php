@@ -24,9 +24,10 @@ trait HasDynamicDrivers
 
         $via = [
             'discord' => \NotificationChannels\Discord\DiscordChannel::class,
+            'mail' => \Illuminate\Notifications\Channels\MailChannel::class,
         ];
 
-        $drivers = array_map(function($driver) use ($via) {
+        $drivers = array_map(function ($driver) use ($via) {
             return $via[$driver];
         }, $drivers);
 
