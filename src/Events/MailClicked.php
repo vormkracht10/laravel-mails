@@ -16,6 +16,5 @@ class MailClicked
      */
     public function __construct(
         public MailEvent $mailEvent
-    ) {
-    }
+    ) {}
 }

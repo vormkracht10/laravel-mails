@@ -17,6 +17,5 @@ class WebhookDelivered
     public function __construct(
         public Provider $provider,
         public $payload,
-    ) {
-    }
+    ) {}
 }
