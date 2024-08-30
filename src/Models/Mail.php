@@ -147,4 +147,14 @@ class Mail extends Model
     {
         return $query->whereNotNull('hard_bounced_at');
     }
+
+    public function scopeSent(Builder $query): Builder
+    {
+        return $query->whereNotNull('sent_at');
+    }
+
+    public function scopeUnsent(Builder $query): Builder
+    {
+        return $query->whereNull('sent_at');
+    }
 }
