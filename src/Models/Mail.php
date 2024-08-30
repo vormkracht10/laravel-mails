@@ -112,4 +112,39 @@ class Mail extends Model
     {
         return $this->hasMany(config('mails.models.event'));
     }
+
+    public function scopeResent(Builder $query): Builder
+    {
+        return $query->whereNotNull('resent_at');
+    }
+
+    public function scopeDelivered(Builder $query): Builder
+    {
+        return $query->whereNotNull('delivered_at');
+    }
+
+    public function scopeClicked(Builder $query): Builder
+    {
+        return $query->whereNotNull('last_clicked_at');
+    }
+
+    public function scopeOpened(Builder $query): Builder
+    {
+        return $query->whereNotNull('last_opened_at');
+    }
+
+    public function scopeComplained(Builder $query): Builder
+    {
+        return $query->whereNotNull('complained_at');
+    }
+
+    public function scopeSoftBounced(Builder $query): Builder
+    {
+        return $query->whereNotNull('soft_bounced_at');
+    }
+
+    public function scopeHardBounced(Builder $query): Builder
+    {
+        return $query->whereNotNull('hard_bounced_at');
+    }
 }
