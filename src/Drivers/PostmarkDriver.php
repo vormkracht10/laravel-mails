@@ -67,6 +67,16 @@ class PostmarkDriver implements MailDriverContract
     {
         $mail->events()->create([
             'type' => $event,
+            'ip_address' => $payload['Geo']['IP'] ?? null,
+            'hostname' => isset($payload['Geo']['IP']) ? gethostbyaddr($payload['Geo']['IP']) : null,
+            'platform' => $payload['Platform'] ?? null,
+            'os' => $payload['OS']['Family'] ?? null,
+            'browser' => $payload['Client']['Family'] ?? null,
+            'user_agent' => $payload['UserAgent'] ?? null,
+            'country_code' => $payload['Geo']['CountryISOCode'] ?? null,
+            'city' => $payload['Geo']['City'] ?? null,
+            'country_code' => $payload['OriginalLink'] ?? null,
+            'tag' => $payload['Tag'] ?? null,
             'payload' => $payload,
             'occurred_at' => $timestamp,
         ]);

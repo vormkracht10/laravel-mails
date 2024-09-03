@@ -22,7 +22,7 @@ class PostmarkWebhookController
         }
 
         $uuid = MailProvider::driver('postmark')->getUuidFromPayload(
-            $payload = $request->all(),
+            $payload = $request->except('signature'),
         );
 
         if (is_null($uuid)) {

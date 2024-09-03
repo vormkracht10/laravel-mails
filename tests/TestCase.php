@@ -3,12 +3,15 @@
 namespace Vormkracht10\Mails\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use NotificationChannels\Discord\DiscordServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Vormkracht10\Mails\MailsServiceProvider;
 
 class TestCase extends Orchestra
 {
+    use RefreshDatabase;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -36,16 +39,18 @@ class TestCase extends Orchestra
             'prefix' => '',
         ]);
 
-        $migration = include __DIR__.'/../database/migrations/1_create_mails_table.php.stub';
+        config()->set('queue.default', 'sync');
+
+        $migration = require __DIR__.'/../database/migrations/1_create_mails_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/2_create_mail_attachments_table.php.stub';
+        $migration = require __DIR__.'/../database/migrations/2_create_mail_attachments_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/2_create_mail_events_table.php.stub';
+        $migration = require __DIR__.'/../database/migrations/2_create_mail_events_table.php.stub';
         $migration->up();
 
-        $migration = include __DIR__.'/../database/migrations/2_create_mailables_table.php.stub';
+        $migration = require __DIR__.'/../database/migrations/2_create_mailables_table.php.stub';
         $migration->up();
     }
 }

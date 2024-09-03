@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('user_agent')->nullable();
             $table->char('country_code', 2)->nullable();
             $table->string('city')->nullable();
+            $table->string('link')->nullable();
+            $table->string('tag')->nullable();
             $table->json('payload')->nullable();
             $table->timestamps();
             $table->timestamp('occurred_at')->nullable();
