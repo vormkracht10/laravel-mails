@@ -13,6 +13,7 @@ use Vormkracht10\Mails\Events\WebhookComplained;
 use Vormkracht10\Mails\Events\WebhookDelivered;
 use Vormkracht10\Mails\Events\WebhookEvent;
 use Vormkracht10\Mails\Events\WebhookOpened;
+use Vormkracht10\Mails\Facades\MailProvider;
 
 class MailgunWebhookController
 {
@@ -22,14 +23,32 @@ class MailgunWebhookController
 
         $type = $this->matchEvent($type);
 
+        if (is_null($type)) {
+            return response('Event type unknown.', status: 400);
+        }
+
+        $uuid = MailProvider::driver('postmark')->getUuidFromPayload(
+            $payload = $request->all(),
+        );
+
+        if (is_null($uuid)) {
+            return response('Mail UUID not found.', status: 202);
+        }
+
+        $timestamp = $this->getTimestamp($payload);
+
+        WebhookEvent::dispatch(
+            Provider::Postmark, $type, $payload, $uuid, $timestamp
+        );
+
         WebhookEvent::dispatch(
             Provider::Mailgun, $type, $request->all(), null, null
         );
 
-        return response(status: 202);
+        return response('Event processed.', status: 202);
     }
 
-    protected function matchEvent(string $event): WebhookEventType
+    protected function matchEvent(string $event): ?WebhookEventType
     {
         return match ($event) {
             'clicked' => WebhookEventType::CLICK,
@@ -37,6 +56,7 @@ class MailgunWebhookController
             'delivered' => WebhookEventType::DELIVERY,
             'opened' => WebhookEventType::OPEN,
             'permanent_fail', 'temporary_fail' => WebhookEventType::BOUNCE,
+            default => null,
         };
     }
 
@@ -49,5 +69,10 @@ class MailgunWebhookController
             Mailgun::HARD_BOUNCE->value => WebhookBounced::class,
             Mailgun::OPEN->value => WebhookOpened::class,
         ];
+    }
+
+    protected function getTimestamp(array $payload)
+    {
+        return $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now();
     }
 }

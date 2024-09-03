@@ -17,12 +17,16 @@ class PostmarkWebhookController
 
         $type = $this->matchEvent($type);
 
+        if (is_null($type)) {
+            return response('Event type unknown.', status: 400);
+        }
+
         $uuid = MailProvider::driver('postmark')->getUuidFromPayload(
             $payload = $request->all(),
         );
 
         if (is_null($uuid)) {
-            return response(status: 202);
+            return response('Mail UUID not found.', status: 202);
         }
 
         $timestamp = $this->getTimestamp($payload);
@@ -31,10 +35,10 @@ class PostmarkWebhookController
             Provider::Postmark, $type, $payload, $uuid, $timestamp
         );
 
-        return response(status: 202);
+        return response('Event processed.', status: 202);
     }
 
-    protected function matchEvent(string $event): WebhookEventType
+    protected function matchEvent(string $event): ?WebhookEventType
     {
         return match ($event) {
             'Click' => WebhookEventType::CLICK,
@@ -42,6 +46,7 @@ class PostmarkWebhookController
             'Delivery' => WebhookEventType::DELIVERY,
             'Bounce' => WebhookEventType::BOUNCE,
             'Open' => WebhookEventType::OPEN,
+            default => null,
         };
     }
 
