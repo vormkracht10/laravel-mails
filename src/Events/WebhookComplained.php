@@ -17,6 +17,5 @@ class WebhookComplained
     public function __construct(
         public Provider $provider,
         public $payload
-    ) {
-    }
+    ) {}
 }

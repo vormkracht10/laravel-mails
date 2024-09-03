@@ -15,12 +15,12 @@ class MailProviderManager extends Manager
 
     protected function createPostmarkDriver(): PostmarkDriver
     {
-        return new PostmarkDriver();
+        return new PostmarkDriver;
     }
 
     protected function createMailgunDriver(): MailgunDriver
     {
-        return new MailgunDriver();
+        return new MailgunDriver;
     }
 
     public function getDefaultDriver(): ?string

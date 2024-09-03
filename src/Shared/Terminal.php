@@ -23,7 +23,7 @@ class Terminal extends Command
 
         $this->input = new StringInput($argInput);
 
-        $this->outputSymfony = new ConsoleOutput();
+        $this->outputSymfony = new ConsoleOutput;
         $this->outputStyle = new OutputStyle($this->input, $this->outputSymfony);
 
         $this->output = $this->outputStyle;
