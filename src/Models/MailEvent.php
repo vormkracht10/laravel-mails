@@ -20,8 +20,15 @@ class MailEvent extends Model
     protected $fillable = [
         'mail_id',
         'type',
-        'ip',
+        'ip_address',
         'hostname',
+        'platform',
+        'os',
+        'browser',
+        'user_agent',
+        'country_code',
+        'link',
+        'tag',
         'payload',
         'occurred_at',
     ];
