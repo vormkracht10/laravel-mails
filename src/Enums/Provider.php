@@ -6,4 +6,5 @@ enum Provider
 {
     case Postmark;
     case Mailgun;
+    case Mailtrap;
 }
