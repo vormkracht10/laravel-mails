@@ -233,5 +233,6 @@ it('can receive incoming click webhook from postmark', function () {
 
     assertDatabaseHas((new MailEvent)->getTable(), [
         'type' => Mapping::CLICK->value,
+        'link' => 'https://example.com',
     ]);
 });
