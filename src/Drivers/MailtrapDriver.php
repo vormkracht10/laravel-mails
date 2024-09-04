@@ -2,7 +2,6 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
-use Vormkracht10\Mails\Enums\Events\Mailgun;
 use Vormkracht10\Mails\Enums\Events\Mailtrap;
 use Vormkracht10\Mails\Enums\Events\Mapping;
 
@@ -25,7 +24,7 @@ class MailtrapDriver
             Mailtrap::DELIVERY->value => Mapping::DELIVERY->value,
             Mailtrap::HARD_BOUNCE->value => Mapping::BOUNCE->value,
             Mailtrap::OPEN->value => Mapping::OPEN->value,
-            Mailtrap::SOFT_BOUNCE->value => Mapping::BOUNCE->value
+            Mailtrap::SOFT_BOUNCE->value => Mapping::BOUNCE->value,
         ];
     }
 }
