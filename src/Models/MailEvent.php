@@ -26,6 +26,7 @@ class MailEvent extends Model
         'os',
         'browser',
         'user_agent',
+        'city',
         'country_code',
         'link',
         'tag',
