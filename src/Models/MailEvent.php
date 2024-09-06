@@ -2,14 +2,14 @@
 
 namespace Vormkracht10\Mails\Models;
 
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Vormkracht10\Mails\Database\Factories\MailEventFactory;
+use Vormkracht10\Mails\Enums\Events\MappingPastTense;
 use Vormkracht10\Mails\Enums\WebhookEventType;
 use Vormkracht10\Mails\Events\MailEventLogged;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Vormkracht10\Mails\Enums\Events\MappingPastTense;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Vormkracht10\Mails\Database\Factories\MailEventFactory;
 
 /**
  * @property Mail $mail

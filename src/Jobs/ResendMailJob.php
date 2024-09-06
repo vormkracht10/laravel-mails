@@ -40,6 +40,7 @@ class ResendMailJob implements ShouldQueue
 
             return $message
                 ->subject($this->mail->subject ?? '')
+                ->from($this->mail->from)
                 ->replyTo($this->mail->reply_to ?? [])
                 ->to($this->to ?? [])
                 ->cc($this->cc ?? [])
