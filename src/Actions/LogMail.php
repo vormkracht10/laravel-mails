@@ -125,11 +125,6 @@ class LogMail
     public function saveAttachment($attachmentModel, $attachment): void
     {
         Storage::disk($attachmentModel->disk)
-            ->put($this->getAttachmentStoragePath($attachmentModel->id), $attachment->getBody(), 'private');
-    }
-
-    public function getAttachmentStoragePath(string $filename): string
-    {
-        return rtrim(config('mails.logging.attachments.root'), '/').'/'.$filename;
+            ->put($attachment->storagePath, $attachment->getBody(), 'private');
     }
 }
