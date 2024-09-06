@@ -22,6 +22,7 @@
         "laravel-notification-channels/telegram": "^4.0|5.0",
         "laravel/helpers": "^1.6",
         "laravel/slack-notification-channel": "^2.5|^3.2",
+        "mailgun/mailgun-php": "^4.3",
         "spatie/laravel-package-tools": "^1.14.0",
         "wildbit/postmark-php": "^4.0"
     },
@@ -62,7 +63,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
         }
     },
     "extra": {

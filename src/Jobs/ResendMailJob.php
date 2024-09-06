@@ -39,8 +39,8 @@ class ResendMailJob implements ShouldQueue
             }
 
             return $message
-                ->replyTo($this->mail->reply_to ?? [])
                 ->subject($this->mail->subject ?? '')
+                ->replyTo($this->mail->reply_to ?? [])
                 ->to($this->to ?? [])
                 ->cc($this->cc ?? [])
                 ->bcc($this->bcc ?? []);

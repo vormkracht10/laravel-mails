@@ -10,8 +10,8 @@ class ResendMail
 {
     use AsAction;
 
-    public function handle(Mailable $mail, array $to = [], array $cc = [], array $bcc = [])
+    public function handle(Mailable $mail, array $to = [], array $cc = [], array $bcc = [], array $replyTo = [])
     {
-        ResendMailJob::dispatch($mail, $to, $cc, $bcc);
+        ResendMailJob::dispatch($mail, $to, $cc, $bcc, $replyTo);
     }
 }

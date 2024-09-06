@@ -89,6 +89,6 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail' . $this->past_tense_name;
+        return 'Vormkracht10\Mails\Events\Mail'.$this->past_tense_name;
     }
 }

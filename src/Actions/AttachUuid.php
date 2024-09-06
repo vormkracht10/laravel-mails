@@ -19,6 +19,8 @@ class AttachUuid
         $uuid = Str::uuid()->toString();
 
         $event->message->getHeaders()->addTextHeader(config('mails.headers.uuid'), $uuid);
+
+        // specifically for Postmark
         $event->message->getHeaders()->addTextHeader('X-PM-Metadata-'.config('mails.headers.uuid'), $uuid);
     }
 }
