@@ -30,18 +30,20 @@ class ResendMailJob implements ShouldQueue
 
     public function handle(): void
     {
-        Mail::send([], callback: function (Message $mail) {
-            match (isset($this->mail->html)) {
-                true => $mail->html($this->mail->html),
-                false => $mail->text($this->mail->text ?? ''),
-            };
+        Mail::send([], callback: function (Message $message) {
+            $message->html($this->mail->html ?? '')
+                ->text($this->mail->text ?? '');
 
-            return $mail
+            foreach ($this->mail->attachments as $attachment) {
+                $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
+            }
+
+            return $message
                 ->replyTo($this->mail->reply_to ?? [])
                 ->subject($this->mail->subject ?? '')
-                ->to($this->to)
-                ->cc($this->cc)
-                ->bcc($this->bcc);
+                ->to($this->to ?? [])
+                ->cc($this->cc ?? [])
+                ->bcc($this->bcc ?? []);
         });
     }
 }
