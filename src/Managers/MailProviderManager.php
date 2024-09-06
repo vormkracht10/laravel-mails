@@ -25,13 +25,6 @@ class MailProviderManager extends Manager
 
     public function getDefaultDriver(): ?string
     {
-        $defaultMailer = config('mail.default');
-        $drivers = ['postmark', 'mailgun'];
-
-        if (in_array($defaultMailer, $drivers)) {
-            return $defaultMailer;
-        }
-
         return null;
     }
 }

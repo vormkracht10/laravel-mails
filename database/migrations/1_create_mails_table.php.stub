@@ -22,6 +22,7 @@ return new class extends Migration
             $table->text('text')->nullable();
             $table->unsignedBigInteger('opens')->default(0);
             $table->unsignedBigInteger('clicks')->default(0);
+            $table->timestamp('accepted_at')->nullable();
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('resent_at')->nullable();
             $table->timestamp('delivered_at')->nullable();
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->timestamp('complained_at')->nullable();
             $table->timestamp('soft_bounced_at')->nullable();
             $table->timestamp('hard_bounced_at')->nullable();
+            $table->timestamp('unsubscribed_at')->nullable();
             $table->timestamps();
         });
     }

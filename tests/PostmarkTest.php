@@ -3,7 +3,6 @@
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use Vormkracht10\Mails\Enums\Events\Mapping;
 use Vormkracht10\Mails\Models\Mail as MailModel;
 use Vormkracht10\Mails\Models\MailEvent;
 

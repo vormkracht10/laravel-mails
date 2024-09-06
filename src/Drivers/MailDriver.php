@@ -19,15 +19,25 @@ class MailDriver
         $this->uuidHeaderName = config('mails.headers.uuid');
     }
 
-    protected function getDataFromPayload(array $payload)
+    public function getMailFromPayload(array $payload): ?Mail
+    {
+        return $this->mailModel::query()
+            ->firstWhere('uuid', $this->getUuidFromPayload($payload));
+    }
+
+    public function getDataFromPayload(array $payload): array
     {
         return collect($this->dataMapping())
             ->mapWithKeys(fn ($value, $key) => [$key => data_get($payload, $value)])
             ->filter()
+            ->merge([
+                'type' => $this->getEventFromPayload($payload),
+                'timestamp' => $this->getTimestampFromPayload($payload),
+            ])
             ->toArray();
     }
 
-    protected function getEventFromPayload(array $payload)
+    public function getEventFromPayload(array $payload)
     {
         foreach ($this->eventsMapping() as $event => $mapping) {
             if (collect($mapping)->every(fn ($value, $key) => data_get($payload, $key) === $value)) {
@@ -36,29 +46,34 @@ class MailDriver
         }
     }
 
-    public function record(Mail $mail, array $payload, $timestamp = null): void
+    public function logMailEvent($payload): void
     {
-        $timestamp ??= now();
+        $mail = $this->getMailFromPayload($payload);
 
-        $method = strtolower($type->name);
+        $method = strtolower($this->getEventFromPayload($payload));
 
         if (method_exists($this, $method)) {
             if (is_null($mail)) {
                 return;
             }
 
-            $this->{$method}($mail, $timestamp);
+            // log mail event
+            $mail->events()->create($this->getDataMapping($payload));
 
-            $this->logEvent($mail, $type, $payload, $timestamp);
+            // update mail record with timestamp
+            $this->{$method}($mail, $this->getTimestampFromPayload($payload));
         }
     }
 
-    public function logEvent(Mail $mail, WebhookEventType $event, array $payload, $timestamp): void
+    public function accepted(Mail $mail, string $timestamp): void
     {
-        $mail->events()->create($this->getDataMapping($payload));
+        $mail->update([
+            'last_opened_at' => $timestamp,
+            'opens' => $mail->opens + 1,
+        ]);
     }
 
-    public function clicked($mail, $timestamp): void
+    public function clicked(Mail $mail, string $timestamp): void
     {
         $mail->update([
             'last_clicked_at' => $timestamp,
@@ -66,28 +81,43 @@ class MailDriver
         ]);
     }
 
-    public function complained($mail, $timestamp): void
+    public function complained(Mail $mail, string $timestamp): void
     {
         $mail->update([
             'complained_at' => $timestamp,
         ]);
     }
 
-    public function delivered($mail, $timestamp): void
+    public function delivered(Mail $mail, string $timestamp): void
     {
         $mail->update([
             'delivered_at' => $timestamp,
         ]);
     }
 
-    public function bounced($mail, $timestamp): void
+    public function hardBounced(Mail $mail, string $timestamp): void
     {
         $mail->update([
             'hard_bounced_at' => $timestamp,
         ]);
     }
 
-    public function opened($mail, $timestamp): void
+    public function opened(Mail $mail, string $timestamp): void
+    {
+        $mail->update([
+            'last_opened_at' => $timestamp,
+            'opens' => $mail->opens + 1,
+        ]);
+    }
+
+    public function softBounced(Mail $mail, string $timestamp): void
+    {
+        $mail->update([
+            'soft_bounced_at' => $timestamp,
+        ]);
+    }
+
+    public function unsubscribed(Mail $mail, string $timestamp): void
     {
         $mail->update([
             'last_opened_at' => $timestamp,

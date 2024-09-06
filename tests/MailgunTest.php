@@ -3,7 +3,7 @@
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use Vormkracht10\Mails\Enums\Events\Mapping;
+use Vormkracht10\Mails\Enums\EventType;
 use Vormkracht10\Mails\Models\Mail as MailModel;
 use Vormkracht10\Mails\Models\MailEvent;
 
@@ -73,7 +73,7 @@ it('can receive incoming delivery webhook from mailgun', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::DELIVERY->value,
+        'type' => EventType::DELIVERED->value,
     ]);
 });
 
@@ -122,6 +122,7 @@ it('can receive incoming accept webhook from mailgun', function () {
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'to' => 'test@omnivery.com',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
+                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
                 'size' => 5637,
             ],
@@ -129,11 +130,11 @@ it('can receive incoming accept webhook from mailgun', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::ACCEPT->value,
+        'type' => EventType::ACCEPTED->value,
     ]);
 });
 
-it('can receive incoming bounce webhook from mailgun', function () {
+it('can receive incoming hard bounce webhook from mailgun', function () {
     Mail::send([], [], function (Message $message) {
         $message->to('mark@vormkracht10.nl')
             ->from('local@computer.nl')
@@ -189,7 +190,67 @@ it('can receive incoming bounce webhook from mailgun', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::BOUNCE->value,
+        'type' => EventType::HARD_BOUNCED->value,
+    ]);
+});
+
+it('can receive incoming soft bounce webhook from mailgun', function () {
+    Mail::send([], [], function (Message $message) {
+        $message->to('mark@vormkracht10.nl')
+            ->from('local@computer.nl')
+            ->cc('cc@vk10.nl')
+            ->bcc('bcc@vk10.nl')
+            ->subject('Test')
+            ->text('Text')
+            ->html('<p>HTML</p>');
+    });
+
+    $mail = MailModel::latest()->first();
+
+    post(URL::signedRoute('mails.webhook', ['driver' => 'mailgun']), [
+        'event-data' => [
+            'event' => 'failed',
+            'severity' => 'temporary',
+            'envelope' => [
+                'sender' => 'bounce-d9bee8ac-b0e7-11ec-8086-57d93b186f66@notify.omnivery.com',
+                'sending-ip' => '185.136.201.130',
+                'targets' => 'nosuchemail@omnivery.com',
+                'transport' => 'smtp',
+            ],
+            'recipient' => 'nosuchemail@omnivery.com',
+            'message' => [
+                'size' => 5597,
+                'headers' => [
+                    'message-id' => 'd9bee8ac-b0e7-11ec-8086-57d93b186f66',
+                    'subject' => 'Test message subject',
+                    'date' => 'Thu, 31 Mar 2022 11:43:57 +0000',
+                    'to' => 'nosuchemail@omnivery.com',
+                    'from' => '"Friendly Sender" <sender@emaildemos.com>',
+                    config('mails.headers.uuid') => $mail?->uuid,
+                ],
+            ],
+            'delivery-status' => [
+                'code' => 550,
+                'bounce-class' => 'bad-mailbox',
+                'description' => '550 5.1.1 <nosuchemail@omnivery.com>: Recipient address rejected: User unknown in virtual mailbox table',
+                'mx-host' => 'mail.mailkit.eu',
+                'tls' => true,
+                'mx-ip' => '185.136.200.19',
+                'message' => '<nosuchemail@omnivery.com>: Recipient address rejected: User unknown in virtual mailbox table',
+            ],
+            'id' => 'MTozOmhhcmRib3VuY2U6MTY0ODcyNzAzOQ==',
+            'timestamp' => 1648727038.22387,
+            'recipient-domain' => 'omnivery.com',
+        ],
+        'signature' => [
+            'signature' => 'secrethmacsignature',
+            'timestamp' => 1648727039,
+            'token' => 'eventtoken',
+        ],
+    ])->assertAccepted();
+
+    assertDatabaseHas((new MailEvent)->getTable(), [
+        'type' => EventType::SOFT_BOUNCED->value,
     ]);
 });
 
@@ -237,6 +298,7 @@ it('can receive incoming complaint webhook from mailgun', function () {
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'to' => 'test@omnivery.com',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
+                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
                 'size' => 5637,
             ],
@@ -244,7 +306,7 @@ it('can receive incoming complaint webhook from mailgun', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::COMPLAINT->value,
+        'type' => EventType::COMPLAINED->value,
     ]);
 });
 
@@ -280,6 +342,7 @@ it('can receive incoming open webhook from mailgun', function () {
                     'message-id' => '6d261932-b677-11ec-aa58-03210c12f2eb',
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
+                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
             ],
             'client-info' => [
@@ -305,7 +368,7 @@ it('can receive incoming open webhook from mailgun', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::OPEN->value,
+        'type' => EventType::OPENED->value,
     ]);
 });
 
@@ -360,6 +423,7 @@ it('can receive incoming click webhook from mailgun', function () {
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'to' => 'test@omnivery.com',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
+                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
                 'size' => 5637,
             ],
@@ -367,7 +431,7 @@ it('can receive incoming click webhook from mailgun', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::CLICK->value,
+        'type' => EventType::CLICKED->value,
         'link' => 'https://example.com',
     ]);
 });
@@ -415,6 +479,7 @@ it('can receive incoming unsubscribe webhook from mailgun', function () {
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'to' => 'test@omnivery.com',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
+                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
                 'size' => 5637,
             ],
@@ -422,6 +487,6 @@ it('can receive incoming unsubscribe webhook from mailgun', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::UNSUBSCRIBE->value,
+        'type' => EventType::UNSUBSCRIBED->value,
     ]);
 });

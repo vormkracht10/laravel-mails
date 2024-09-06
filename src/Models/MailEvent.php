@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
-use Vormkracht10\Mails\Enums\Events\MappingPastTense;
 use Vormkracht10\Mails\Enums\WebhookEventType;
 use Vormkracht10\Mails\Events\MailEventLogged;
 

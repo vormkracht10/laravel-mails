@@ -10,21 +10,27 @@ interface MailDriverContract
 
     public function getMailFromPayload(array $payload): ?Mail;
 
-    public function eventsMapping(): array;
+    public function getDataFromPayload(array $payload): array;
+
+    public function eventMapping(): array;
 
     public function dataMapping(): array;
 
-    public function record(Mail $mail, array $payload, $timestamp): void;
+    public function logMailEvent(array $payload): void;
 
-    public function logEvent(Mail $mail, array $payload, $timestamp): void;
+    public function accepted(Mail $mail, string $timestamp): void;
 
-    public function clicked(Mail $mail, array $timestamp): void;
+    public function clicked(Mail $mail, string $timestamp): void;
 
-    public function complained(Mail $mail, array $timestamp): void;
+    public function complained(Mail $mail, string $timestamp): void;
 
-    public function delivered(Mail $mail, array $timestamp): void;
+    public function delivered(Mail $mail, string $timestamp): void;
 
-    public function bounced(Mail $mail, array $timestamp): void;
+    public function hardBounced(Mail $mail, string $timestamp): void;
 
-    public function opened(Mail $mail, array $timestamp): void;
+    public function opened(Mail $mail, string $timestamp): void;
+
+    public function softBounced(Mail $mail, string $timestamp): void;
+
+    public function unsubscribed(Mail $mail, string $timestamp): void;
 }

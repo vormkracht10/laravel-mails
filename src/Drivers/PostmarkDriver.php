@@ -4,14 +4,9 @@ namespace Vormkracht10\Mails\Drivers;
 
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
-use Vormkracht10\Mails\Models\Mail;
 
 class PostmarkDriver extends MailDriver implements MailDriverContract
 {
-    protected $mailModel;
-
-    protected $mailEventModel;
-
     public function getUuidFromPayload(array $payload): ?string
     {
         return $payload['Metadata'][$this->uuidHeaderName] ??
@@ -20,18 +15,12 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             null;
     }
 
-    public function getMailFromPayload(array $payload): ?Mail
-    {
-        return $this->mailModel::query()
-            ->firstWhere('uuid', $this->getUuidFromPayload($payload));
-    }
-
     protected function getTimestampFromPayload(array $payload)
     {
         return $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now();
     }
 
-    public function eventsMapping(): array
+    public function eventMapping(): array
     {
         return [
             EventType::CLICKED => ['RecordType' => 'Click'],
