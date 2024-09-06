@@ -23,7 +23,7 @@ it('can receive incoming delivery webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.mailgun'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'mailgun']), [
         'event-data' => [
             'event' => 'delivered',
             'delivery-status' => [
@@ -90,7 +90,7 @@ it('can receive incoming accept webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.mailgun'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'mailgun']), [
         'signature' => [
             'timestamp' => 1649408311,
             'token' => 'eventtoken',
@@ -146,7 +146,7 @@ it('can receive incoming bounce webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.mailgun'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'mailgun']), [
         'event-data' => [
             'event' => 'failed',
             'severity' => 'permanent',
@@ -206,7 +206,7 @@ it('can receive incoming complaint webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.mailgun'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'mailgun']), [
         'signature' => [
             'timestamp' => 1649408311,
             'token' => 'eventtoken',
@@ -261,7 +261,7 @@ it('can receive incoming open webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.mailgun'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'mailgun']), [
         'signature' => [
             'signature' => 'secrethmacsignature',
             'token' => 'eventtoken',
@@ -322,7 +322,7 @@ it('can receive incoming click webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.mailgun'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'mailgun']), [
         'signature' => [
             'timestamp' => 1649408311,
             'token' => 'eventtoken',
@@ -385,7 +385,7 @@ it('can receive incoming unsubscribe webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.mailgun'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'mailgun']), [
         'signature' => [
             'timestamp' => 1649408311,
             'token' => 'eventtoken',

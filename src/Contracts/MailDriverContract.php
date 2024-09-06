@@ -2,7 +2,6 @@
 
 namespace Vormkracht10\Mails\Contracts;
 
-use Vormkracht10\Mails\Enums\WebhookEventType;
 use Vormkracht10\Mails\Models\Mail;
 
 interface MailDriverContract
@@ -11,19 +10,21 @@ interface MailDriverContract
 
     public function getMailFromPayload(array $payload): ?Mail;
 
-    public function events(): array;
+    public function eventsMapping(): array;
 
-    public function record(Mail $mail, WebhookEventType $type, array $payload, $timestamp): void;
+    public function dataMapping(): array;
 
-    public function logEvent(Mail $mail, WebhookEventType $event, array $payload, $timestamp): void;
+    public function record(Mail $mail, array $payload, $timestamp): void;
 
-    public function click(Mail $mail, array $timestamp): void;
+    public function logEvent(Mail $mail, array $payload, $timestamp): void;
 
-    public function complaint(Mail $mail, array $timestamp): void;
+    public function clicked(Mail $mail, array $timestamp): void;
 
-    public function delivery(Mail $mail, array $timestamp): void;
+    public function complained(Mail $mail, array $timestamp): void;
 
-    public function bounce(Mail $mail, array $timestamp): void;
+    public function delivered(Mail $mail, array $timestamp): void;
 
-    public function open(Mail $mail, array $timestamp): void;
+    public function bounced(Mail $mail, array $timestamp): void;
+
+    public function opened(Mail $mail, array $timestamp): void;
 }

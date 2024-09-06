@@ -29,7 +29,7 @@ class RegisterWebhooks
         $spamComplaintTrigger = new WebhookConfigurationSpamComplaintTrigger((bool) $trackingConfig['complaints'], (bool) $trackingConfig['complaints']);
         $triggers = new WebhookConfigurationTriggers($openTrigger, $clickTrigger, $deliveryTrigger, $bounceTrigger, $spamComplaintTrigger);
 
-        $url = URL::signedRoute('mails.webhooks.postmark');
+        $url = URL::signedRoute('mails.webhook', ['driver' => 'postmark']);
 
         $token = (string) config('services.postmark.token');
         $client = new PostmarkClient($token);

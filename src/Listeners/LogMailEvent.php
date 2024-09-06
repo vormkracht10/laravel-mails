@@ -2,7 +2,7 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
-use Vormkracht10\Mails\Events\WebhookEvent;
+use Vormkracht10\Mails\Events\MailEvent;
 use Vormkracht10\Mails\Facades\MailProvider;
 
 class LogMailEvent
@@ -10,7 +10,7 @@ class LogMailEvent
     /**
      * Handle the event.
      */
-    public function handle(WebhookEvent $event): void
+    public function handle(MailEvent $event): void
     {
         $mail = $event->mail();
 

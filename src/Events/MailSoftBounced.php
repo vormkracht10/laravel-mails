@@ -7,7 +7,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Vormkracht10\Mails\Models\MailEvent;
 
-class MailBounced
+class MailSoftBounced
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

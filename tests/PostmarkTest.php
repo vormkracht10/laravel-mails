@@ -23,7 +23,7 @@ it('can receive incoming delivery webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.postmark'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -55,7 +55,7 @@ it('can receive incoming bounce webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.postmark'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -98,7 +98,7 @@ it('can receive incoming complaint webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.postmark'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -141,7 +141,7 @@ it('can receive incoming open webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.postmark'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -195,7 +195,7 @@ it('can receive incoming click webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhooks.postmark'), [
+    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
