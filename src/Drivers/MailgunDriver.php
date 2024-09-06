@@ -54,15 +54,14 @@ class MailgunDriver extends MailDriver implements MailDriverContract
     public function dataMapping(): array
     {
         return [
-            'ip_address' => 'Geo.IP',
-            'platform' => 'Platform',
-            'os' => 'OS.Family',
-            'browser' => 'Client.Family',
-            'user_agent' => 'UserAgent',
-            'city' => 'City',
-            'country_code' => 'Geo.CountryISOCode',
-            'link' => 'OriginalLink',
-            'tag' => 'Tag',
+            'ip_address' => 'ip',
+            'platform' => 'client-info.device-type',
+            'os' => 'client-info.client-os',
+            'browser' => 'client-info.client-name',
+            'user_agent' => 'client-info.user-agent',
+            'country_code' => 'geolocation.region',
+            'link' => 'event-data.url',
+            'tag' => 'tags',
         ];
     }
 }

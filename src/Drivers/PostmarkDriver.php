@@ -2,6 +2,14 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
+use Illuminate\Support\Facades\URL;
+use Postmark\Models\Webhooks\WebhookConfigurationBounceTrigger;
+use Postmark\Models\Webhooks\WebhookConfigurationClickTrigger;
+use Postmark\Models\Webhooks\WebhookConfigurationDeliveryTrigger;
+use Postmark\Models\Webhooks\WebhookConfigurationOpenTrigger;
+use Postmark\Models\Webhooks\WebhookConfigurationSpamComplaintTrigger;
+use Postmark\Models\Webhooks\WebhookConfigurationTriggers;
+use Postmark\PostmarkClient;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
 

@@ -41,7 +41,7 @@ it('can receive incoming delivery webhook from mailgun', function () {
             ],
             'user-variables' => [
                 'url' => [
-                    'link' => 'https://www.omnivery.com',
+                    'link' => 'https://example.com',
                     'title' => 'Omnivery',
                 ],
                 'fname' => 'John',
@@ -409,7 +409,7 @@ it('can receive incoming click webhook from mailgun', function () {
                 'region' => 'ES',
                 'city' => 'Puerto de la Omnivery',
             ],
-            'url' => 'https://www.omnivery.com',
+            'url' => 'https://example.com',
             'client-info' => [
                 'client-name' => 'Chrome',
                 'client-type' => 'browser',

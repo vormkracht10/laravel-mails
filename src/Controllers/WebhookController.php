@@ -16,7 +16,7 @@ class WebhookController
             return response('Unknown provider.', status: 400);
         }
 
-        if (MailProvider::with($driver)->verifyWebhookSignature($request->all())) {
+        if (! MailProvider::with($driver)->verifyWebhookSignature($request->all())) {
             return response('Invalid signature.', status: 400);
         }
 
