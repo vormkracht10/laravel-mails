@@ -12,6 +12,21 @@ use Vormkracht10\Mails\Events\MailEventLogged;
 
 /**
  * @property Mail $mail
+ * @property string $type
+ * @property string $ip_address
+ * @property string $hostname
+ * @property string $platform
+ * @property string $os
+ * @property string $browser
+ * @property string $user_agent
+ * @property string $city
+ * @property string $country_code
+ * @property string $link
+ * @property string $tag
+ * @property object $payload
+ * @property Carbon $occurred_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
  */
 class MailEvent extends Model
 {
@@ -74,6 +89,6 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail'.$this->past_tense_name;
+        return 'Vormkracht10\Mails\Events\Mail' . $this->past_tense_name;
     }
 }
