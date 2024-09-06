@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Vormkracht10\Mails\Database\Factories\MailAttachmentFactory;
 
+/**
+ * @property-read string $disk
+ * @property-read string $uuid
+ * @property-read string $filename
+ * @property-read string $mime
+ * @property-read boolean $inline
+ * @property-read integer $size
+ * @property-read Mail $mail
+
+ */
 class MailAttachment extends Model
 {
     use HasFactory;
