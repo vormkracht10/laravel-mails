@@ -15,6 +15,7 @@ use Vormkracht10\Mails\Database\Factories\MailFactory;
  * @property-read string $uuid
  * @property-read string $mail_class
  * @property-read string $subject
+ * @property-read string $html
  * @property-read ?string $content
  * @property-read array $from
  * @property-read array $reply_to
