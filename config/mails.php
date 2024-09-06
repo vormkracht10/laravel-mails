@@ -108,7 +108,11 @@ return [
     ],
 
     'events' => [
-        'bounce' => [
+        'soft_bounce' => [
+            'notify' => ['mail'],
+        ],
+
+        'hard_bounce' => [
             'notify' => ['mail'],
         ],
 

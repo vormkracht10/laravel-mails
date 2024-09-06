@@ -6,6 +6,8 @@ use Vormkracht10\Mails\Models\Mail;
 
 interface MailDriverContract
 {
+    public function registerWebhooks($components): void;
+
     public function getUuidFromPayload(array $payload): ?string;
 
     public function getMailFromPayload(array $payload): ?Mail;

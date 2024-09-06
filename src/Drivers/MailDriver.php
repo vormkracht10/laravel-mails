@@ -39,7 +39,7 @@ class MailDriver
 
     public function getEventFromPayload(array $payload)
     {
-        foreach ($this->eventsMapping() as $event => $mapping) {
+        foreach ($this->eventMapping() as $event => $mapping) {
             if (collect($mapping)->every(fn ($value, $key) => data_get($payload, $key) === $value)) {
                 return $event;
             }
@@ -58,7 +58,7 @@ class MailDriver
             }
 
             // log mail event
-            $mail->events()->create($this->getDataMapping($payload));
+            $mail->events()->create($this->getDataFromPayload($payload));
 
             // update mail record with timestamp
             $this->{$method}($mail, $this->getTimestampFromPayload($payload));

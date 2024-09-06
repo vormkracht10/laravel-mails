@@ -7,11 +7,13 @@ use Vormkracht10\Mails\Enums\EventType;
 
 class MailgunDriver extends MailDriver implements MailDriverContract
 {
+    public function registerWebhooks($components): void {}
+
     public function getUuidFromPayload(array $payload): ?string
     {
-        return $payload['Metadata'][$this->uuidHeaderName] ??
-            $payload['Metadata'][strtolower($this->uuidHeaderName)] ??
-            $payload['Metadata'][strtoupper($this->uuidHeaderName)] ??
+        return $payload['event-data']['message']['headers'][$this->uuidHeaderName] ??
+            $payload['event-data']['message']['headers'][strtolower($this->uuidHeaderName)] ??
+            $payload['event-data']['message']['headers'][strtoupper($this->uuidHeaderName)] ??
             null;
     }
 
@@ -23,14 +25,14 @@ class MailgunDriver extends MailDriver implements MailDriverContract
     public function eventMapping(): array
     {
         return [
-            EventType::ACCEPTED => ['event-data.event' => 'accepted'],
-            EventType::CLICKED => ['event-data.event' => 'clicked'],
-            EventType::COMPLAINED => ['event-data.event' => 'complained'],
-            EventType::DELIVERED => ['event-data.event' => 'delivered'],
-            EventType::SOFT_BOUNCED => ['event-data.event' => 'failed', 'severity' => 'temporary'],
-            EventType::HARD_BOUNCED => ['event-data.event' => 'failed', 'severity' => 'permanent'],
-            EventType::OPENED => ['event-data.event' => 'opened'],
-            EventType::UNSUBSCRIBED => ['event-data.event' => 'unsubscribed'],
+            EventType::ACCEPTED->value => ['event-data.event' => 'accepted'],
+            EventType::CLICKED->value => ['event-data.event' => 'clicked'],
+            EventType::COMPLAINED->value => ['event-data.event' => 'complained'],
+            EventType::DELIVERED->value => ['event-data.event' => 'delivered'],
+            EventType::SOFT_BOUNCED->value => ['event-data.event' => 'failed', 'severity' => 'temporary'],
+            EventType::HARD_BOUNCED->value => ['event-data.event' => 'failed', 'severity' => 'permanent'],
+            EventType::OPENED->value => ['event-data.event' => 'opened'],
+            EventType::UNSUBSCRIBED->value => ['event-data.event' => 'unsubscribed'],
         ];
     }
 

@@ -7,6 +7,47 @@ use Vormkracht10\Mails\Enums\EventType;
 
 class PostmarkDriver extends MailDriver implements MailDriverContract
 {
+    public function registerWebhooks($components): void
+    {
+        $trackingConfig = (array) config('mails.logging.tracking');
+
+        $openTrigger = new WebhookConfigurationOpenTrigger((bool) $trackingConfig['opens'], false);
+        $clickTrigger = new WebhookConfigurationClickTrigger((bool) $trackingConfig['clicks']);
+        $deliveryTrigger = new WebhookConfigurationDeliveryTrigger((bool) $trackingConfig['deliveries']);
+        $bounceTrigger = new WebhookConfigurationBounceTrigger((bool) $trackingConfig['bounces'], (bool) $trackingConfig['bounces']);
+        $spamComplaintTrigger = new WebhookConfigurationSpamComplaintTrigger((bool) $trackingConfig['complaints'], (bool) $trackingConfig['complaints']);
+        $triggers = new WebhookConfigurationTriggers($openTrigger, $clickTrigger, $deliveryTrigger, $bounceTrigger, $spamComplaintTrigger);
+
+        $url = URL::signedRoute('mails.webhook', ['provider' => 'postmark']);
+
+        $token = (string) config('services.postmark.token');
+        $client = new PostmarkClient($token);
+
+        $broadcastStream = collect($client->listMessageStreams()['messagestreams'] ?? []);
+
+        if ($broadcastStream->where('ID', 'broadcast')->count() === 0) {
+            $client->createMessageStream('broadcast', 'Broadcasts', 'Default Broadcast Stream');
+        } else {
+            $components->info('Broadcast stream already exists');
+        }
+
+        $outboundWebhooks = collect($client->getWebhookConfigurations('outbound')['webhooks'] ?? []);
+
+        if ($outboundWebhooks->where('url', $url)->count() === 0) {
+            $client->createWebhookConfiguration($url, null, null, null, $triggers);
+        } else {
+            $components->info('Outbound webhook already exists');
+        }
+
+        $broadcastWebhooks = collect($client->getWebhookConfigurations('broadcast')['webhooks'] ?? []);
+
+        if ($broadcastWebhooks->where('url', $url)->count() === 0) {
+            $client->createWebhookConfiguration($url, 'broadcast', null, null, $triggers);
+        } else {
+            $components->info('Broadcast webhook already exists');
+        }
+    }
+
     public function getUuidFromPayload(array $payload): ?string
     {
         return $payload['Metadata'][$this->uuidHeaderName] ??
@@ -23,11 +64,12 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
     public function eventMapping(): array
     {
         return [
-            EventType::CLICKED => ['RecordType' => 'Click'],
-            EventType::COMPLAINED => ['RecordType' => 'Complaint'],
-            EventType::DELIVERED => ['RecordType' => 'Delivery'],
-            EventType::HARD_BOUNCED => ['RecordType' => 'Bounce'],
-            EventType::OPENED => ['RecordType' => 'Open'],
+            EventType::CLICKED->value => ['RecordType' => 'Click'],
+            EventType::COMPLAINED->value => ['RecordType' => 'Complaint'],
+            EventType::DELIVERED->value => ['RecordType' => 'Delivery'],
+            EventType::HARD_BOUNCED->value => ['Type' => 'Bounce', 'RecordType' => 'HardBounce'],
+            EventType::OPENED->value => ['RecordType' => 'Open'],
+            EventType::SOFT_BOUNCED->value => ['RecordType' => 'Bounce', 'Type' => 'SoftBounce'],
         ];
     }
 

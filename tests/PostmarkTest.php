@@ -3,6 +3,7 @@
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
+use Vormkracht10\Mails\Enums\EventType;
 use Vormkracht10\Mails\Models\Mail as MailModel;
 use Vormkracht10\Mails\Models\MailEvent;
 
@@ -22,7 +23,7 @@ it('can receive incoming delivery webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -37,11 +38,11 @@ it('can receive incoming delivery webhook from postmark', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::DELIVERY->value,
+        'type' => EventType::DELIVERED->value,
     ]);
 });
 
-it('can receive incoming bounce webhook from postmark', function () {
+it('can receive incoming hard bounce webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
         $message->to('mark@vormkracht10.nl')
             ->from('local@computer.nl')
@@ -54,7 +55,7 @@ it('can receive incoming bounce webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -80,7 +81,7 @@ it('can receive incoming bounce webhook from postmark', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::BOUNCE->value,
+        'type' => EventType::HARD_BOUNCED->value,
     ]);
 });
 
@@ -97,7 +98,7 @@ it('can receive incoming complaint webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -123,7 +124,7 @@ it('can receive incoming complaint webhook from postmark', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::COMPLAINT->value,
+        'type' => EventType::COMPLAINED->value,
     ]);
 });
 
@@ -140,7 +141,7 @@ it('can receive incoming open webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -177,7 +178,7 @@ it('can receive incoming open webhook from postmark', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::OPEN->value,
+        'type' => EventType::OPENED->value,
     ]);
 });
 
@@ -194,7 +195,7 @@ it('can receive incoming click webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['driver' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
@@ -231,7 +232,7 @@ it('can receive incoming click webhook from postmark', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => Mapping::CLICK->value,
+        'type' => EventType::CLICKED->value,
         'link' => 'https://example.com',
     ]);
 });

@@ -18,7 +18,7 @@ it('will send notification on bounce', function () {
 
     Mail::factory()
         ->hasEvents(1, [
-            'type' => 'bounce',
+            'type' => 'hard_bounced',
         ])
         ->create();
 

@@ -12,7 +12,7 @@ class MailEventFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => 'delivery',
+            'type' => 'delivered',
             'payload' => [],
         ];
     }
@@ -21,7 +21,7 @@ class MailEventFactory extends Factory
     {
         return $this->state(function () {
             return [
-                'type' => 'bounce',
+                'type' => 'hard_bounce',
             ];
         });
     }
