@@ -29,6 +29,7 @@ use Vormkracht10\Mails\Database\Factories\MailFactory;
  * @property ?Carbon $last_clicked_at
  * @property ?Carbon $complained_at
  * @property ?Carbon $soft_bounced_at
+ * @property ?Carbon $resent_at
  * @property ?Carbon $hard_bounced_at
  * @property ?Carbon $created_at
  * @property ?Carbon $updated_at
