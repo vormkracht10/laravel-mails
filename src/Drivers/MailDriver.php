@@ -37,13 +37,15 @@ class MailDriver
             ->toArray();
     }
 
-    public function getEventFromPayload(array $payload)
+    public function getEventFromPayload(array $payload): string
     {
         foreach ($this->eventMapping() as $event => $mapping) {
             if (collect($mapping)->every(fn ($value, $key) => data_get($payload, $key) === $value)) {
                 return $event;
             }
         }
+
+        return '';
     }
 
     public function logMailEvent($payload): void
