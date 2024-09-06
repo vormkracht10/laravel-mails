@@ -8,6 +8,8 @@ interface MailDriverContract
 {
     public function registerWebhooks($components): void;
 
+    public function verifyWebhookSignature(array $payload): bool;
+
     public function getUuidFromPayload(array $payload): ?string;
 
     public function getMailFromPayload(array $payload): ?Mail;

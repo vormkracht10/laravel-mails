@@ -48,6 +48,11 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
         }
     }
 
+    public function verifyWebhookSignature(array $payload): bool
+    {
+        return true;
+    }
+
     public function getUuidFromPayload(array $payload): ?string
     {
         return $payload['Metadata'][$this->uuidHeaderName] ??
@@ -65,9 +70,9 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
     {
         return [
             EventType::CLICKED->value => ['RecordType' => 'Click'],
-            EventType::COMPLAINED->value => ['RecordType' => 'Complaint'],
+            EventType::COMPLAINED->value => ['RecordType' => 'SpamComplaint'],
             EventType::DELIVERED->value => ['RecordType' => 'Delivery'],
-            EventType::HARD_BOUNCED->value => ['Type' => 'Bounce', 'RecordType' => 'HardBounce'],
+            EventType::HARD_BOUNCED->value => ['RecordType' => 'Bounce', 'Type' => 'HardBounce'],
             EventType::OPENED->value => ['RecordType' => 'Open'],
             EventType::SOFT_BOUNCED->value => ['RecordType' => 'Bounce', 'Type' => 'SoftBounce'],
         ];

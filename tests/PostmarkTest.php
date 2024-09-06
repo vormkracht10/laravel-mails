@@ -85,6 +85,49 @@ it('can receive incoming hard bounce webhook from postmark', function () {
     ]);
 });
 
+it('can receive incoming soft bounce webhook from postmark', function () {
+    Mail::send([], [], function (Message $message) {
+        $message->to('mark@vormkracht10.nl')
+            ->from('local@computer.nl')
+            ->cc('cc@vk10.nl')
+            ->bcc('bcc@vk10.nl')
+            ->subject('Test')
+            ->text('Text')
+            ->html('<p>HTML</p>');
+    });
+
+    $mail = MailModel::latest()->first();
+
+    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+        'Metadata' => [
+            config('mails.headers.uuid') => $mail?->uuid,
+        ],
+        'RecordType' => 'Bounce',
+        'ID' => 42,
+        'Type' => 'SoftBounce',
+        'TypeCode' => 1,
+        'Name' => 'Soft bounce',
+        'Tag' => 'Test',
+        'MessageID' => '00000000-0000-0000-0000-000000000000',
+        'ServerID' => 1234,
+        'MessageStream' => 'outbound',
+        'Description' => 'The server was unable to deliver your message (ex => unknown user, mailbox not found).',
+        'Details' => 'Test bounce details',
+        'Email' => 'john@example.com',
+        'From' => 'sender@example.com',
+        'BouncedAt' => '2023-05-21T02:51:39Z',
+        'DumpAvailable' => true,
+        'Inactive' => true,
+        'CanActivate' => true,
+        'Subject' => 'Test subject',
+        'Content' => 'Test content',
+    ])->assertAccepted();
+
+    assertDatabaseHas((new MailEvent)->getTable(), [
+        'type' => EventType::HARD_BOUNCED->value,
+    ]);
+});
+
 it('can receive incoming complaint webhook from postmark', function () {
     Mail::send([], [], function (Message $message) {
         $message->to('mark@vormkracht10.nl')

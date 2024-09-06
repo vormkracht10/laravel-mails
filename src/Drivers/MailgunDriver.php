@@ -9,6 +9,21 @@ class MailgunDriver extends MailDriver implements MailDriverContract
 {
     public function registerWebhooks($components): void {}
 
+    public function verifyWebhookSignature(array $payload): bool
+    {
+        if (empty($payload['signature']['timestamp']) || empty($payload['signature']['token']) || empty($payload['signature']['signature'])) {
+            return false;
+        }
+
+        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'].$payload['signature']['token'], config('services.mailgun.api_key'));
+
+        if (function_exists('hash_equals')) {
+            return hash_equals($hmac, $payload['signature']['signature']);
+        }
+
+        return $hmac === $payload['signature']['signature'];
+    }
+
     public function getUuidFromPayload(array $payload): ?string
     {
         return $payload['event-data']['message']['headers'][$this->uuidHeaderName] ??
