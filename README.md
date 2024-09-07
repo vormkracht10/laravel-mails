@@ -7,7 +7,13 @@
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/vormkracht10/laravel-mails)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
 
+## Nice to meet you, we're [Vormkracht10](https://vormkracht10.nl)
+
 Hi! We're [Vormkracht10](https://vormkracht10.nl) a Dutch web development agency from Nijmegen in the Netherlands and we use Laravel for everything: advanced websites with a lot of bells and whitles and big web applications.
+
+## Why this package
+
+Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark or Mailgun email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
 
 Using Laravel we create packages to scratch a lot of our own itches, as we get to certain challenges working for our clients and on our projects. One of our problems in our 13 years of web development experience is customers that contact us about emails not getting delivered.
 
@@ -26,13 +32,9 @@ Laravel Mails can collect everything you might want to track about the mails tha
 -   Resend logged emails to another recipient
 -   View all sent emails in the browser using complementary package [Filament Mails](https://github.com/vormkracht10/filament-mails)
 
-## Features to come
+## Upcoming features
 
 We're currently in the process of writing mail events support for other popular email service providers like Resend, SendGrid, Amazon SES and Mailtrap.
-
-## Why this package
-
-Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark or Mailgun email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
 
 ## Looking for a UI? We've got your back: [Filament Mails](https://github.com/vormkracht10/filament-mails)
 
