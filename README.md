@@ -7,6 +7,10 @@
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/vormkracht10/laravel-mails)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
 
+Hi! We're [Vormkracht10](https://vormkracht10.nl) a Dutch web development agency in Nijmegen in the Netherlands and we use Laravel for everything: advanced websites with a lot of bells and whitles and big web applications.
+
+Using Laravel we create packages to scratch a lot of our own itches, as we get to certain challenges working for our clients and on our projects. One of our problems in our 13 years of web development experience is customers that contact us about emails not getting delivered. Sometimes this happens to a bug in code, but often times it's because of things going wrong you can't imagine before hand. If it can fail, it will fail. Using Murphy's law in full extend! And email is one of these types where this happens more than you like. As we got tired of the situation that a customer needs to call us, we want to know before the customer can notice it and contact us. Therefore we created this package: to log all events happening with our sent emails and to get automatically notified using Discord (or Slack, Telegram) when there are problems on the horizon.
+
 Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app. Common use cases are provided in this package:
 
 -   Log all sent emails, attachments and events with only specific attributes
@@ -28,7 +32,9 @@ Email as a protocol is very error prone. Succesfull email delivery is not guaran
 
 ## Looking for a UI? We've got your back: [Filament Mails](https://github.com/vormkracht10/filament-mails)
 
-We created a Laravel Filament plugin called [Filament Mails](https://github.com/vormkracht10/filament-mails) to easily view all data collected by this Laravel Mails package. It can show all information about the emails and events in a beautiful UI:
+We created a Laravel [Filament](https://filamentphp.com) plugin called [Filament Mails](https://github.com/vormkracht10/filament-mails) to easily view all data collected by this Laravel Mails package.
+
+It can show all information about the emails and events in a beautiful UI:
 
 ![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mails-list.png)
 
@@ -211,6 +217,26 @@ return [
 ```
 
 ## Usage
+
+### Logging
+
+When you send emails within Laravel using the `Mail` Facade or using a `Mailable`, Laravel Mails will log the email sending and all events that are incoming from your email service provider.
+
+### How to relate emails to Eloquent models
+
+...
+
+### Resend a logged email
+
+...
+
+### Get notified of important events such as bounces, high bounce rate or spam complaints
+
+...
+
+### Prune logged emails
+
+...
 
 ## Events
 
