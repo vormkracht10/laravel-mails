@@ -9,34 +9,65 @@
 
 Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app. Common use cases are provided in this package:
 
--   Log all sent emails with only specific attributes
--   View all sent emails in the browser using the viewer
--   Collect feedback about the delivery from email providers using webhooks
--   Relate sent emails to Eloquent models
--   Get automatically notified when email bounces
--   Prune logging of emails periodically
--   Resend logged email to another recipient
+-   Log all sent emails, attachments and events with only specific attributes
+-   Works currently for popular email service providers Postmark and Mailgun
+-   Collect feedback about the delivery status from email providers using webhooks
+-   You can relate emails being send in Laravel directly to Eloquent models, for example the order confirmation email attached to an Order model
+-   Get quickly and automatically notified when email hard/soft bounces or the bouncerate goes too high
+-   Prune all logged emails periodically to keep the database nice and slim
+-   Resend logged emails to another recipient
+-   View all sent emails in the browser using [Filament Mails](https://github.com/vormkracht10/filament-mails)
+
+## Features to come
+
+We're currently in the process of writing mail events support for other popular email service providers like Resend, SendGrid, Amazon SES and Mailtrap.
 
 ## Why this package
 
-Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark, Mailgun or Resend email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
+Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark or Mailgun email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
+
+## Need a UI? Install Filament Mails to view all mails and events using [Filament](https://filamentphp.com)
+
+We created a Laravel Filament plugin called [Filament Mails](https://github.com/vormkracht10/filament-mails) to easily view all data collected by this Laravel Mails package. It can show all information about the emails and events in a beautiful UI:
+
+![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mails-list.png)
 
 ## Installation
 
-You can install the package via composer:
+First install the package via composer:
 
 ```bash
 composer require vormkracht10/laravel-mails
 ```
 
-You can publish and run the migrations with:
+Then you can publish and run the migrations with:
 
 ```bash
 php artisan vendor:publish --tag="mails-migrations"
 php artisan migrate
 ```
 
-You can publish the config file with:
+Add the API key of your email service provider to the `config/services.php` file in your Laravel project, currently we support Postmark and Mailgun:
+
+```
+[
+    'mailgun' => [
+        'token' => '...',
+    ],
+
+    'postmark' => [
+        'token' => '...',
+    ]
+]
+```
+
+When done, run this command with the slug of your service provider:
+
+```bash
+php artisan mails:webhooks [service] // where [service] is your provider, e.g. postmark or mailgun
+```
+
+And for changing the configuration you can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag="mails-config"
@@ -46,20 +77,157 @@ This is the contents of the published config file:
 
 ```php
 return [
+    // Eloquent model to use for sent emails
+
+    'models' => [
+        'mail' => Mail::class,
+        'event' => MailEvent::class,
+        'attachment' => MailAttachment::class,
+    ],
+
+    // Table names for saving sent emails and polymorphic relations to database
+
+    'database' => [
+        'tables' => [
+            'mails' => 'mails',
+            'attachments' => 'mail_attachments',
+            'events' => 'mail_events',
+            'polymorph' => 'mailables',
+        ],
+
+        'pruning' => [
+            'enabled' => true,
+            'after' => 30, // days
+        ],
+    ],
+
+    'headers' => [
+        'uuid' => 'X-Mails-UUID',
+
+        'associate' => 'X-Mails-Associated-Models',
+    ],
+
+    'webhooks' => [
+        'routes' => [
+            'prefix' => 'webhooks/mails',
+        ],
+
+        'queue' => env('MAILS_QUEUE_WEBHOOKS', false),
+    ],
+
+    // Logging mails
+    'logging' => [
+
+        // Enable logging of all sent mails to database
+
+        'enabled' => env('MAILS_LOGGING_ENABLED', true),
+
+        // Specify attributes to log in database
+
+        'attributes' => [
+            'subject',
+            'from',
+            'to',
+            'reply_to',
+            'cc',
+            'bcc',
+            'html',
+            'text',
+        ],
+
+        // Encrypt all attributes saved to database
+
+        'encrypted' => env('MAILS_ENCRYPTED', true),
+
+        // Track following events using webhooks from email provider
+
+        'tracking' => [
+            'bounces' => true,
+            'clicks' => true,
+            'complaints' => true,
+            'deliveries' => true,
+            'opens' => true,
+        ],
+
+        // Enable saving mail attachments to disk
+
+        'attachments' => [
+            'enabled' => env('MAILS_LOGGING_ATTACHMENTS_ENABLED', true),
+            'disk' => env('FILESYSTEM_DISK', 'local'),
+            'root' => 'mails/attachments',
+        ],
+    ],
+
+    // Notifications for important mail events
+
+    'notifications' => [
+        'mail' => [
+            'to' => ['test@example.com'],
+        ],
+
+        'discord' => [
+            // 'to' => ['1234567890'],
+        ],
+
+        'slack' => [
+            // 'to' => ['https://hooks.slack.com/services/...'],
+        ],
+
+        'telegram' => [
+            // 'to' => ['1234567890'],
+        ],
+    ],
+
+    'events' => [
+        'soft_bounced' => [
+            'notify' => ['mail'],
+        ],
+
+        'hard_bounced' => [
+            'notify' => ['mail'],
+        ],
+
+        'bouncerate' => [
+            'notify' => [],
+
+            'retain' => 30, // days
+
+            'treshold' => 1, // %
+        ],
+
+        'deliveryrate' => [
+            'treshold' => 99,
+        ],
+
+        'complained' => [
+            //
+        ],
+
+        'unsent' => [
+            //
+        ],
+    ],
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="mails-views"
 ```
 
 ## Usage
 
+## Events
+
+Depending on the mail provider, we send these events comming in from the webhooks of the email service provider.
+
 ```php
-$laravelMails = new Vormkracht10\Mails();
-echo $laravelMails->echoPhrase('Hello, Vormkracht10!');
+\Vormkracht10\Mails\Events\MailAccepted::class,
+\Vormkracht10\Mails\Events\MailClicked::class,
+\Vormkracht10\Mails\Events\MailComplained::class,
+\Vormkracht10\Mails\Events\MailDelivered::class,
+\Vormkracht10\Mails\Events\MailEvent::class,
+\Vormkracht10\Mails\Events\MailEventLogged::class,
+\Vormkracht10\Mails\Events\MailHardBounced::class,
+\Vormkracht10\Mails\Events\MailOpened::class,
+\Vormkracht10\Mails\Events\MailResent::class,
+\Vormkracht10\Mails\Events\MailSoftBounced::class,
+\Vormkracht10\Mails\Events\MailUnsubscribed::class,
 ```
 
 ## Testing
