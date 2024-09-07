@@ -10,9 +10,6 @@ class NotifyOnSpamComplaint
 {
     use SendsNotifications;
 
-    /**
-     * Handle the event.
-     */
     public function handle(MailComplained $event): void
     {
         if (! $channels = config('mails.events.complaint.notify')) {

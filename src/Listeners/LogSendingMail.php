@@ -7,17 +7,6 @@ use Vormkracht10\Mails\Actions\LogMail;
 
 class LogSendingMail
 {
-    /**
-     * Create the event listener.
-     */
-    public function __construct()
-    {
-        // ...
-    }
-
-    /**
-     * Handle the event.
-     */
     public function handle(MessageSending $event): void
     {
         (new LogMail)($event);

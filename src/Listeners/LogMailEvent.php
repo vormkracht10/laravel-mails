@@ -7,9 +7,6 @@ use Vormkracht10\Mails\Facades\MailProvider;
 
 class LogMailEvent
 {
-    /**
-     * Handle the event.
-     */
     public function handle(MailEvent $event): void
     {
         $mail = MailProvider::with($event->provider)->getMailFromPayload($event->payload);
