@@ -11,7 +11,7 @@ Hi! We're [Vormkracht10](https://vormkracht10.nl) a Dutch web development agency
 
 Using Laravel we create packages to scratch a lot of our own itches, as we get to certain challenges working for our clients and on our projects. One of our problems in our 13 years of web development experience is customers that contact us about emails not getting delivered.
 
-Sometimes this happens to a bug in code, but often times it's because of things going wrong you can't imagine before hand. If it can fail, it will fail. Using Murphy's law in full extend! And email is one of these types where this happens more than you like.
+Sometimes this happens because of a bug in code, but often times it's because of things going wrong you can't imagine before hand. If it can fail, it will fail. Using Murphy's law in full extend! And email is one of these types where this happens more than you like.
 
 As we got tired of the situation that a customer needs to call us, we want to know before the customer can notice it and contact us. Therefore we created this package: to log all events happening with our sent emails and to get automatically notified using Discord (or Slack, Telegram) when there are problems on the horizon.
 
@@ -24,7 +24,7 @@ Laravel Mails can collect everything you might want to track about the mails tha
 -   Get quickly and automatically notified when email hard/soft bounces or the bouncerate goes too high
 -   Prune all logged emails periodically to keep the database nice and slim
 -   Resend logged emails to another recipient
--   View all sent emails in the browser using [Filament Mails](https://github.com/vormkracht10/filament-mails)
+-   View all sent emails in the browser using complementary package [Filament Mails](https://github.com/vormkracht10/filament-mails)
 
 ## Features to come
 
