@@ -2,6 +2,8 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
+use Exception;
+use Illuminate\Support\Str;
 use Vormkracht10\Mails\Models\Mail;
 
 class MailDriver
@@ -45,22 +47,23 @@ class MailDriver
             }
         }
 
-        return '';
+        throw new Exception('Unknown event type');
     }
 
     public function logMailEvent($payload): void
     {
         $mail = $this->getMailFromPayload($payload);
 
-        $method = strtolower($this->getEventFromPayload($payload));
+        if (is_null($mail)) {
+            return;
+        }
+
+        $data = $this->getDataFromPayload($payload);
+        $method = Str::camel($data['type']);
 
         if (method_exists($this, $method)) {
-            if (is_null($mail)) {
-                return;
-            }
-
             // log mail event
-            $mail->events()->create($this->getDataFromPayload($payload));
+            $mail->events()->create($data);
 
             // update mail record with timestamp
             $this->{$method}($mail, $this->getTimestampFromPayload($payload));

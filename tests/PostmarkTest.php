@@ -24,17 +24,17 @@ it('can receive incoming delivery webhook from postmark', function () {
     $mail = MailModel::latest()->first();
 
     post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+        'DeliveredAt' => '2023-05-19T22:09:32Z',
+        'Details' => 'Test delivery webhook details',
+        'MessageID' => '00000000-0000-0000-0000-000000000000',
+        'MessageStream' => 'outbound',
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
+        'Recipient' => 'mark@vormkracht10.nl',
         'RecordType' => 'Delivery',
         'ServerID' => 23,
-        'MessageStream' => 'outbound',
-        'MessageID' => '00000000-0000-0000-0000-000000000000',
-        'Recipient' => 'mark@vormkracht10.nl',
         'Tag' => 'welcome-email',
-        'DeliveredAt' => '2023-05-19T22:09:32Z',
-        'Details' => 'Test delivery webhook details',
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
@@ -56,28 +56,28 @@ it('can receive incoming hard bounce webhook from postmark', function () {
     $mail = MailModel::latest()->first();
 
     post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+        'BouncedAt' => '2023-05-21T02:51:39Z',
+        'CanActivate' => true,
+        'Content' => 'Test content',
+        'Description' => 'The server was unable to deliver your message (ex => unknown user, mailbox not found).',
+        'Details' => 'Test bounce details',
+        'DumpAvailable' => true,
+        'Email' => 'john@example.com',
+        'From' => 'sender@example.com',
+        'ID' => 42,
+        'Inactive' => true,
+        'MessageID' => '00000000-0000-0000-0000-000000000000',
+        'MessageStream' => 'outbound',
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
+        'Name' => 'Hard bounce',
         'RecordType' => 'Bounce',
-        'ID' => 42,
+        'ServerID' => 1234,
+        'Subject' => 'Test subject',
+        'Tag' => 'Test',
         'Type' => 'HardBounce',
         'TypeCode' => 1,
-        'Name' => 'Hard bounce',
-        'Tag' => 'Test',
-        'MessageID' => '00000000-0000-0000-0000-000000000000',
-        'ServerID' => 1234,
-        'MessageStream' => 'outbound',
-        'Description' => 'The server was unable to deliver your message (ex => unknown user, mailbox not found).',
-        'Details' => 'Test bounce details',
-        'Email' => 'john@example.com',
-        'From' => 'sender@example.com',
-        'BouncedAt' => '2023-05-21T02:51:39Z',
-        'DumpAvailable' => true,
-        'Inactive' => true,
-        'CanActivate' => true,
-        'Subject' => 'Test subject',
-        'Content' => 'Test content',
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
@@ -99,28 +99,28 @@ it('can receive incoming soft bounce webhook from postmark', function () {
     $mail = MailModel::latest()->first();
 
     post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+        'BouncedAt' => '2023-05-21T02:51:39Z',
+        'CanActivate' => true,
+        'Content' => 'Test content',
+        'Description' => 'The server was unable to deliver your message (ex => unknown user, mailbox not found).',
+        'Details' => 'Test bounce details',
+        'DumpAvailable' => true,
+        'Email' => 'john@example.com',
+        'From' => 'sender@example.com',
+        'ID' => 42,
+        'Inactive' => true,
+        'MessageID' => '00000000-0000-0000-0000-000000000000',
+        'MessageStream' => 'outbound',
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
+        'Name' => 'Soft bounce',
         'RecordType' => 'Bounce',
-        'ID' => 42,
+        'ServerID' => 1234,
+        'Subject' => 'Test subject',
+        'Tag' => 'Test',
         'Type' => 'SoftBounce',
         'TypeCode' => 1,
-        'Name' => 'Soft bounce',
-        'Tag' => 'Test',
-        'MessageID' => '00000000-0000-0000-0000-000000000000',
-        'ServerID' => 1234,
-        'MessageStream' => 'outbound',
-        'Description' => 'The server was unable to deliver your message (ex => unknown user, mailbox not found).',
-        'Details' => 'Test bounce details',
-        'Email' => 'john@example.com',
-        'From' => 'sender@example.com',
-        'BouncedAt' => '2023-05-21T02:51:39Z',
-        'DumpAvailable' => true,
-        'Inactive' => true,
-        'CanActivate' => true,
-        'Subject' => 'Test subject',
-        'Content' => 'Test content',
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
@@ -142,28 +142,28 @@ it('can receive incoming complaint webhook from postmark', function () {
     $mail = MailModel::latest()->first();
 
     post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+        'BouncedAt' => '2023-05-21T02:51:39Z',
+        'CanActivate' => false,
+        'Content' => 'Test content',
+        'Description' => 'The subscriber explicitly marked this message as spam.',
+        'Details' => 'Test spam complaint details',
+        'DumpAvailable' => true,
+        'Email' => 'john@example.com',
+        'From' => 'sender@example.com',
+        'ID' => 42,
+        'Inactive' => true,
+        'MessageID' => '00000000-0000-0000-0000-000000000000',
+        'MessageStream' => 'outbound',
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,
         ],
+        'Name' => 'Spam complaint',
         'RecordType' => 'SpamComplaint',
-        'ID' => 42,
+        'ServerID' => 1234,
+        'Subject' => 'Test subject',
+        'Tag' => 'Test',
         'Type' => 'SpamComplaint',
         'TypeCode' => 100001,
-        'Name' => 'Spam complaint',
-        'Tag' => 'Test',
-        'MessageID' => '00000000-0000-0000-0000-000000000000',
-        'ServerID' => 1234,
-        'MessageStream' => 'outbound',
-        'Description' => 'The subscriber explicitly marked this message as spam.',
-        'Details' => 'Test spam complaint details',
-        'Email' => 'john@example.com',
-        'From' => 'sender@example.com',
-        'BouncedAt' => '2023-05-21T02:51:39Z',
-        'DumpAvailable' => true,
-        'Inactive' => true,
-        'CanActivate' => false,
-        'Subject' => 'Test subject',
-        'Content' => 'Test content',
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
@@ -185,15 +185,26 @@ it('can receive incoming open webhook from postmark', function () {
     $mail = MailModel::latest()->first();
 
     post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
-        'Metadata' => [
-            config('mails.headers.uuid') => $mail?->uuid,
-        ],
-        'RecordType' => 'Open',
-        'FirstOpen' => true,
         'Client' => [
-            'Name' => 'Chrome 35.0.1916.153',
             'Company' => 'Google',
             'Family' => 'Chrome',
+            'Name' => 'Chrome 35.0.1916.153',
+        ],
+        'FirstOpen' => true,
+        'Geo' => [
+            'City' => 'Novi Sad',
+            'Coords' => '45.2517,19.8369',
+            'Country' => 'Serbia',
+            'CountryISOCode' => 'RS',
+            'IP' => '188.2.95.4',
+            'Region' => 'Autonomna Pokrajina Vojvodina',
+            'RegionISOCode' => 'VO',
+            'Zip' => '21000',
+        ],
+        'MessageID' => '00000000-0000-0000-0000-000000000000',
+        'MessageStream' => 'outbound',
+        'Metadata' => [
+            config('mails.headers.uuid') => $mail?->uuid,
         ],
         'OS' => [
             'Name' => 'OS X 10.7 Lion',
@@ -201,23 +212,12 @@ it('can receive incoming open webhook from postmark', function () {
             'Family' => 'OS X 10',
         ],
         'Platform' => 'WebMail',
-        'UserAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36',
         'ReadSeconds' => 5,
-        'Geo' => [
-            'CountryISOCode' => 'RS',
-            'Country' => 'Serbia',
-            'RegionISOCode' => 'VO',
-            'Region' => 'Autonomna Pokrajina Vojvodina',
-            'City' => 'Novi Sad',
-            'Zip' => '21000',
-            'Coords' => '45.2517,19.8369',
-            'IP' => '188.2.95.4',
-        ],
-        'MessageID' => '00000000-0000-0000-0000-000000000000',
-        'MessageStream' => 'outbound',
         'ReceivedAt' => '2023-05-21T02:51:39Z',
-        'Tag' => 'welcome-email',
         'Recipient' => 'john@example.com',
+        'RecordType' => 'Open',
+        'Tag' => 'welcome-email',
+        'UserAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36',
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
@@ -239,39 +239,39 @@ it('can receive incoming click webhook from postmark', function () {
     $mail = MailModel::latest()->first();
 
     post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
-        'Metadata' => [
-            config('mails.headers.uuid') => $mail?->uuid,
-        ],
-        'RecordType' => 'Click',
-        'ClickLocation' => 'HTML',
         'Client' => [
-            'Name' => 'Chrome 35.0.1916.153',
             'Company' => 'Google',
             'Family' => 'Chrome',
+            'Name' => 'Chrome 35.0.1916.153',
         ],
-        'OS' => [
-            'Name' => 'OS X 10.7 Lion',
-            'Company' => 'Apple Computer, Inc.',
-            'Family' => 'OS X 10',
-        ],
-        'Platform' => 'Desktop',
-        'UserAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36',
-        'OriginalLink' => 'https://example.com',
+        'ClickLocation' => 'HTML',
         'Geo' => [
-            'CountryISOCode' => 'RS',
-            'Country' => 'Serbia',
-            'RegionISOCode' => 'VO',
-            'Region' => 'Autonomna Pokrajina Vojvodina',
             'City' => 'Novi Sad',
-            'Zip' => '21000',
             'Coords' => '45.2517,19.8369',
+            'Country' => 'Serbia',
+            'CountryISOCode' => 'RS',
             'IP' => '188.2.95.4',
+            'Region' => 'Autonomna Pokrajina Vojvodina',
+            'RegionISOCode' => 'VO',
+            'Zip' => '21000',
         ],
         'MessageID' => '00000000-0000-0000-0000-000000000000',
         'MessageStream' => 'outbound',
+        'Metadata' => [
+            config('mails.headers.uuid') => $mail?->uuid,
+        ],
+        'OriginalLink' => 'https://example.com',
+        'OS' => [
+            'Company' => 'Apple Computer, Inc.',
+            'Family' => 'OS X 10',
+            'Name' => 'OS X 10.7 Lion',
+        ],
+        'Platform' => 'Desktop',
         'ReceivedAt' => '2023-05-21T02:51:39Z',
-        'Tag' => 'welcome-email',
         'Recipient' => 'john@example.com',
+        'RecordType' => 'Click',
+        'Tag' => 'welcome-email',
+        'UserAgent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36',
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [

@@ -89,15 +89,15 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
     public function dataMapping(): array
     {
         return [
-            'ip_address' => 'Geo.IP',
-            'platform' => 'Platform',
-            'os' => 'OS.Family',
             'browser' => 'Client.Family',
-            'user_agent' => 'UserAgent',
             'city' => 'City',
             'country_code' => 'Geo.CountryISOCode',
+            'ip_address' => 'Geo.IP',
             'link' => 'OriginalLink',
+            'os' => 'OS.Family',
+            'platform' => 'Platform',
             'tag' => 'Tag',
+            'user_agent' => 'UserAgent',
         ];
     }
 }
