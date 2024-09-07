@@ -2,9 +2,9 @@
 
 namespace Vormkracht10\Mails\Actions;
 
-use Vormkracht10\Mails\Listeners\Concerns\SendsNotifications;
 use Vormkracht10\Mails\Notifications\HighBounceRateNotification;
 use Vormkracht10\Mails\Shared\AsAction;
+use Vormkracht10\Mails\Traits\SendsNotifications;
 
 class SendHighBounceRateNotifications
 {

@@ -38,7 +38,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
 
     protected function getTimestampFromPayload(array $payload)
     {
-        return $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now();
+        return $payload['event-data']['timestamp'];
     }
 
     public function eventMapping(): array
@@ -48,9 +48,9 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             EventType::CLICKED->value => ['event-data.event' => 'clicked'],
             EventType::COMPLAINED->value => ['event-data.event' => 'complained'],
             EventType::DELIVERED->value => ['event-data.event' => 'delivered'],
-            EventType::SOFT_BOUNCED->value => ['event-data.event' => 'failed', 'severity' => 'temporary'],
-            EventType::HARD_BOUNCED->value => ['event-data.event' => 'failed', 'severity' => 'permanent'],
+            EventType::HARD_BOUNCED->value => ['event-data.event' => 'failed', 'event-data.severity' => 'permanent'],
             EventType::OPENED->value => ['event-data.event' => 'opened'],
+            EventType::SOFT_BOUNCED->value => ['event-data.event' => 'failed', 'event-data.severity' => 'temporary'],
             EventType::UNSUBSCRIBED->value => ['event-data.event' => 'unsubscribed'],
         ];
     }

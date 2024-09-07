@@ -3,8 +3,8 @@
 namespace Vormkracht10\Mails\Listeners;
 
 use Vormkracht10\Mails\Events\MailComplained;
-use Vormkracht10\Mails\Listeners\Concerns\SendsNotifications;
 use Vormkracht10\Mails\Notifications\SpamComplaintNotification;
+use Vormkracht10\Mails\Traits\SendsNotifications;
 
 class NotifyOnSpamComplaint
 {

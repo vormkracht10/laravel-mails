@@ -108,11 +108,11 @@ return [
     ],
 
     'events' => [
-        'soft_bounce' => [
+        'soft_bounced' => [
             'notify' => ['mail'],
         ],
 
-        'hard_bounce' => [
+        'hard_bounced' => [
             'notify' => ['mail'],
         ],
 
@@ -128,7 +128,7 @@ return [
             'treshold' => 99,
         ],
 
-        'complaint' => [
+        'complained' => [
             //
         ],
 

@@ -21,7 +21,7 @@ class MailEventFactory extends Factory
     {
         return $this->state(function () {
             return [
-                'type' => 'hard_bounce',
+                'type' => 'hard_bounced',
             ];
         });
     }

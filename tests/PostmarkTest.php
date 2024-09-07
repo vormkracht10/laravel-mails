@@ -124,7 +124,7 @@ it('can receive incoming soft bounce webhook from postmark', function () {
     ])->assertAccepted();
 
     assertDatabaseHas((new MailEvent)->getTable(), [
-        'type' => EventType::HARD_BOUNCED->value,
+        'type' => EventType::SOFT_BOUNCED->value,
     ]);
 });
 

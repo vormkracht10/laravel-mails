@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Telegram\TelegramMessage;
 use Vormkracht10\Mails\Models\Mail;
-use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
+use Vormkracht10\Mails\Traits\HasDynamicDrivers;
 
 class SpamComplaintNotification extends Notification implements ShouldQueue
 {

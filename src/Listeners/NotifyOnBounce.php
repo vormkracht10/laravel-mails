@@ -3,8 +3,8 @@
 namespace Vormkracht10\Mails\Listeners;
 
 use Vormkracht10\Mails\Events\MailHardBounced;
-use Vormkracht10\Mails\Listeners\Concerns\SendsNotifications;
 use Vormkracht10\Mails\Notifications\BounceNotification;
+use Vormkracht10\Mails\Traits\SendsNotifications;
 
 class NotifyOnBounce
 {
