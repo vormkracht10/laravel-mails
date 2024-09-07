@@ -26,7 +26,7 @@ We're currently in the process of writing mail events support for other popular 
 
 Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark or Mailgun email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
 
-## Need a UI? Install Filament Mails to view all mails and events using [Filament](https://filamentphp.com)
+## Looking for a UI? We've got your back: [Filament Mails](https://github.com/vormkracht10/filament-mails)
 
 We created a Laravel Filament plugin called [Filament Mails](https://github.com/vormkracht10/filament-mails) to easily view all data collected by this Laravel Mails package. It can show all information about the emails and events in a beautiful UI:
 
