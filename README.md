@@ -21,6 +21,8 @@ Sometimes this happens because of a bug in code, but often times it's because of
 
 As we got tired of the situation that a customer needs to call us, we want to know before the customer can notice it and contact us. Therefore we created this package: to log all events happening with our sent emails and to get automatically notified using Discord (or Slack, Telegram) when there are problems on the horizon.
 
+## Features
+
 Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app. Common use cases are provided in this package:
 
 -   Log all sent emails, attachments and events with only specific attributes
