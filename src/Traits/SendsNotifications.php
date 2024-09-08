@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\Notification as Notifications;
 
 trait SendsNotifications
 {
-    /**
-     * @param  Notification  $notification
-     */
     public function send(Notification $notification, array $channels): void
     {
         foreach ($channels as $channel) {
@@ -33,10 +30,6 @@ trait SendsNotifications
 
     /**
      * Prepare the notification for sending.
-     *
-     * @param  Notification  $notification
-     * @param  string  $channel
-     * @return Notification
      */
     protected function prepareNotification(Notification $notification, string $channel): Notification
     {
