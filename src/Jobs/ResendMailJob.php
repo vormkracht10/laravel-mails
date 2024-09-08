@@ -41,10 +41,19 @@ class ResendMailJob implements ShouldQueue
             $from = $this->formatMailAddresses($this->mail->from)[0] ?? '';
             $replyTo = $this->formatMailAddresses($this->mail->reply_to);
 
+            $message->subject($this->mail->subject ?? '');
+
+            if (!empty($from)) {
+                $email = is_array($from) ? key($from) : $from;
+                $name = is_array($from) ? current($from) : null;
+                $message->from($email, $name);
+            }
+
+            foreach ($replyTo as $email => $name) {
+                $message->replyTo($email, $name);
+            }
+
             return $message
-                ->subject($this->mail->subject ?? '')
-                ->from(key($from), current($from))
-                ->replyTo($replyTo)
                 ->to($this->to ?? [])
                 ->cc($this->cc ?? [])
                 ->bcc($this->bcc ?? []);
