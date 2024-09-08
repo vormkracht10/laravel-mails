@@ -2,10 +2,10 @@
 
 namespace Vormkracht10\Mails\Actions;
 
-use Vormkracht10\Mails\Shared\AsAction;
-use Vormkracht10\Mails\Facades\MailProvider;
-use Illuminate\Console\View\Components\Factory;
 use Illuminate\Console\Concerns\InteractsWithIO;
+use Illuminate\Console\View\Components\Factory;
+use Vormkracht10\Mails\Facades\MailProvider;
+use Vormkracht10\Mails\Shared\AsAction;
 
 class RegisterWebhooks
 {
