@@ -38,13 +38,39 @@ class ResendMailJob implements ShouldQueue
                 $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
             }
 
+            $from = $this->formatMailAddresses($this->mail->from)[0] ?? '';
+            $replyTo = $this->formatMailAddresses($this->mail->reply_to);
+
             return $message
                 ->subject($this->mail->subject ?? '')
-                ->from($this->mail->from)
-                ->replyTo($this->mail->reply_to ?? [])
+                ->from(key($from), current($from))
+                ->replyTo($replyTo)
                 ->to($this->to ?? [])
                 ->cc($this->cc ?? [])
                 ->bcc($this->bcc ?? []);
         });
+    }
+
+    /**
+     * @param string|array $addresses
+     * @return array
+     */
+    public function formatMailAddresses($addresses): array
+    {
+        if (!is_array($addresses)) {
+            $addresses = [$addresses];
+        }
+
+        return array_map(function ($address) {
+            $decoded = json_decode($address, true);
+
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                $email = array_key_first($decoded);
+                $name = $decoded[$email];
+                return [$email => $name];
+            }
+
+            return $address;
+        }, $addresses);
     }
 }
