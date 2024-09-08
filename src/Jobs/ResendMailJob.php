@@ -53,12 +53,11 @@ class ResendMailJob implements ShouldQueue
 
     public function formatMailAddresses(string|array $email): array
     {
-        return collect(
-            json_decode(
-                $email,
-                JSON_OBJECT_AS_ARRAY
-            )
-        )
+        if (is_string($email)) {
+            $email = json_decode($email, true) ?? [];
+        }
+
+        return collect($email)
             ->map(fn($name, $email) => ['name' => $name, 'email' => $email])
             ->values()
             ->toArray();
