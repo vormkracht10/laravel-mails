@@ -4,12 +4,11 @@ namespace Vormkracht10\Mails\Traits;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Notification as Notifications;
-use Vormkracht10\Mails\Notifications\Concerns\HasDynamicDrivers;
 
 trait SendsNotifications
 {
     /**
-     * @param  HasDynamicDrivers & Notification  $notification
+     * @param  Notification  $notification
      */
     public function send(Notification $notification, array $channels): void
     {
@@ -21,14 +20,30 @@ trait SendsNotifications
             );
 
             if (empty($accounts)) {
-                return;
+                continue;
             }
 
             foreach ($accounts as $route) {
                 Notifications::route($channel, $route)->notify(
-                    $notification->on($channel),
+                    $this->prepareNotification($notification, $channel)
                 );
             }
         }
+    }
+
+    /**
+     * Prepare the notification for sending.
+     *
+     * @param  Notification  $notification
+     * @param  string  $channel
+     * @return Notification
+     */
+    protected function prepareNotification(Notification $notification, string $channel): Notification
+    {
+        if (method_exists($notification, 'on')) {
+            return $notification->on($channel);
+        }
+
+        return $notification;
     }
 }
