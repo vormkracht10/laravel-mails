@@ -28,15 +28,10 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'sqlite');
-
-        config()->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
+        config([
+            'database.default' => 'testing',
+            'queue.default' => 'sync',
         ]);
-
-        config()->set('queue.default', 'sync');
 
         $migration = require __DIR__.'/../database/migrations/1_create_mails_table.php.stub';
         $migration->up();
