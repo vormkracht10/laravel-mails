@@ -65,7 +65,7 @@ class ResendMailJob implements ShouldQueue
         }
 
         return collect($email)
-            ->map(fn($value, $key) => is_numeric($key) ? ['email' => $value] : ['name' => $value, 'email' => $key])
+            ->map(fn ($value, $key) => is_numeric($key) ? ['email' => $value] : ['name' => $value, 'email' => $key])
             ->values()
             ->toArray();
     }
