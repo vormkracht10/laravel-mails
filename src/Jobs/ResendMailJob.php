@@ -40,7 +40,7 @@ class ResendMailJob implements ShouldQueue
 
             $from = json_decode($this->mail->from);
             $replyTo = json_decode($this->mail->reply_to);
-            
+
             return $message
                 ->subject($this->mail->subject ?? '')
                 ->from(address: $from->address, name: $from->name)
