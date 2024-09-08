@@ -13,7 +13,6 @@ class SendHighBounceRateNotifications
     /**
      * @param  float|int  $rate
      * @param  float|int  $threshold
-     * @return bool
      */
     public function handle($rate, $threshold): bool
     {

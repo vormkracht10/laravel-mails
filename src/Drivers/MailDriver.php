@@ -38,7 +38,7 @@ abstract class MailDriver
     public function getDataFromPayload(array $payload): array
     {
         return collect($this->dataMapping())
-            ->mapWithKeys(fn($value, $key) => [$key => data_get($payload, $value)])
+            ->mapWithKeys(fn ($value, $key) => [$key => data_get($payload, $value)])
             ->filter()
             ->merge([
                 'type' => $this->getEventFromPayload($payload),
@@ -50,7 +50,7 @@ abstract class MailDriver
     public function getEventFromPayload(array $payload): string
     {
         foreach ($this->eventMapping() as $event => $mapping) {
-            if (collect($mapping)->every(fn($value, $key) => data_get($payload, $key) === $value)) {
+            if (collect($mapping)->every(fn ($value, $key) => data_get($payload, $key) === $value)) {
                 return $event;
             }
         }
