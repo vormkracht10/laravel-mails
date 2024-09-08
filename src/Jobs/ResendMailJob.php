@@ -39,7 +39,7 @@ class ResendMailJob implements ShouldQueue
             }
 
             dd($this->mail->from, $this->mail->reply_to);
- 
+
             return $message
                 ->subject($this->mail->subject ?? '')
                 ->from(address: array_key_first($this->mail->from))
