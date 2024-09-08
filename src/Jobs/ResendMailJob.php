@@ -61,12 +61,11 @@ class ResendMailJob implements ShouldQueue
     }
 
     /**
-     * @param string|array $addresses
-     * @return array
+     * @param  string|array  $addresses
      */
     public function formatMailAddresses($addresses): array
     {
-        if (!is_array($addresses)) {
+        if (! is_array($addresses)) {
             $addresses = [$addresses];
         }
 
@@ -76,6 +75,7 @@ class ResendMailJob implements ShouldQueue
             if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
                 $email = array_key_first($decoded);
                 $name = $decoded[$email];
+
                 return [$email => $name];
             }
 
