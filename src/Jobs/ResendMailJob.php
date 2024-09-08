@@ -50,10 +50,8 @@ class ResendMailJob implements ShouldQueue
         });
     }
 
-    private function getFrom(array $from): string
+    private function getFrom(string $from): array
     {
-        // "{"info@vormkracht10.nl": "Vormkracht10"}" // vendor/vormkracht10/laravel-mails/src/Jobs/ResendMailJob.php:41
-
         // Decode the JSON string into an array
         $fromArray = json_decode($from, true);
 
