@@ -58,7 +58,7 @@ class ResendMailJob implements ShouldQueue
         }
 
         return collect($email)
-            ->map(fn($name, $email) => ['name' => $name, 'email' => $email])
+            ->map(fn ($name, $email) => ['name' => $name, 'email' => $email])
             ->values()
             ->toArray();
     }
