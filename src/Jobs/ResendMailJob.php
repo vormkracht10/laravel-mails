@@ -43,7 +43,7 @@ class ResendMailJob implements ShouldQueue
 
             $message->subject($this->mail->subject ?? '');
 
-            if (!empty($from)) {
+            if (! empty($from)) {
                 $email = is_array($from) ? key($from) : $from;
                 $name = is_array($from) ? current($from) : null;
                 $message->from($email, $name);
