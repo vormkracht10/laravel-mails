@@ -24,6 +24,7 @@ class ResendMailJob implements ShouldQueue
         private array $to,
         private array $cc = [],
         private array $bcc = [],
+        private array $replyTo = [],
     ) {
         //
     }
@@ -54,16 +55,16 @@ class ResendMailJob implements ShouldQueue
             ->from($this->getFirstAddress($this->mail->from))
             ->to($this->to);
 
-        if ($this->mail->cc) {
-            $message->cc($this->mail->cc);
+        if ($this->mail->cc || $this->cc) {
+            $message->cc($this->mail->cc ?? $this->cc);
         }
 
-        if ($this->mail->bcc) {
-            $message->bcc($this->mail->bcc);
+        if ($this->mail->bcc || $this->bcc) {
+            $message->bcc($this->mail->bcc ?? $this->bcc);
         }
 
-        if ($this->mail->reply_to) {
-            $message->replyTo($this->getFirstAddress($this->mail->reply_to));
+        if ($this->mail->reply_to || $this->replyTo) {
+            $message->replyTo($this->getFirstAddress($this->mail->reply_to ?? $this->replyTo));
         }
 
         return $this;
