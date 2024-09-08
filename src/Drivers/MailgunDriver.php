@@ -36,7 +36,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             null;
     }
 
-    protected function getTimestampFromPayload(array $payload)
+    protected function getTimestampFromPayload(array $payload): string
     {
         return $payload['event-data']['timestamp'];
     }

@@ -24,7 +24,7 @@ class ResendMailJob implements ShouldQueue
         private array $to,
         private array $cc = [],
         private array $bcc = [],
-        private array $replyTo = [],
+        private array $replyTo = []
     ) {
         //
     }
@@ -43,7 +43,11 @@ class ResendMailJob implements ShouldQueue
             ->text($this->mail->text ?? '');
 
         foreach ($this->mail->attachments as $attachment) {
-            $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
+            $message->attachData(
+                $attachment->file_data ?? $attachment->fileData ?? '',
+                $attachment->file_name ?? $attachment->filename ?? '',
+                ['mime' => $attachment->mime_type ?? $attachment->mime ?? '']
+            );
         }
 
         return $this;
@@ -73,7 +77,6 @@ class ResendMailJob implements ShouldQueue
     private function getFirstAddress(string $jsonAddresses): string
     {
         $addresses = json_decode($jsonAddresses, true);
-
         return array_key_first($addresses);
     }
 }

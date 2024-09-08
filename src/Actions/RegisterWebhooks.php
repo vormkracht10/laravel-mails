@@ -2,9 +2,10 @@
 
 namespace Vormkracht10\Mails\Actions;
 
-use Illuminate\Console\Concerns\InteractsWithIO;
-use Illuminate\Console\View\Components\Factory;
 use Vormkracht10\Mails\Shared\AsAction;
+use Vormkracht10\Mails\Facades\MailProvider;
+use Illuminate\Console\View\Components\Factory;
+use Illuminate\Console\Concerns\InteractsWithIO;
 
 class RegisterWebhooks
 {
@@ -12,6 +13,8 @@ class RegisterWebhooks
 
     public function handle(Factory $components)
     {
-        MailProvider::with('postmark')->registerWebhooks();
+        MailProvider::with('postmark')->registerWebhooks(
+            components: $components
+        );
     }
 }

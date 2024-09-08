@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Support\Str;
 use Vormkracht10\Mails\Models\Mail;
 
-class MailDriver
+abstract class MailDriver
 {
     protected string $mailModel;
 
@@ -21,6 +21,14 @@ class MailDriver
         $this->uuidHeaderName = config('mails.headers.uuid');
     }
 
+    abstract protected function getUuidFromPayload(array $payload): ?string;
+
+    abstract protected function dataMapping(): array;
+
+    abstract protected function getTimestampFromPayload(array $payload): string;
+
+    abstract protected function eventMapping(): array;
+
     public function getMailFromPayload(array $payload): ?Mail
     {
         return $this->mailModel::query()
@@ -30,7 +38,7 @@ class MailDriver
     public function getDataFromPayload(array $payload): array
     {
         return collect($this->dataMapping())
-            ->mapWithKeys(fn ($value, $key) => [$key => data_get($payload, $value)])
+            ->mapWithKeys(fn($value, $key) => [$key => data_get($payload, $value)])
             ->filter()
             ->merge([
                 'type' => $this->getEventFromPayload($payload),
@@ -42,7 +50,7 @@ class MailDriver
     public function getEventFromPayload(array $payload): string
     {
         foreach ($this->eventMapping() as $event => $mapping) {
-            if (collect($mapping)->every(fn ($value, $key) => data_get($payload, $key) === $value)) {
+            if (collect($mapping)->every(fn($value, $key) => data_get($payload, $key) === $value)) {
                 return $event;
             }
         }
