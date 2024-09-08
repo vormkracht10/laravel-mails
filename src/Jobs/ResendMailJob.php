@@ -38,8 +38,10 @@ class ResendMailJob implements ShouldQueue
                 $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
             }
 
-            dd($this->mail->from, $this->mail->reply_to);
- 
+
+
+            dd($this->mail->from, $this->mail->reply_to, $this->getFrom($this->mail->from), $this->getFrom($this->mail->reply_to));
+
             return $message
                 ->subject($this->mail->subject ?? '')
                 ->from(address: array_key_first($this->mail->from))
@@ -48,5 +50,21 @@ class ResendMailJob implements ShouldQueue
                 ->cc($this->cc ?? [])
                 ->bcc($this->bcc ?? []);
         });
+    }
+
+    private function getFrom(array $from): string
+    {
+        // "{"info@vormkracht10.nl": "Vormkracht10"}" // vendor/vormkracht10/laravel-mails/src/Jobs/ResendMailJob.php:41
+
+        // Decode the JSON string into an array
+        $fromArray = json_decode($from, true);
+
+        // Get the first key (email address)
+        $fromEmail = array_key_first($fromArray);
+
+        // Get the value (name) associated with the first key
+        $fromName = $fromArray[$fromEmail] ?? null;
+
+        return [$fromEmail => $fromName];
     }
 }
