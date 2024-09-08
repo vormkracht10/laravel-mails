@@ -87,6 +87,6 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail' . Str::studly($this->type->value);
+        return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
     }
 }
