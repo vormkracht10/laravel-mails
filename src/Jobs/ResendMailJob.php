@@ -58,7 +58,8 @@ class ResendMailJob implements ShouldQueue
                 JSON_OBJECT_AS_ARRAY
             )
         )
-            ->map(fn ($name, $email) => ['name' => $name, 'email' => $email])
-            ->values();
+            ->map(fn($name, $email) => ['name' => $name, 'email' => $email])
+            ->values()
+            ->toArray();
     }
 }
