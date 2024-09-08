@@ -12,7 +12,7 @@ class WebhookController
 {
     public function __invoke(Request $request, string $driver): Response
     {
-        if (!in_array($driver, array_column(Provider::cases(), 'value'))) {
+        if (! in_array($driver, array_column(Provider::cases(), 'value'))) {
             return response('Unknown provider.', status: 400);
         }
 

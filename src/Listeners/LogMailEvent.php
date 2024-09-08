@@ -32,6 +32,6 @@ class LogMailEvent
 
     private function dispatch($provider, $payload): void
     {
-        dispatch(fn() => $this->record($provider, $payload));
+        dispatch(fn () => $this->record($provider, $payload));
     }
 }
