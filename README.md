@@ -230,7 +230,7 @@ return [
 
 When you send emails within Laravel using the `Mail` Facade or using a `Mailable`, Laravel Mails will log the email sending and all events that are incoming from your email service provider.
 
-### How to relate emails to Eloquent models
+### Relate emails to Eloquent models
 
 ...
 
