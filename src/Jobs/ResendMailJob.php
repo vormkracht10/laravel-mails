@@ -72,6 +72,7 @@ class ResendMailJob implements ShouldQueue
     private function getFirstAddress(string $jsonAddresses): string
     {
         $addresses = json_decode($jsonAddresses, true);
+
         return array_key_first($addresses);
     }
 }
