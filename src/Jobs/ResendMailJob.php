@@ -38,48 +38,25 @@ class ResendMailJob implements ShouldQueue
                 $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
             }
 
-            $from = $this->formatMailAddresses($this->mail->from)[0] ?? '';
-            $replyTo = $this->formatMailAddresses($this->mail->reply_to);
-
-            $message->subject($this->mail->subject ?? '');
-
-            if (!empty($from)) {
-                $email = is_array($from) ? key($from) : $from;
-                $name = is_array($from) ? current($from) : null;
-                $message->from($email, $name);
-            }
-
-            foreach ($replyTo as $email => $name) {
-                $message->replyTo($email, $name);
-            }
-
             return $message
+                ->subject($this->mail->subject ?? '')
+                ->from($this->formatMailAddresses($this->mail->from))
+                ->replyTo($this->formatMailAddresses($this->mail->reply_to ?? []))
                 ->to($this->to ?? [])
                 ->cc($this->cc ?? [])
                 ->bcc($this->bcc ?? []);
         });
     }
 
-    /**
-     * @param  string|array  $addresses
-     */
-    public function formatMailAddresses($addresses): array
+    public function formatMailAddresses(string $email): array
     {
-        if (! is_array($addresses)) {
-            $addresses = [$addresses];
-        }
-
-        return array_map(function ($address) {
-            $decoded = json_decode($address, true);
-
-            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                $email = array_key_first($decoded);
-                $name = $decoded[$email];
-
-                return [$email => $name];
-            }
-
-            return $address;
-        }, $addresses);
+        return collect(
+            json_decode(
+                $email,
+                JSON_OBJECT_AS_ARRAY
+            )
+        )
+            ->map(fn($name, $email) => ['name' => $name, 'email' => $email])
+            ->values();
     }
 }
