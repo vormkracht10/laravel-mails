@@ -30,50 +30,48 @@ class ResendMailJob implements ShouldQueue
 
     public function handle(): void
     {
-        Mail::send([], callback: function (Message $message) {
-            $message->html($this->mail->html ?? '')
-                ->text($this->mail->text ?? '');
-
-            foreach ($this->mail->attachments as $attachment) {
-                $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
-            }
-
-            $message = $message
-                ->subject($this->mail->subject ?? '')
-                ->from(address: array_key_first(
-                    $this->getFrom($this->mail->from)
-                ))
-                ->to($this->to ?? []);
-
-            if ($this->mail->cc) {
-                $message->cc($this->mail->cc);
-            }
-
-            if ($this->mail->bcc) {
-                $message->bcc($this->mail->bcc);
-            }
-
-            if ($this->mail->reply_to) {
-                $message->replyTo(address: array_key_first(
-                    $this->getFrom($this->mail->reply_to)
-                ));
-            }
-
-            return $message;
+        Mail::send([], [], function (Message $message) {
+            $this->setMessageContent($message)
+                ->setMessageRecipients($message);
         });
     }
 
-    private function getFrom(string $from): array
+    private function setMessageContent(Message $message): self
     {
-        // Decode the JSON string into an array
-        $fromArray = json_decode($from, true);
+        $message->html($this->mail->html ?? '')
+            ->text($this->mail->text ?? '');
 
-        // Get the first key (email address)
-        $fromEmail = array_key_first($fromArray);
+        foreach ($this->mail->attachments as $attachment) {
+            $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
+        }
 
-        // Get the value (name) associated with the first key
-        $fromName = $fromArray[$fromEmail] ?? null;
+        return $this;
+    }
 
-        return [$fromEmail => $fromName];
+    private function setMessageRecipients(Message $message): self
+    {
+        $message->subject($this->mail->subject ?? '')
+            ->from($this->getFirstAddress($this->mail->from))
+            ->to($this->to);
+
+        if ($this->mail->cc) {
+            $message->cc($this->mail->cc);
+        }
+
+        if ($this->mail->bcc) {
+            $message->bcc($this->mail->bcc);
+        }
+
+        if ($this->mail->reply_to) {
+            $message->replyTo($this->getFirstAddress($this->mail->reply_to));
+        }
+
+        return $this;
+    }
+
+    private function getFirstAddress(string $jsonAddresses): string
+    {
+        $addresses = json_decode($jsonAddresses, true);
+        return array_key_first($addresses);
     }
 }
