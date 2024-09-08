@@ -38,6 +38,8 @@ class ResendMailJob implements ShouldQueue
                 $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
             }
 
+            dd($this->mail->from, $this->formatMailAddresses($this->mail->from), $this->mail->reply_to, $this->formatMailAddresses($this->mail->reply_to));
+
             return $message
                 ->subject($this->mail->subject ?? '')
                 ->from($this->formatMailAddresses($this->mail->from))
@@ -56,7 +58,7 @@ class ResendMailJob implements ShouldQueue
                 JSON_OBJECT_AS_ARRAY
             )
         )
-            ->map(fn ($name, $email) => ['name' => $name, 'email' => $email])
+            ->map(fn($name, $email) => ['name' => $name, 'email' => $email])
             ->values();
     }
 }
