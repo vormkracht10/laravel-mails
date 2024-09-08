@@ -38,12 +38,13 @@ class ResendMailJob implements ShouldQueue
                 $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
             }
 
-            dd($this->mail->from, $this->formatMailAddresses($this->mail->from), $this->mail->reply_to, $this->formatMailAddresses($this->mail->reply_to));
+            $replyTo = $this->formatMailAddresses($this->mail->reply_to ?? []);
+            $from = $this->formatMailAddresses($this->mail->from);
 
             return $message
                 ->subject($this->mail->subject ?? '')
-                ->from($this->formatMailAddresses($this->mail->from))
-                ->replyTo($this->formatMailAddresses($this->mail->reply_to ?? []))
+                ->from(address: $from['email'], name: $from['name'] ?? null)
+                ->replyTo(address: $replyTo['email'], name: $replyTo['name'] ?? null)
                 ->to($this->to ?? [])
                 ->cc($this->cc ?? [])
                 ->bcc($this->bcc ?? []);
