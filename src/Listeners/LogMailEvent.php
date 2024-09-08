@@ -30,8 +30,8 @@ class LogMailEvent
             ->logMailEvent($payload);
     }
 
-    private function dispatch($payload): void
+    private function dispatch($provider, $payload): void
     {
-        dispatch(fn () => $this->record($payload));
+        dispatch(fn() => $this->record($provider, $payload));
     }
 }

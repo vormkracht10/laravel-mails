@@ -69,7 +69,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             null;
     }
 
-    protected function getTimestampFromPayload(array $payload)
+    protected function getTimestampFromPayload(array $payload): string
     {
         return $payload['DeliveredAt'] ?? $payload['BouncedAt'] ?? $payload['ReceivedAt'] ?? now();
     }
