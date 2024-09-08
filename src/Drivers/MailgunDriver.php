@@ -19,7 +19,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             return false;
         }
 
-        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'] . $payload['signature']['token'], config('services.mailgun.api_key'));
+        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'].$payload['signature']['token'], config('services.mailgun.api_key'));
 
         if (function_exists('hash_equals')) {
             return hash_equals($hmac, $payload['signature']['signature']);
