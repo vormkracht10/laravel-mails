@@ -38,8 +38,8 @@ class ResendMailJob implements ShouldQueue
                 $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
             }
 
-            $replyTo = $this->formatMailAddresses($this->mail->reply_to ?? []);
-            $from = $this->formatMailAddresses($this->mail->from);
+            $replyTo = $this->formatMailAddresses($this->mail->reply_to ?? [])[0];
+            $from = $this->formatMailAddresses($this->mail->from)[0];
 
             return $message
                 ->subject($this->mail->subject ?? '')
@@ -51,7 +51,7 @@ class ResendMailJob implements ShouldQueue
         });
     }
 
-    public function formatMailAddresses(string $email): array
+    public function formatMailAddresses(string|array $email): array
     {
         return collect(
             json_decode(
@@ -59,7 +59,7 @@ class ResendMailJob implements ShouldQueue
                 JSON_OBJECT_AS_ARRAY
             )
         )
-            ->map(fn ($name, $email) => ['name' => $name, 'email' => $email])
+            ->map(fn($name, $email) => ['name' => $name, 'email' => $email])
             ->values()
             ->toArray();
     }
