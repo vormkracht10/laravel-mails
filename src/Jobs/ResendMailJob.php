@@ -38,13 +38,20 @@ class ResendMailJob implements ShouldQueue
                 $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
             }
 
-            $replyTo = $this->formatMailAddresses($this->mail->reply_to ?? [])[0];
-            $from = $this->formatMailAddresses($this->mail->from)[0];
+            $replyTo = $this->formatMailAddresses($this->mail->reply_to ?? [])[0] ?? null;
+            $from = $this->formatMailAddresses($this->mail->from)[0] ?? null;
+
+            $message->subject($this->mail->subject ?? '');
+
+            if ($from) {
+                $message->from($from['email'], $from['name'] ?? null);
+            }
+
+            if ($replyTo) {
+                $message->replyTo($replyTo['email'], $replyTo['name'] ?? null);
+            }
 
             return $message
-                ->subject($this->mail->subject ?? '')
-                ->from(address: $from['email'], name: $from['name'] ?? null)
-                ->replyTo(address: $replyTo['email'], name: $replyTo['name'] ?? null)
                 ->to($this->to ?? [])
                 ->cc($this->cc ?? [])
                 ->bcc($this->bcc ?? []);
@@ -58,7 +65,7 @@ class ResendMailJob implements ShouldQueue
         }
 
         return collect($email)
-            ->map(fn($name, $email) => ['name' => $name, 'email' => $email])
+            ->map(fn($value, $key) => is_numeric($key) ? ['email' => $value] : ['name' => $value, 'email' => $key])
             ->values()
             ->toArray();
     }
