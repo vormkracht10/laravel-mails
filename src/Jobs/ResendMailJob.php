@@ -37,7 +37,7 @@ class ResendMailJob implements ShouldQueue
             foreach ($this->mail->attachments as $attachment) {
                 $message->attachData($attachment->fileData, $attachment->filename, ['mime' => $attachment->mime]);
             }
-
+ 
             return $message
                 ->subject($this->mail->subject ?? '')
                 ->from(address: array_key_first($this->mail->from))
