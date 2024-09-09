@@ -81,7 +81,7 @@ abstract class MailDriver
     public function accepted(Mail $mail, string $timestamp): void
     {
         $mail->update([
-            'last_opened_at' => $timestamp,
+            'accepted_at' => $timestamp,
             'opens' => $mail->opens + 1,
         ]);
     }
@@ -133,8 +133,7 @@ abstract class MailDriver
     public function unsubscribed(Mail $mail, string $timestamp): void
     {
         $mail->update([
-            'last_opened_at' => $timestamp,
-            'opens' => $mail->opens + 1,
+            'unsubscribed_at' => $timestamp,
         ]);
     }
 }
