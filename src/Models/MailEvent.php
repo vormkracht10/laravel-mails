@@ -54,6 +54,7 @@ class MailEvent extends Model
         'type' => EventType::class,
         'payload' => 'object',
         'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'occurred_at' => 'datetime',
     ];
 
