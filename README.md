@@ -78,7 +78,7 @@ Add the API key of your email service provider to the `config/services.php` file
 When done, run this command with the slug of your service provider:
 
 ```bash
-php artisan mails:webhooks [service] // where [service] is your provider, e.g. postmark or mailgun
+php artisan mail:webhooks [service] // where [service] is your provider, e.g. postmark or mailgun
 ```
 
 And for changing the configuration you can publish the config file with:
