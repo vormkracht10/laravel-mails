@@ -42,7 +42,7 @@ abstract class MailDriver
             ->filter()
             ->merge([
                 'type' => $this->getEventFromPayload($payload),
-                'timestamp' => $this->getTimestampFromPayload($payload),
+                'occurred_at' => $this->getTimestampFromPayload($payload),
             ])
             ->toArray();
     }
