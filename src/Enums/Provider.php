@@ -2,8 +2,8 @@
 
 namespace Vormkracht10\Mails\Enums;
 
-enum Provider
+enum Provider: string
 {
-    case Postmark;
-    case Mailgun;
+    case POSTMARK = 'postmark';
+    case MAILGUN = 'mailgun';
 }
