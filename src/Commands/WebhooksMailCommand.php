@@ -4,8 +4,9 @@ namespace Vormkracht10\Mails\Commands;
 
 use Illuminate\Console\Command;
 use Vormkracht10\Mails\Actions\RegisterWebhooks;
+use Illuminate\Contracts\Console\PromptsForMissingInput;
 
-class WebhooksMailCommand extends Command
+class WebhooksMailCommand extends Command implements PromptsForMissingInput
 {
     public $signature = 'mail:webhooks {provider}';
 
