@@ -161,4 +161,27 @@ class Mail extends Model
     {
         return $query->whereNull('sent_at');
     }
+
+    public function getStatusAttribute(): string
+    {
+        if ($this->hard_bounced_at) {
+            return __('Hard Bounced');
+        } elseif ($this->soft_bounced_at) {
+            return __('Soft Bounced');
+        } elseif ($this->complained_at) {
+            return __('Complained');
+        } elseif ($this->last_clicked_at) {
+            return __('Clicked');
+        } elseif ($this->last_opened_at) {
+            return __('Opened');
+        } elseif ($this->delivered_at) {
+            return __('Delivered');
+        } elseif ($this->resent_at) {
+            return __('Resent');
+        } elseif ($this->sent_at) {
+            return __('Sent');
+        } else {
+            return __('Unsent');
+        }
+    }
 }
