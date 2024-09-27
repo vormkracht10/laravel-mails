@@ -4,8 +4,8 @@ namespace Vormkracht10\Mails\Shared;
 
 trait AsAction
 {
-    public function __invoke()
+    public function __invoke(...$parameters)
     {
-        return $this->handle(...func_get_args());
+        return $this->handle(...$parameters);
     }
 }
