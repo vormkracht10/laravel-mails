@@ -56,28 +56,21 @@ class ResendMailJob implements ShouldQueue
     private function setMessageRecipients(Message $message): self
     {
         $message->subject($this->mail->subject ?? '')
-            ->from($this->getFirstAddress($this->mail->from))
+            ->from(array_keys($this->mail->from)[0], array_values($this->mail->from)[0])
             ->to($this->to);
 
-        if ($this->mail->cc || $this->cc) {
+        if ($this->mail->cc || count($this->cc) > 0) {
             $message->cc($this->mail->cc ?? $this->cc);
         }
 
-        if ($this->mail->bcc || $this->bcc) {
+        if ($this->mail->bcc || count($this->bcc) > 0) {
             $message->bcc($this->mail->bcc ?? $this->bcc);
         }
 
         if ($this->mail->reply_to || $this->replyTo) {
-            $message->replyTo($this->getFirstAddress($this->mail->reply_to ?? $this->replyTo));
+            $message->replyTo($this->mail->reply_to ?? $this->replyTo);
         }
 
         return $this;
-    }
-
-    private function getFirstAddress(string $jsonAddresses): string
-    {
-        $addresses = json_decode($jsonAddresses, true);
-
-        return array_key_first($addresses);
     }
 }
