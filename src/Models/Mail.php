@@ -114,7 +114,7 @@ class Mail extends Model
 
     public function events(): HasMany
     {
-        return $this->hasMany(config('mails.models.event'));
+        return $this->hasMany(config('mails.models.event'))->orderBy('created_at', 'desc');
     }
 
     public function scopeResent(Builder $query): Builder
