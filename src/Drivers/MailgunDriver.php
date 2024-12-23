@@ -13,7 +13,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
     {
         $trackingConfig = (array) config('mails.logging.tracking');
 
-        $apiKey = config('services.mailgun.api_key');
+        $apiKey = config('services.mailgun.secret');
         $domain = config('services.mailgun.domain');
 
         $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => 'mailgun']);
