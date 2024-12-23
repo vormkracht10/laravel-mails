@@ -70,9 +70,11 @@ Add the API key of your email service provider to the `config/services.php` file
     ],
 
     'mailgun' => [
-        'api_key' => env('MAILGUN_API_KEY'),
-        'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
         'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
+        'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
     ],
 ]
 ```
