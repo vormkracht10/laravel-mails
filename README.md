@@ -66,13 +66,13 @@ Add the API key of your email service provider to the `config/services.php` file
 ```
 [
     'postmark' => [
-        'token' => '...',
+        'token' => env('POSTMARK_TOKEN'),
     ],
 
     'mailgun' => [
-        'api_key' => '...',
-        'webhook_signing_key' => '...',
-        'domain' => 'example.org'
+        'api_key' => env('MAILGUN_API_KEY'),
+        'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
+        'domain' => env('MAILGUN_DOMAIN'),
     ],
 ]
 ```
