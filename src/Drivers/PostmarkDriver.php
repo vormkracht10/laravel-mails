@@ -2,14 +2,8 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
-use Postmark\Models\Webhooks\WebhookConfigurationBounceTrigger;
-use Postmark\Models\Webhooks\WebhookConfigurationClickTrigger;
-use Postmark\Models\Webhooks\WebhookConfigurationDeliveryTrigger;
-use Postmark\Models\Webhooks\WebhookConfigurationOpenTrigger;
-use Postmark\Models\Webhooks\WebhookConfigurationSpamComplaintTrigger;
-use Postmark\Models\Webhooks\WebhookConfigurationTriggers;
-use Postmark\PostmarkClient;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
 
@@ -19,38 +13,82 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
     {
         $trackingConfig = (array) config('mails.logging.tracking');
 
-        $openTrigger = new WebhookConfigurationOpenTrigger((bool) $trackingConfig['opens'], false);
-        $clickTrigger = new WebhookConfigurationClickTrigger((bool) $trackingConfig['clicks']);
-        $deliveryTrigger = new WebhookConfigurationDeliveryTrigger((bool) $trackingConfig['deliveries']);
-        $bounceTrigger = new WebhookConfigurationBounceTrigger((bool) $trackingConfig['bounces'], (bool) $trackingConfig['bounces']);
-        $spamComplaintTrigger = new WebhookConfigurationSpamComplaintTrigger((bool) $trackingConfig['complaints'], (bool) $trackingConfig['complaints']);
-        $triggers = new WebhookConfigurationTriggers($openTrigger, $clickTrigger, $deliveryTrigger, $bounceTrigger, $spamComplaintTrigger);
+        $triggers = [
+            'Open' => [
+                'Enabled' => (bool) $trackingConfig['opens'],
+                'PostFirstOpenOnly' => false,
+            ],
+            'Click' => [
+                'Enabled' => (bool) $trackingConfig['clicks'],
+            ],
+            'Delivery' => [
+                'Enabled' => (bool) $trackingConfig['deliveries'],
+            ],
+            'Bounce' => [
+                'Enabled' => (bool) $trackingConfig['bounces'],
+                'IncludeContent' => (bool) $trackingConfig['bounces'],
+            ],
+            'SpamComplaint' => [
+                'Enabled' => (bool) $trackingConfig['complaints'],
+                'IncludeContent' => (bool) $trackingConfig['complaints'],
+            ],
+            'SubscriptionChange' => [
+                'Enabled' => (bool) $trackingConfig['unsubscribes'],
+            ],
+        ];
 
-        $url = URL::signedRoute('mails.webhook', ['provider' => 'postmark']);
+        $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => 'postmark']);
 
         $token = (string) config('services.postmark.token');
-        $client = new PostmarkClient($token);
 
-        $broadcastStream = collect($client->listMessageStreams()['messagestreams'] ?? []);
+        $headers = [
+            'Accept' => 'application/json',
+            'X-Postmark-Server-Token' => $token,
+        ];
+
+        $broadcastStream = collect(Http::withHeaders($headers)->get('https://api.postmarkapp.com/message-streams')['MessageStreams'] ?? []);
 
         if ($broadcastStream->where('ID', 'broadcast')->count() === 0) {
-            $client->createMessageStream('broadcast', 'Broadcasts', 'Default Broadcast Stream');
+            Http::withHeaders($headers)->post('https://api.postmarkapp.com/message-streams', [
+                'ID' => 'broadcast',
+                'Name' => 'Broadcasts',
+                'Description' => 'Default Broadcast Stream',
+            ]);
         } else {
             $components->info('Broadcast stream already exists');
         }
 
-        $outboundWebhooks = collect($client->getWebhookConfigurations('outbound')['webhooks'] ?? []);
+        $outboundWebhooks = collect(Http::withHeaders($headers)->get('https://api.postmarkapp.com/webhooks?MessageStream=outbound')['Webhooks'] ?? []);
 
-        if ($outboundWebhooks->where('url', $url)->count() === 0) {
-            $client->createWebhookConfiguration($url, null, null, null, $triggers);
+        if ($outboundWebhooks->where('Url', $webhookUrl)->count() === 0) {
+            $response = Http::withHeaders($headers)->post('https://api.postmarkapp.com/webhooks?MessageStream=outbound', [
+                'Url' => $webhookUrl,
+                'Triggers' => $triggers,
+            ]);
+
+            if ($response->ok()) {
+                $components->info('Created Postmark webhook for outbound stream');
+            } else {
+                $components->error('Failed to create Postmark webhook for outbound stream');
+            }
         } else {
             $components->info('Outbound webhook already exists');
         }
 
-        $broadcastWebhooks = collect($client->getWebhookConfigurations('broadcast')['webhooks'] ?? []);
+        $broadcastWebhooks = collect(Http::withHeaders($headers)->get('https://api.postmarkapp.com/webhooks?MessageStream=broadcast')['Webhooks'] ?? []);
 
-        if ($broadcastWebhooks->where('url', $url)->count() === 0) {
-            $client->createWebhookConfiguration($url, 'broadcast', null, null, $triggers);
+        if ($broadcastWebhooks->where('Url', $webhookUrl)->count() === 0) {
+            $response = Http::withHeaders($headers)->post('https://api.postmarkapp.com/webhooks?MessageStream=broadcast', [
+                'Url' => $webhookUrl,
+                'MessageStream' => 'broadcast',
+                'Triggers' => $triggers,
+            ]);
+
+            if ($response->ok()) {
+                $components->info('Created Postmark webhook for broadcast stream');
+            } else {
+                $components->error('Failed to create Postmark webhook for broadcast stream');
+            }
         } else {
             $components->info('Broadcast webhook already exists');
         }
@@ -83,6 +121,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             EventType::HARD_BOUNCED->value => ['RecordType' => 'Bounce', 'Type' => 'HardBounce'],
             EventType::OPENED->value => ['RecordType' => 'Open'],
             EventType::SOFT_BOUNCED->value => ['RecordType' => 'Bounce', 'Type' => 'SoftBounce'],
+            EventType::UNSUBSCRIBED->value => ['RecordType' => 'SubscriptionChange'],
         ];
     }
 
