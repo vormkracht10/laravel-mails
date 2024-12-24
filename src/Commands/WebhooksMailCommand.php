@@ -3,8 +3,8 @@
 namespace Vormkracht10\Mails\Commands;
 
 use Illuminate\Console\Command;
-use Vormkracht10\Mails\Actions\RegisterWebhooks;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
+use Vormkracht10\Mails\Actions\RegisterWebhooks;
 
 class WebhooksMailCommand extends Command implements PromptsForMissingInput
 {

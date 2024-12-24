@@ -279,3 +279,36 @@ it('can receive incoming click webhook from postmark', function () {
         'link' => 'https://example.com',
     ]);
 });
+
+it('can receive incoming subscription change webhook from postmark', function () {
+    Mail::send([], [], function (Message $message) {
+        $message->to('mark@vormkracht10.nl')
+            ->from('local@computer.nl')
+            ->cc('cc@vk10.nl')
+            ->bcc('bcc@vk10.nl')
+            ->subject('Test')
+            ->text('Text')
+            ->html('<p>HTML</p>');
+    });
+
+    $mail = MailModel::latest()->first();
+
+    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+        'ChangedAt' => '2024-12-08T06:03:20Z',
+        'Metadata' => [
+            config('mails.headers.uuid') => $mail?->uuid,
+        ],
+        'MessageID' => '00000000-0000-0000-0000-000000000000',
+        'MessageStream' => 'outbound',
+        'Origin' => 'Recipient',
+        'Recipient' => 'john@example.com',
+        'RecordType' => 'SubscriptionChange',
+        'ServerID' => 23,
+        'SuppressionReason' => 'HardBounce',
+        'SuppressSending' => true,
+    ])->assertAccepted();
+
+    assertDatabaseHas((new MailEvent)->getTable(), [
+        'type' => EventType::UNSUBSCRIBED->value,
+    ]);
+});

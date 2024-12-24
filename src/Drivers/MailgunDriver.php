@@ -2,12 +2,69 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
 
 class MailgunDriver extends MailDriver implements MailDriverContract
 {
-    public function registerWebhooks($components): void {}
+    public function registerWebhooks($components): void
+    {
+        $trackingConfig = (array) config('mails.logging.tracking');
+
+        $apiKey = config('services.mailgun.secret');
+        $domain = config('services.mailgun.domain');
+
+        $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => 'mailgun']);
+
+        $events = [];
+
+        if ((bool) $trackingConfig['opens']) {
+            $events[] = 'opened';
+        }
+
+        if ((bool) $trackingConfig['clicks']) {
+            $events[] = 'clicked';
+        }
+
+        if ((bool) $trackingConfig['deliveries']) {
+            $events[] = 'accepted';
+            $events[] = 'delivered';
+        }
+
+        if ((bool) $trackingConfig['bounces']) {
+            $events[] = 'permanent_fail';
+            $events[] = 'temporary_fail';
+        }
+
+        if ((bool) $trackingConfig['complaints']) {
+            $events[] = 'complained';
+        }
+
+        if ((bool) $trackingConfig['unsubscribes']) {
+            $events[] = 'unsubscribed';
+        }
+
+        foreach ($events as $event) {
+            $response = Http::withBasicAuth('api', $apiKey)
+                ->asMultipart()
+                ->post("https://api.mailgun.net/v3/domains/$domain/webhooks", [
+                    'id' => $event,
+                    'url' => $webhookUrl,
+                ]);
+
+            $message = $response->json()['message'] ?? null;
+
+            if ($response->successful()) {
+                $components->info("Created Mailgun webhook for: $event ($message)");
+            } elseif ($message === 'Webhook already exists') {
+                $components->info("Mailgun webhook already exists for: $event");
+            } else {
+                $components->error("Failed to create Mailgun webhook for: $event");
+            }
+        }
+    }
 
     public function verifyWebhookSignature(array $payload): bool
     {
@@ -19,7 +76,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             return false;
         }
 
-        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'].$payload['signature']['token'], config('services.mailgun.api_key'));
+        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'] . $payload['signature']['token'], config('services.mailgun.webhook_signing_key'));
 
         if (function_exists('hash_equals')) {
             return hash_equals($hmac, $payload['signature']['signature']);

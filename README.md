@@ -9,11 +9,11 @@
 
 ## Nice to meet you, we're [Vormkracht10](https://vormkracht10.nl)
 
-Hi! We are a web development agency from Nijmegen in the Netherlands and we use Laravel for everything: advanced websites with a lot of bells and whitles and big web applications.
+Hi! We are a web development agency from Nijmegen in the Netherlands and we use Laravel for everything: advanced websites with a lot of bells and whitles and large web applications.
 
 ## Why this package
 
-Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
+Email as a protocol is very error prone. Succesfull email delivery is not guaranteed in any way, so it is best to monitor your email sending realtime. Using external services like Postmark or Mailgun, email gets better by offering things like logging and delivery feedback, but it still needs your attention and can fail silently but horendously. Therefore we created Laravel Mails that fills in all the gaps.
 
 Using Laravel we create packages to scratch a lot of our own itches, as we get to certain challenges working for our clients and on our projects. One of our problems in our 13 years of web development experience is customers that contact us about emails not getting delivered.
 
@@ -26,7 +26,7 @@ As we got tired of the situation that a customer needs to call us, we want to kn
 Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app. Common use cases are provided in this package:
 
 -   Log all sent emails, attachments and events with only specific attributes
--   Works currently for popular email service provider Postmark
+-   Works currently for popular email service providers Postmark and Mailgun
 -   Collect feedback about the delivery status from email providers using webhooks
 -   Get quickly and automatically notified when email hard/soft bounces or the bouncerate goes too high
 -   Prune all logged emails periodically to keep the database nice and slim
@@ -35,7 +35,7 @@ Laravel Mails can collect everything you might want to track about the mails tha
 
 ## Upcoming features
 
--   We're currently in the process of writing mail events support for other popular email service providers like Mailgun, Resend, SendGrid, Amazon SES and Mailtrap.
+-   We can write drivers for popular email service providers like Resend, SendGrid, Amazon SES and Mailtrap.
 -   Relate emails being send in Laravel directly to Eloquent models, for example the order confirmation email attached to an Order model.
 
 ## Looking for a UI? We've got your back: [Filament Mails](https://github.com/vormkracht10/filament-mails)
@@ -66,15 +66,23 @@ Add the API key of your email service provider to the `config/services.php` file
 ```
 [
     'postmark' => [
-        'token' => '...',
-    ]
+        'token' => env('POSTMARK_TOKEN'),
+    ],
+
+    'mailgun' => [
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
+        'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
+    ],
 ]
 ```
 
 When done, run this command with the slug of your service provider:
 
 ```bash
-php artisan mail:webhooks [service] // where [service] is your provider, e.g. postmark
+php artisan mail:webhooks [service] // where [service] is your provider, e.g. postmark or mailgun
 ```
 
 And for changing the configuration you can publish the config file with:

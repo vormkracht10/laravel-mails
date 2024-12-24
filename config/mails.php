@@ -76,6 +76,7 @@ return [
             'complaints' => true,
             'deliveries' => true,
             'opens' => true,
+            'unsubscribes' => true,
         ],
 
         // Enable saving mail attachments to disk
