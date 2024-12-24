@@ -37,13 +37,13 @@ use Vormkracht10\Mails\Database\Factories\MailFactory;
  *
  * @method static Builder forUuid(string $uuid)
  * @method static Builder forMailClass(string $mailClass)
- * @method static Builder|self sent()
- * @method static Builder|self delivered()
- * @method static Builder|self opened()
- * @method static Builder|self clicked()
- * @method static Builder|self softBounced()
- * @method static Builder|self hardBounced()
- * @method static Builder|self unsent()
+ * @method static Builder<static> sent()
+ * @method static Builder<static> delivered()
+ * @method static Builder<static> opened()
+ * @method static Builder<static> clicked()
+ * @method static Builder<static> softBounced()
+ * @method static Builder<static> hardBounced()
+ * @method static Builder<static> unsent()
  */
 class Mail extends Model
 {
