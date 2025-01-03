@@ -61,7 +61,7 @@ php artisan vendor:publish --tag="mails-migrations"
 php artisan migrate
 ```
 
-Add the API key of your email service provider to the `config/services.php` file in your Laravel project, currently we only support Postmark:
+Add the API key of your email service provider to the `config/services.php` file in your Laravel project, currently we only support Postmark and Mailgun:
 
 ```
 [
