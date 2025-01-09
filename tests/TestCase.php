@@ -14,7 +14,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Vormkracht10\\Mails\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn(string $modelName) => 'Vormkracht10\\Mails\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -33,16 +33,19 @@ class TestCase extends Orchestra
             'queue.default' => 'sync',
         ]);
 
-        $migration = require __DIR__.'/../database/migrations/1_create_mails_table.php.stub';
+        $migration = require __DIR__ . '/../database/migrations/1_create_mails_table.php.stub';
         $migration->up();
 
-        $migration = require __DIR__.'/../database/migrations/2_create_mail_attachments_table.php.stub';
+        $migration = require __DIR__ . '/../database/migrations/2_create_mail_attachments_table.php.stub';
         $migration->up();
 
-        $migration = require __DIR__.'/../database/migrations/2_create_mail_events_table.php.stub';
+        $migration = require __DIR__ . '/../database/migrations/2_create_mail_events_table.php.stub';
         $migration->up();
 
-        $migration = require __DIR__.'/../database/migrations/2_create_mailables_table.php.stub';
+        $migration = require __DIR__ . '/../database/migrations/2_create_mailables_table.php.stub';
+        $migration->up();
+
+        $migration = require __DIR__ . '/../database/migrations/3_add_unsuppressed_at_to_mail_events.php.stub';
         $migration->up();
     }
 }

@@ -39,7 +39,7 @@ class MailsServiceProvider extends PackageServiceProvider
 
     public function bootingPackage(): void
     {
-        $this->app->singleton(MailProviderContract::class, fn ($app) => new MailProviderManager($app));
+        $this->app->singleton(MailProviderContract::class, fn($app) => new MailProviderManager($app));
     }
 
     public function configurePackage(Package $package): void
@@ -53,6 +53,7 @@ class MailsServiceProvider extends PackageServiceProvider
                 '2_create_mail_attachments_table',
                 '2_create_mail_events_table',
                 '2_create_mailables_table',
+                '3_add_unsuppressed_at_to_mail_events',
             )
             ->hasRoutes('webhooks')
             ->hasCommands(
