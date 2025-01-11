@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Mailgun\Mailgun;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
 use Vormkracht10\Mails\Drivers\PostmarkDriver;
 use Vormkracht10\Mails\Enums\EventType;
@@ -96,6 +98,39 @@ class MailEvent extends Model
 
     public function unSuppress()
     {
-        $this->update(['unsuppressed_at' => now()]);
+        if (config('mail.default') === 'postmark') {
+            $client = Http::asJson()
+                ->withHeaders([
+                    'X-Postmark-Server-Token' => config('services.postmark.token')
+                ])
+                ->baseUrl('https://api.postmarkapp.com/');
+
+            $streamId = 'broadcast';
+            $response = $client->post("message-streams/{$streamId}/suppressions/delete", [
+                'Suppressions' => [
+                    [
+                        'emailAddress' => key($this->mail->to)
+                    ]
+                ]
+            ]);
+
+            if ($response->successful()) {
+                $this->update(['unsuppressed_at' => now()]);
+            } else {
+                throw new \Exception('Failed to unsuppress email address due to ' . $response);
+            }
+        }
+
+        if (config('mail.default') === 'mailgun') {
+            $mailgun = Mailgun::create(config('services.mailgun.secret'), 'https://api.mailgun.net/v3');
+
+            $response = $mailgun->suppressions()->unsubscribes()->delete(config('services.mailgun.domain'), key($this->mail->to));
+
+            if ($response ) {
+                $this->update(['unsuppressed_at' => now()]);
+            } else {
+                throw new \Exception('Failed to unsuppress email address due to ' . $response);
+            }
+        }
     }
 }

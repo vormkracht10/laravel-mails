@@ -22,7 +22,12 @@
         "laravel-notification-channels/telegram": "^4.0|5.0",
         "laravel/helpers": "^1.7.0",
         "laravel/slack-notification-channel": "^2.5|^3.3.2",
-        "spatie/laravel-package-tools": "^1.14.0"
+        "mailgun/mailgun-php": "^4.3",
+        "nyholm/psr7": "^1.8",
+        "spatie/laravel-package-tools": "^1.14.0",
+        "symfony/http-client": "^7.2",
+        "symfony/mailgun-mailer": "^7.2",
+        "symfony/postmark-mailer": "^7.2"
     },
     "require-dev": {
         "larastan/larastan": "^2.9.8",
