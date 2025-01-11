@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
+use Vormkracht10\Mails\Drivers\PostmarkDriver;
 use Vormkracht10\Mails\Enums\EventType;
 use Vormkracht10\Mails\Events\MailEventLogged;
 
@@ -48,6 +49,7 @@ class MailEvent extends Model
         'tag',
         'payload',
         'occurred_at',
+        'unsuppressed_at'
     ];
 
     protected $casts = [
@@ -56,6 +58,7 @@ class MailEvent extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'occurred_at' => 'datetime',
+        'unsuppressed_at' => 'datetime',
     ];
 
     public function getTable()
@@ -88,6 +91,11 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
+        return 'Vormkracht10\Mails\Events\Mail' . Str::studly($this->type->value);
+    }
+
+    public function unSuppress()
+    {
+        $this->update(['unsuppressed_at' => now()]);
     }
 }
