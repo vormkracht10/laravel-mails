@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Mailgun\Mailgun;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
-use Vormkracht10\Mails\Drivers\PostmarkDriver;
 use Vormkracht10\Mails\Enums\EventType;
 use Vormkracht10\Mails\Events\MailEventLogged;
 
@@ -51,7 +50,7 @@ class MailEvent extends Model
         'tag',
         'payload',
         'occurred_at',
-        'unsuppressed_at'
+        'unsuppressed_at',
     ];
 
     protected $casts = [
@@ -93,7 +92,7 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail' . Str::studly($this->type->value);
+        return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
     }
 
     public function unSuppress()
@@ -101,7 +100,7 @@ class MailEvent extends Model
         if (config('mail.default') === 'postmark') {
             $client = Http::asJson()
                 ->withHeaders([
-                    'X-Postmark-Server-Token' => config('services.postmark.token')
+                    'X-Postmark-Server-Token' => config('services.postmark.token'),
                 ])
                 ->baseUrl('https://api.postmarkapp.com/');
 
@@ -109,15 +108,15 @@ class MailEvent extends Model
             $response = $client->post("message-streams/{$streamId}/suppressions/delete", [
                 'Suppressions' => [
                     [
-                        'emailAddress' => key($this->mail->to)
-                    ]
-                ]
+                        'emailAddress' => key($this->mail->to),
+                    ],
+                ],
             ]);
 
             if ($response->successful()) {
                 $this->update(['unsuppressed_at' => now()]);
             } else {
-                throw new \Exception('Failed to unsuppress email address due to ' . $response);
+                throw new \Exception('Failed to unsuppress email address due to '.$response);
             }
         }
 
@@ -126,10 +125,10 @@ class MailEvent extends Model
 
             $response = $mailgun->suppressions()->unsubscribes()->delete(config('services.mailgun.domain'), key($this->mail->to));
 
-            if ($response ) {
+            if ($response) {
                 $this->update(['unsuppressed_at' => now()]);
             } else {
-                throw new \Exception('Failed to unsuppress email address due to ' . $response);
+                throw new \Exception('Failed to unsuppress email address due to '.$response);
             }
         }
     }
