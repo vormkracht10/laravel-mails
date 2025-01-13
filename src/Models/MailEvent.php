@@ -99,36 +99,41 @@ class MailEvent extends Model
     public function unSuppress()
     {
         if (config('mail.default') === 'postmark') {
+
             $client = Http::asJson()
                 ->withHeaders([
                     'X-Postmark-Server-Token' => config('services.postmark.token')
                 ])
                 ->baseUrl('https://api.postmarkapp.com/');
 
-            $streamId = 'broadcast';
-            $response = $client->post("message-streams/{$streamId}/suppressions/delete", [
+            $response = $client->post('message-streams/' . config('mail.mailers.postmark.stream_id', 'broadcast') . '/suppressions/delete', [
                 'Suppressions' => [
                     [
-                        'emailAddress' => key($this->mail->to)
-                    ]
-                ]
+                        'emailAddress' => key($this->mail->to),
+                    ],
+                ],
             ]);
 
             if ($response->successful()) {
+
                 $this->update(['unsuppressed_at' => now()]);
             } else {
+
                 throw new \Exception('Failed to unsuppress email address due to ' . $response);
             }
         }
 
         if (config('mail.default') === 'mailgun') {
+
             $mailgun = Mailgun::create(config('services.mailgun.secret'), 'https://api.mailgun.net/v3');
 
             $response = $mailgun->suppressions()->unsubscribes()->delete(config('services.mailgun.domain'), key($this->mail->to));
 
-            if ($response ) {
+            if ($response) {
+
                 $this->update(['unsuppressed_at' => now()]);
             } else {
+
                 throw new \Exception('Failed to unsuppress email address due to ' . $response);
             }
         }
