@@ -2,14 +2,15 @@
 
 namespace Vormkracht10\Mails\Models;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Vormkracht10\Mails\Database\Factories\MailEventFactory;
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Vormkracht10\Mails\Enums\EventType;
 use Vormkracht10\Mails\Events\MailEventLogged;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Vormkracht10\Mails\Database\Factories\MailEventFactory;
 
 /**
  * @property Mail $mail
@@ -84,6 +85,11 @@ class MailEvent extends Model
     public function mail()
     {
         return $this->belongsTo(config('mails.models.mail'));
+    }
+
+    public function scopeSuppressed(Builder $query): void
+    {
+        $query->where('type', EventType::HARD_BOUNCED);
     }
 
     protected function getEventClassAttribute(): string
