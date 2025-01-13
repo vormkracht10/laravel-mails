@@ -158,7 +158,6 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             ],
         ]);
 
-        dd($response->json());
         if (!$response->successful()) {
             Log::error('Failed to unsuppress email address due to ' . $response);
 
