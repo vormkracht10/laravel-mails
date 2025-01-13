@@ -138,7 +138,4 @@ return [
         ],
     ],
 
-    // Set region of usage for mailgun
-    'region' => 'eu', // Set to * for wildcard
-
 ];
