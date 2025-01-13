@@ -138,4 +138,7 @@ return [
         ],
     ],
 
+    //Set region of usage for mailgun
+    'region' => 'eu'
+
 ];

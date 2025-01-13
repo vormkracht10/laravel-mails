@@ -3,9 +3,11 @@
 namespace Vormkracht10\Mails\Drivers;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
+use Vormkracht10\Mails\Models\MailEvent;
 
 class MailgunDriver extends MailDriver implements MailDriverContract
 {
@@ -126,5 +128,23 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             'link' => 'event-data.url',
             'tag' => 'tags',
         ];
+    }
+
+    public function unSupress(MailEvent $event): bool
+    {
+        $client = Http::asJson()
+            ->withBasicAuth('api', config('services.mailgun.secret'))
+            // ->baseUrl(config('mails.region') === 'eu' ? 'https://api.eu.mailgun.net/v3/' : 'https://api.mailgun.net/v3/');
+            ->baseUrl('https://api.mailgun.net/v3/');
+
+        $response = $client->delete(config('services.mailgun.domain') . '/unsubscribes/' . key($event->mail->to));
+
+        if (!$response->successful()) {
+            Log::error('Failed to unsuppress email address due to ' . $response);
+
+            return false;
+        }
+
+        return true;
     }
 }
