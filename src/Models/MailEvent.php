@@ -93,7 +93,7 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail' . Str::studly($this->type->value);
+        return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
     }
 
     public function unSuppress()
@@ -106,7 +106,7 @@ class MailEvent extends Model
                 ])
                 ->baseUrl('https://api.postmarkapp.com/');
 
-            $response = $client->post('message-streams/' . config('mail.mailers.postmark.stream_id', 'broadcast') . '/suppressions/delete', [
+            $response = $client->post('message-streams/'.config('mail.mailers.postmark.stream_id', 'broadcast').'/suppressions/delete', [
                 'Suppressions' => [
                     [
                         'emailAddress' => key($this->mail->to),
@@ -118,7 +118,7 @@ class MailEvent extends Model
                 event(MailUnsuppressed::class, $mailEvent);
             } else {
 
-                throw new \Exception('Failed to unsuppress email address due to ' . $response);
+                throw new \Exception('Failed to unsuppress email address due to '.$response);
             }
         }
 
@@ -132,7 +132,7 @@ class MailEvent extends Model
                 event(MailUnsuppressed::class, $mailEvent);
             } else {
 
-                throw new \Exception('Failed to unsuppress email address due to ' . $response);
+                throw new \Exception('Failed to unsuppress email address due to '.$response);
             }
         }
     }
