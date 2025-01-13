@@ -14,17 +14,7 @@ return new class extends Migration
         Schema::table('mail_events', function (Blueprint $table) {
             $table->timestamp('unsuppressed_at')
                 ->nullable()
-                ->after('unsubscripbed_at');
-        });
-    }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::table('mail_events', function (Blueprint $table) {
-            $table->dropColumn('unsuppressed_at');
+                ->after('unsubscribed_at');
         });
     }
 };
