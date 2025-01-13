@@ -43,7 +43,7 @@ class MailsServiceProvider extends PackageServiceProvider
 
     public function bootingPackage(): void
     {
-        $this->app->singleton(MailProviderContract::class, fn($app) => new MailProviderManager($app));
+        $this->app->singleton(MailProviderContract::class, fn ($app) => new MailProviderManager($app));
     }
 
     public function configurePackage(Package $package): void

@@ -80,7 +80,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             return false;
         }
 
-        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'] . $payload['signature']['token'], config('services.mailgun.webhook_signing_key'));
+        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'].$payload['signature']['token'], config('services.mailgun.webhook_signing_key'));
 
         if (function_exists('hash_equals')) {
             return hash_equals($hmac, $payload['signature']['signature']);
@@ -134,12 +134,12 @@ class MailgunDriver extends MailDriver implements MailDriverContract
     {
         $client = Http::asJson()
             ->withBasicAuth('api', config('services.mailgun.secret'))
-            ->baseUrl(config('mails.region') === 'eu' ? 'https://api.eu.mailgun.net/v3/' : 'https://api.mailgun.net/v3/');;
+            ->baseUrl(config('mails.region') === 'eu' ? 'https://api.eu.mailgun.net/v3/' : 'https://api.mailgun.net/v3/');
 
-        $response = $client->delete(config('services.mailgun.domain') . '/unsubscribes/' . key($event->mail->to));
+        $response = $client->delete(config('services.mailgun.domain').'/unsubscribes/'.key($event->mail->to));
 
-        if (!$response->successful()) {
-            Log::error('Failed to unsuppress email address due to ' . $response);
+        if (! $response->successful()) {
+            Log::error('Failed to unsuppress email address due to '.$response);
 
             return false;
         }

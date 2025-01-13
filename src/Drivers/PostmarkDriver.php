@@ -2,12 +2,12 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Http;
+use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
 use Vormkracht10\Mails\Models\MailEvent;
-use Vormkracht10\Mails\Contracts\MailDriverContract;
 
 class PostmarkDriver extends MailDriver implements MailDriverContract
 {
@@ -150,7 +150,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             ])
             ->baseUrl('https://api.postmarkapp.com/');
 
-        $response = $client->post('message-streams/' . config('mail.mailers.postmark.stream_id', 'broadcast') . '/suppressions/delete', [
+        $response = $client->post('message-streams/'.config('mail.mailers.postmark.stream_id', 'broadcast').'/suppressions/delete', [
             'Suppressions' => [
                 [
                     'emailAddress' => key($event->mail->to),
@@ -158,8 +158,8 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             ],
         ]);
 
-        if (!$response->successful()) {
-            Log::error('Failed to unsuppress email address due to ' . $response);
+        if (! $response->successful()) {
+            Log::error('Failed to unsuppress email address due to '.$response);
 
             return false;
         }

@@ -13,8 +13,7 @@ class UnsuppressEmailAddress
         $driver = match (config('mail.default')) {
             'postmark' => MailProvider::with(driver: 'postmark'),
             'mailgun' => MailProvider::with(driver: 'mailgun'),
-            default =>
-            MailProvider::with('default'),
+            default => MailProvider::with('default'),
         };
 
         $result = $driver->unSupress($event->mailEvent);
@@ -25,6 +24,6 @@ class UnsuppressEmailAddress
             return;
         }
 
-        throw new Exception('Failed to unsupress email address using the ' . config('mail.default') . ' driver: ');
+        throw new Exception('Failed to unsupress email address using the '.config('mail.default').' driver: ');
     }
 }

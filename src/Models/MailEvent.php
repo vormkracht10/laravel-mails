@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
-use Mailgun\Mailgun;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
 use Vormkracht10\Mails\Enums\EventType;
 use Vormkracht10\Mails\Events\MailEventLogged;
@@ -93,7 +91,7 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail' . Str::studly($this->type->value);
+        return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
     }
 
     public function unSuppress()
