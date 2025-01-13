@@ -101,7 +101,7 @@ class LogMail
     protected function getAddressesValue(array $address): ?Collection
     {
         $addresses = collect($address)
-            ->flatMap(fn(Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
+            ->flatMap(fn (Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
 
         return $addresses->count() > 0 ? $addresses : null;
     }
