@@ -11,21 +11,25 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('mail_events', function (Blueprint $table) {
-            $table->timestamp('unsuppressed_at')
-                ->nullable()
-                ->after('occurred_at');
+        Schema::table('mail_events', function (Blueprint $table): void {
+            if (!Schema::hasColumn('mail_events', 'unsuppressed_at')) {
+                $table->timestamp('unsuppressed_at')
+                    ->nullable()
+                    ->after('occurred_at');
+            }
         });
 
-        Schema::table('mails', function (Blueprint $table) {
-            $table->string('driver')
-                ->after('uuid');
-        });
+        Schema::table('mails', function (Blueprint $table): void {
+            if (!Schema::hasColumn('mails', 'driver')) {
+                $table->string('driver')
+                    ->after('uuid');
+            }
 
-        Schema::table('mails', function (Blueprint $table) {
-            $table->unsignedBigIntiger('stream_id')
-                ->nullable()
-                ->after('driver');
+            if (!Schema::hasColumn('mails', 'stream_id')) {
+                $table->string('stream_id')
+                    ->nullable()
+                    ->after('driver');
+            }
         });
     }
 };
