@@ -17,7 +17,7 @@ class UnsuppressEmailAddress
             MailProvider::with('default'),
         };
 
-        $result = $driver->unSupress(event: $event->mailEvent);
+        $result = $driver->unSupress($event->mailEvent);
 
         if ($result) {
             $event->mailEvent->update(['unsuppressed_at', now()]);

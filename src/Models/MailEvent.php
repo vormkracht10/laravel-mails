@@ -93,47 +93,11 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
+        return 'Vormkracht10\Mails\Events\Mail' . Str::studly($this->type->value);
     }
 
     public function unSuppress()
     {
-        if (config('mail.default') === 'postmark') {
-
-            $client = Http::asJson()
-                ->withHeaders([
-                    'X-Postmark-Server-Token' => config('services.postmark.token'),
-                ])
-                ->baseUrl('https://api.postmarkapp.com/');
-
-            $response = $client->post('message-streams/'.config('mail.mailers.postmark.stream_id', 'broadcast').'/suppressions/delete', [
-                'Suppressions' => [
-                    [
-                        'emailAddress' => key($this->mail->to),
-                    ],
-                ],
-            ]);
-
-            if ($response->successful()) {
-                event(MailUnsuppressed::class, $mailEvent);
-            } else {
-
-                throw new \Exception('Failed to unsuppress email address due to '.$response);
-            }
-        }
-
-        if (config('mail.default') === 'mailgun') {
-
-            $mailgun = Mailgun::create(config('services.mailgun.secret'), 'https://api.mailgun.net/v3');
-
-            $response = $mailgun->suppressions()->unsubscribes()->delete(config('services.mailgun.domain'), key($this->mail->to));
-
-            if ($response) {
-                event(MailUnsuppressed::class, $mailEvent);
-            } else {
-
-                throw new \Exception('Failed to unsuppress email address due to '.$response);
-            }
-        }
+        event(new MailUnsuppressed($this));
     }
 }
