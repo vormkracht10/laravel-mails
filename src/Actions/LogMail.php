@@ -101,7 +101,7 @@ class LogMail
     protected function getAddressesValue(array $address): ?Collection
     {
         $addresses = collect($address)
-            ->flatMap(fn (Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
+            ->flatMap(fn(Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
 
         return $addresses->count() > 0 ? $addresses : null;
     }
@@ -125,6 +125,6 @@ class LogMail
     public function saveAttachment($attachmentModel, $attachment): void
     {
         Storage::disk($attachmentModel->disk)
-            ->put($attachment->storagePath, $attachment->getBody(), 'private');
+            ->put($attachmentModel->storagePath, $attachment->getBody(), 'private');
     }
 }

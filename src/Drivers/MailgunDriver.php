@@ -15,6 +15,8 @@ class MailgunDriver extends MailDriver implements MailDriverContract
 
         $apiKey = config('services.mailgun.secret');
         $domain = config('services.mailgun.domain');
+        $scheme = config('services.mailgun.scheme', 'https');
+        $endpoint = config('services.mailgun.endpoint', 'api.mailgun.net');
 
         $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => 'mailgun']);
 
@@ -49,7 +51,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
         foreach ($events as $event) {
             $response = Http::withBasicAuth('api', $apiKey)
                 ->asMultipart()
-                ->post("https://api.mailgun.net/v3/domains/$domain/webhooks", [
+                ->post("$scheme://$endpoint/v3/domains/$domain/webhooks", [
                     'id' => $event,
                     'url' => $webhookUrl,
                 ]);
