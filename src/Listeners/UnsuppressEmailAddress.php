@@ -9,12 +9,10 @@ class UnsuppressEmailAddress
 {
     public function handle(MailUnsuppressed $event): void
     {
-        $driver = MailProvider::with(driver: $event->driver);
-
-        if ($event->driver === 'postmark') {
-            $driver->unsuppressEmailAddress(address: $event->emailAddress, stream_id: $event->stream_id);
-        } else {
-            $driver->unsuppressEmailAddress(address: $event->emailAddress);
-        }
+        MailProvider::with(driver: $event->driver)
+            ->unsuppressEmailAddress(
+                address: $event->emailAddress,
+                stream_id: $event->stream_id ?? null
+            );
     }
 }

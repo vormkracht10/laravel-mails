@@ -9,11 +9,10 @@ use Vormkracht10\Mails\Models\MailEvent;
 
 class MailUnsuppressed
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;,
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public string $emailAddress, public string $driver, public ?string $stream_id = null) 
-{}
+    public function __construct(public string $emailAddress, public string $driver, public ?string $stream_id = null) {}
 }
