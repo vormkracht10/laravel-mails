@@ -10,7 +10,6 @@ use Illuminate\Support\Str;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
 use Vormkracht10\Mails\Enums\EventType;
 use Vormkracht10\Mails\Events\MailEventLogged;
-use Vormkracht10\Mails\Events\MailUnsuppressed;
 
 /**
  * @property Mail $mail
@@ -92,10 +91,5 @@ class MailEvent extends Model
     protected function getEventClassAttribute(): string
     {
         return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
-    }
-
-    public function unSuppress()
-    {
-        event(new MailUnsuppressed($this));
     }
 }

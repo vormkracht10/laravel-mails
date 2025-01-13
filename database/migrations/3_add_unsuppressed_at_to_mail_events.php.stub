@@ -16,5 +16,16 @@ return new class extends Migration
                 ->nullable()
                 ->after('occurred_at');
         });
+
+        Schema::table('mails', function (Blueprint $table) {
+            $table->string('driver')
+                ->after('uuid');
+        });
+
+        Schema::table('mails', function (Blueprint $table) {
+            $table->unsignedBigIntiger('stream_id')
+                ->nullable()
+                ->after('driver');
+        });
     }
 };
