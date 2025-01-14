@@ -3,7 +3,6 @@
 namespace Vormkracht10\Mails\Drivers;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
@@ -138,7 +137,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
         $response = $client->delete(config('services.mailgun.domain').'/unsubscribes/'.$address);
 
         if (! $response->successful()) {
-            Log::error('Failed to unsuppress email address due to '.$response);
+            //
         }
     }
 }

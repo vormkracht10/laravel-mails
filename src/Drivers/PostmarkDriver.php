@@ -3,7 +3,6 @@
 namespace Vormkracht10\Mails\Drivers;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
@@ -158,7 +157,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
         ]);
 
         if (! $response->successful()) {
-            Log::error('Failed to unsuppress email address due to '.$response);
+            //
         }
     }
 }
