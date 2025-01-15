@@ -94,6 +94,8 @@ php artisan vendor:publish --tag="mails-config"
 This is the contents of the published config file:
 
 ```php
+<?php
+
 return [
     // Eloquent model to use for sent emails
 
