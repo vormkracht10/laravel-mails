@@ -63,7 +63,7 @@ php artisan migrate
 
 Add the API key of your email service provider to the `config/services.php` file in your Laravel project, currently we only support Postmark and Mailgun:
 
-```
+```php
 [
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
