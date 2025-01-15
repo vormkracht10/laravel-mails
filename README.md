@@ -64,18 +64,16 @@ php artisan migrate
 Add the API key of your email service provider to the `config/services.php` file in your Laravel project, currently we only support Postmark and Mailgun:
 
 ```php
-[
-    'postmark' => [
-        'token' => env('POSTMARK_TOKEN'),
-    ],
+'postmark' => [
+    'token' => env('POSTMARK_TOKEN'),
+],
 
-    'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
-        'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
-        'scheme' => 'https',
-    ],
+'mailgun' => [
+    'domain' => env('MAILGUN_DOMAIN'),
+    'secret' => env('MAILGUN_SECRET'),
+    'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
+    'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+    'scheme' => 'https',
 ]
 ```
 
@@ -94,140 +92,136 @@ php artisan vendor:publish --tag="mails-config"
 This is the contents of the published config file:
 
 ```php
-<?php
+// Eloquent model to use for sent emails
 
-return [
-    // Eloquent model to use for sent emails
+'models' => [
+    'mail' => Mail::class,
+    'event' => MailEvent::class,
+    'attachment' => MailAttachment::class,
+],
 
-    'models' => [
-        'mail' => Mail::class,
-        'event' => MailEvent::class,
-        'attachment' => MailAttachment::class,
+// Table names for saving sent emails and polymorphic relations to database
+
+'database' => [
+    'tables' => [
+        'mails' => 'mails',
+        'attachments' => 'mail_attachments',
+        'events' => 'mail_events',
+        'polymorph' => 'mailables',
     ],
 
-    // Table names for saving sent emails and polymorphic relations to database
+    'pruning' => [
+        'enabled' => true,
+        'after' => 30, // days
+    ],
+],
 
-    'database' => [
-        'tables' => [
-            'mails' => 'mails',
-            'attachments' => 'mail_attachments',
-            'events' => 'mail_events',
-            'polymorph' => 'mailables',
-        ],
+'headers' => [
+    'uuid' => 'X-Mails-UUID',
 
-        'pruning' => [
-            'enabled' => true,
-            'after' => 30, // days
-        ],
+    'associate' => 'X-Mails-Associated-Models',
+],
+
+'webhooks' => [
+    'routes' => [
+        'prefix' => 'webhooks/mails',
     ],
 
-    'headers' => [
-        'uuid' => 'X-Mails-UUID',
+    'queue' => env('MAILS_QUEUE_WEBHOOKS', false),
+],
 
-        'associate' => 'X-Mails-Associated-Models',
+// Logging mails
+'logging' => [
+
+    // Enable logging of all sent mails to database
+
+    'enabled' => env('MAILS_LOGGING_ENABLED', true),
+
+    // Specify attributes to log in database
+
+    'attributes' => [
+        'subject',
+        'from',
+        'to',
+        'reply_to',
+        'cc',
+        'bcc',
+        'html',
+        'text',
     ],
 
-    'webhooks' => [
-        'routes' => [
-            'prefix' => 'webhooks/mails',
-        ],
+    // Encrypt all attributes saved to database
 
-        'queue' => env('MAILS_QUEUE_WEBHOOKS', false),
+    'encrypted' => env('MAILS_ENCRYPTED', true),
+
+    // Track following events using webhooks from email provider
+
+    'tracking' => [
+        'bounces' => true,
+        'clicks' => true,
+        'complaints' => true,
+        'deliveries' => true,
+        'opens' => true,
     ],
 
-    // Logging mails
-    'logging' => [
+    // Enable saving mail attachments to disk
 
-        // Enable logging of all sent mails to database
+    'attachments' => [
+        'enabled' => env('MAILS_LOGGING_ATTACHMENTS_ENABLED', true),
+        'disk' => env('FILESYSTEM_DISK', 'local'),
+        'root' => 'mails/attachments',
+    ],
+],
 
-        'enabled' => env('MAILS_LOGGING_ENABLED', true),
+// Notifications for important mail events
 
-        // Specify attributes to log in database
-
-        'attributes' => [
-            'subject',
-            'from',
-            'to',
-            'reply_to',
-            'cc',
-            'bcc',
-            'html',
-            'text',
-        ],
-
-        // Encrypt all attributes saved to database
-
-        'encrypted' => env('MAILS_ENCRYPTED', true),
-
-        // Track following events using webhooks from email provider
-
-        'tracking' => [
-            'bounces' => true,
-            'clicks' => true,
-            'complaints' => true,
-            'deliveries' => true,
-            'opens' => true,
-        ],
-
-        // Enable saving mail attachments to disk
-
-        'attachments' => [
-            'enabled' => env('MAILS_LOGGING_ATTACHMENTS_ENABLED', true),
-            'disk' => env('FILESYSTEM_DISK', 'local'),
-            'root' => 'mails/attachments',
-        ],
+'notifications' => [
+    'mail' => [
+        'to' => ['test@example.com'],
     ],
 
-    // Notifications for important mail events
-
-    'notifications' => [
-        'mail' => [
-            'to' => ['test@example.com'],
-        ],
-
-        'discord' => [
-            // 'to' => ['1234567890'],
-        ],
-
-        'slack' => [
-            // 'to' => ['https://hooks.slack.com/services/...'],
-        ],
-
-        'telegram' => [
-            // 'to' => ['1234567890'],
-        ],
+    'discord' => [
+        // 'to' => ['1234567890'],
     ],
 
-    'events' => [
-        'soft_bounced' => [
-            'notify' => ['mail'],
-        ],
-
-        'hard_bounced' => [
-            'notify' => ['mail'],
-        ],
-
-        'bouncerate' => [
-            'notify' => [],
-
-            'retain' => 30, // days
-
-            'treshold' => 1, // %
-        ],
-
-        'deliveryrate' => [
-            'treshold' => 99,
-        ],
-
-        'complained' => [
-            //
-        ],
-
-        'unsent' => [
-            //
-        ],
+    'slack' => [
+        // 'to' => ['https://hooks.slack.com/services/...'],
     ],
-];
+
+    'telegram' => [
+        // 'to' => ['1234567890'],
+    ],
+],
+
+'events' => [
+    'soft_bounced' => [
+        'notify' => ['mail'],
+    ],
+
+    'hard_bounced' => [
+        'notify' => ['mail'],
+    ],
+
+    'bouncerate' => [
+        'notify' => [],
+
+        'retain' => 30, // days
+
+        'treshold' => 1, // %
+    ],
+
+    'deliveryrate' => [
+        'treshold' => 99,
+    ],
+
+    'complained' => [
+        //
+    ],
+
+    'unsent' => [
+        //
+    ],
+]
 ```
 
 ## Usage
