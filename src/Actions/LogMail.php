@@ -76,15 +76,21 @@ class LogMail
 
     protected function getStreamId(MessageSending|MessageSent $event): ?string
     {
-        if ($event->data['mailer'] === 'postmark') {
-            return config('mail.mailers.postmark.message_stream_id');
+        if($event->data['mailer'] !== 'postmark') {
+            return null;
+        }
+
+        if (
+            filled(config('mail.mailers.postmark.message_stream_id'))
+        ) {
+            $streamId = config('mail.mailers.postmark.message_stream_id');
         }
 
         if (null !== $messageStream = $event->message->getHeaders()->get('x-pm-message-stream')) {
-            return $messageStream;
+            $streamId = $messageStream;
         }
 
-        return null;
+        return $streamId ?? 'outbound';
     }
 
     public function getMandatoryAttributes(MessageSending|MessageSent $event): array
