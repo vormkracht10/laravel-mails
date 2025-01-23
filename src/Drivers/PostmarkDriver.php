@@ -2,6 +2,7 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
@@ -140,7 +141,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
         ];
     }
 
-    public function unsuppressEmailAddress(string $address, $stream_id): void
+    public function unsuppressEmailAddress(string $address, $stream_id): Response
     {
         $client = Http::asJson()
             ->withHeaders([
@@ -148,16 +149,13 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             ])
             ->baseUrl('https://api.postmarkapp.com/');
 
-        $response = $client->post('message-streams/'.$stream_id.'/suppressions/delete', [
+        return $client->post('message-streams/'.$stream_id.'/suppressions/delete', [
             'Suppressions' => [
                 [
                     'emailAddress' => $address,
                 ],
             ],
         ]);
-
-        if (! $response->successful()) {
-            //
-        }
+        
     }
 }

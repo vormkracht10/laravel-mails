@@ -2,10 +2,11 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
-use Vormkracht10\Mails\Contracts\MailDriverContract;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
 use Vormkracht10\Mails\Enums\EventType;
+use Vormkracht10\Mails\Contracts\MailDriverContract;
 
 class MailgunDriver extends MailDriver implements MailDriverContract
 {
@@ -128,16 +129,12 @@ class MailgunDriver extends MailDriver implements MailDriverContract
         ];
     }
 
-    public function unsuppressEmailAddress(string $address): void
+    public function unsuppressEmailAddress(string $address): Response
     {
         $client = Http::asJson()
             ->withBasicAuth('api', config('services.mailgun.secret'))
             ->baseUrl(config('services.mailgun.endpoint').'/v3/');
 
-        $response = $client->delete(config('services.mailgun.domain').'/unsubscribes/'.$address);
-
-        if (! $response->successful()) {
-            //
-        }
+        return $client->delete(config('services.mailgun.domain').'/unsubscribes/'.$address);
     }
 }
