@@ -18,12 +18,12 @@ return new class extends Migration
         });
 
         Schema::table('mails', function (Blueprint $table): void {
-            $table->string('provider')
+            $table->string('mailer')
                 ->after('uuid');
 
             $table->string('stream_id')
                 ->nullable()
-                ->after('provider');
+                ->after('mailer');
         });
     }
 };

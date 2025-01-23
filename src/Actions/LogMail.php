@@ -74,7 +74,7 @@ class LogMail
         ];
     }
 
-    protected function getStreamId(MessageSending|MessageSent $event)
+    protected function getStreamId(MessageSending|MessageSent $event): ?string
     {
         if ($event->data['mailer'] === 'postmark') {
             return config('mail.mailers.postmark.message_stream_id');
