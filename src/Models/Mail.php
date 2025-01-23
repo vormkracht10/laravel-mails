@@ -77,7 +77,7 @@ class Mail extends Model
     protected $casts = [
         'id' => 'integer',
         'uuid' => 'string',
-        'driver' => 'string',
+        'mailer' => 'string',
         'stream_id' => 'string',
         'subject' => 'string',
         'from' => 'json',
