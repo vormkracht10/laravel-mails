@@ -80,17 +80,11 @@ class LogMail
             return null;
         }
 
-        if (
-            filled(config('mail.mailers.postmark.message_stream_id'))
-        ) {
-            $streamId = config('mail.mailers.postmark.message_stream_id');
-        }
-
         if (null !== $messageStream = $event->message->getHeaders()->get('x-pm-message-stream')) {
-            $streamId = $messageStream;
+            return $messageStream;
         }
 
-        return $streamId ?? 'outbound';
+        return config('mail.mailers.postmark.message_stream_id', 'outbound');
     }
 
     public function getMandatoryAttributes(MessageSending|MessageSent $event): array
