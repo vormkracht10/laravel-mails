@@ -20,16 +20,12 @@ return new class extends Migration
         });
 
         Schema::table('mails', function (Blueprint $table): void {
-            if (!Schema::hasColumn('mails', 'driver')) {
-                $table->string('driver')
-                    ->after('uuid');
-            }
+            $table->string('provider')
+                ->after('uuid');
 
-            if (!Schema::hasColumn('mails', 'stream_id')) {
-                $table->string('stream_id')
-                    ->nullable()
-                    ->after('driver');
-            }
+            $table->string('stream_id')
+                ->nullable()
+                ->after('provider');
         });
     }
 };

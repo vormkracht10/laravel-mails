@@ -51,7 +51,7 @@ class Mail extends Model
 
     protected $fillable = [
         'uuid',
-        'driver',
+        'provider',
         'stream_id',
         'mail_class',
         'subject',
