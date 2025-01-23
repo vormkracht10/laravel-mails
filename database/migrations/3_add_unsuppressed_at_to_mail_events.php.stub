@@ -12,11 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('mail_events', function (Blueprint $table): void {
-            if (!Schema::hasColumn('mail_events', 'unsuppressed_at')) {
-                $table->timestamp('unsuppressed_at')
-                    ->nullable()
-                    ->after('occurred_at');
-            }
+            $table->timestamp('unsuppressed_at')
+                ->nullable()
+                ->after('occurred_at');
         });
 
         Schema::table('mails', function (Blueprint $table): void {
