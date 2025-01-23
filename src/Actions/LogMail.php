@@ -76,7 +76,7 @@ class LogMail
 
     protected function getStreamId(MessageSending|MessageSent $event): ?string
     {
-        if($event->data['mailer'] !== 'postmark') {
+        if ($event->data['mailer'] !== 'postmark') {
             return null;
         }
 
