@@ -8,12 +8,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Mime\Address;
 use Vormkracht10\Mails\Shared\AsAction;
+use Illuminate\Contracts\Mail\Mailer;
 
 class LogMail
 {
     use AsAction;
 
-    public function handle(MessageSending|MessageSent $event): mixed
+    public function handle(MessageSending|MessageSent $event, $mailer): mixed
     {
         if (! config('mails.logging.enabled')) {
             return null;
@@ -22,7 +23,7 @@ class LogMail
         $mail = $this->newMailModelInstance();
 
         if ($event instanceof MessageSending) {
-            $mail->fill($this->getOnlyConfiguredAttributes($event));
+            $mail->fill($this->getOnlyConfiguredAttributes($event, $mailer));
             $mail->save();
 
             $this->collectAttachments($mail, $event->message->getAttachments());
@@ -31,7 +32,7 @@ class LogMail
         if ($event instanceof MessageSent) {
             $mail = $mail->firstWhere('uuid', $this->getCustomUuid($event));
 
-            $mail->update($this->getOnlyConfiguredAttributes($event));
+            $mail->update($this->getOnlyConfiguredAttributes($event, $mailer));
         }
 
         return null;
@@ -47,11 +48,11 @@ class LogMail
         return new $model;
     }
 
-    public function getOnlyConfiguredAttributes(MessageSending|MessageSent $event): array
+    public function getOnlyConfiguredAttributes(MessageSending|MessageSent $event, Mailer $mailer): array
     {
         return collect($this->getDefaultLogAttributes($event))
             ->only($this->getConfiguredAttributes())
-            ->merge($this->getMandatoryAttributes($event))
+            ->merge($this->getMandatoryAttributes($event, $mailer))
             ->toArray();
     }
 
@@ -62,7 +63,6 @@ class LogMail
 
     public function getDefaultLogAttributes(MessageSending|MessageSent $event): array
     {
-        dd($event);
         return [
             'subject' => $event->message->getSubject(),
             'from' => $this->getAddressesValue($event->message->getFrom()),
@@ -72,17 +72,45 @@ class LogMail
             'bcc' => $this->getAddressesValue($event->message->getBcc()),
             'html' => $event->message->getHtmlBody(),
             'text' => $event->message->getTextBody(),
-            'driver' => '',  // Mail Driver
-            'stream_id' => 'X',  // Stream ID
         ];
     }
 
-    public function getMandatoryAttributes(MessageSending|MessageSent $event): array
+    protected function getMailerName(Mailer $mailer) {
+        $class = $mailer;
+
+        $reflection = new \ReflectionClass($class);
+        $property = $reflection->getProperty('name');
+        $property->setAccessible(true);
+
+        $name = $property->getValue($class);
+
+        return $name;
+    }
+
+    protected function getStreamId(MessageSending|MessageSent $event, string $driver) {
+        if($driver !== 'postmark') {
+            return null;
+        }
+
+        if (! $event->message->getHeaders()->has('x-pm-metadata-x-mails-uuid')) {
+            return null;
+        }
+
+        $headerValue = $event->message->getHeaders()->get('x-pm-metadata-x-mails-uuid');
+
+       return $headerValue->getValue();
+    }
+
+    public function getMandatoryAttributes(MessageSending|MessageSent $event, Mailer $mailer): array
     {
+        $driver = $this->getMailerName($mailer);
+
         return [
             'uuid' => $this->getCustomUuid($event),
             // 'mail_class' => $this->getMailClassHeaderValue($event),
             'sent_at' => $event instanceof MessageSent ? now() : null,
+            'driver' => $driver,
+            'stream_id' => $this->getStreamId($event, $this->getMailerName($mailer)), 
         ];
     }
 
