@@ -9,7 +9,7 @@ class UnsuppressEmailAddress
 {
     public function handle(MailUnsuppressed $event): void
     {
-        MailProvider::with(driver: $event->driver)
+        MailProvider::with(driver: $event->mailer)
             ->unsuppressEmailAddress(
                 address: $event->emailAddress,
                 stream_id: $event->stream_id ?? null
