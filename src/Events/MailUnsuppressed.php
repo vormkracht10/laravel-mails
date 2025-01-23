@@ -13,5 +13,5 @@ class MailUnsuppressed
     /**
      * Create a new event instance.
      */
-    public function __construct(public string $emailAddress, public string $driver, public ?string $stream_id = null) {}
+    public function __construct(public string $emailAddress, public string $mailer, public ?string $stream_id = null) {}
 }
