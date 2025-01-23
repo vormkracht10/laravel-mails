@@ -2,13 +2,13 @@
 
 namespace Vormkracht10\Mails\Actions;
 
+use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Mime\Address;
 use Vormkracht10\Mails\Shared\AsAction;
-use Illuminate\Contracts\Mail\Mailer;
 
 class LogMail
 {
@@ -75,7 +75,8 @@ class LogMail
         ];
     }
 
-    protected function getMailerName(Mailer $mailer) {
+    protected function getMailerName(Mailer $mailer)
+    {
         $class = $mailer;
 
         $reflection = new \ReflectionClass($class);
@@ -87,8 +88,9 @@ class LogMail
         return $name;
     }
 
-    protected function getStreamId(MessageSending|MessageSent $event, string $driver) {
-        if($driver !== 'postmark') {
+    protected function getStreamId(MessageSending|MessageSent $event, string $driver)
+    {
+        if ($driver !== 'postmark') {
             return null;
         }
 
@@ -98,7 +100,7 @@ class LogMail
 
         $headerValue = $event->message->getHeaders()->get('x-pm-metadata-x-mails-uuid');
 
-       return $headerValue->getValue();
+        return $headerValue->getValue();
     }
 
     public function getMandatoryAttributes(MessageSending|MessageSent $event, Mailer $mailer): array
@@ -110,7 +112,7 @@ class LogMail
             // 'mail_class' => $this->getMailClassHeaderValue($event),
             'sent_at' => $event instanceof MessageSent ? now() : null,
             'driver' => $driver,
-            'stream_id' => $this->getStreamId($event, $this->getMailerName($mailer)), 
+            'stream_id' => $this->getStreamId($event, $this->getMailerName($mailer)),
         ];
     }
 

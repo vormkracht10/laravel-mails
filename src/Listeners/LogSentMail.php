@@ -15,7 +15,6 @@ class LogSentMail
         $this->mailer = $mailer;
     }
 
-    
     public function handle(MessageSent $event): void
     {
         (new LogMail)($event, $this->mailer);
