@@ -156,6 +156,6 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
                 ],
             ],
         ]);
-        
+
     }
 }
