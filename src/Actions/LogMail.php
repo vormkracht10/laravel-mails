@@ -71,6 +71,8 @@ class LogMail
             'bcc' => $this->getAddressesValue($event->message->getBcc()),
             'html' => $event->message->getHtmlBody(),
             'text' => $event->message->getTextBody(),
+            'driver' => '',  // Mail Driver
+            'stream_id' => 'X',  // Stream ID
         ];
     }
 
