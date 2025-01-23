@@ -62,6 +62,7 @@ class LogMail
 
     public function getDefaultLogAttributes(MessageSending|MessageSent $event): array
     {
+        dd($event);
         return [
             'subject' => $event->message->getSubject(),
             'from' => $this->getAddressesValue($event->message->getFrom()),
