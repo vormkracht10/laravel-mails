@@ -44,5 +44,8 @@ class TestCase extends Orchestra
 
         $migration = require __DIR__.'/../database/migrations/2_create_mailables_table.php.stub';
         $migration->up();
+
+        $migration = require __DIR__.'/../database/migrations/3_add_unsuppressed_at_to_mail_events.php.stub';
+        $migration->up();
     }
 }

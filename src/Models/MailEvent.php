@@ -49,6 +49,7 @@ class MailEvent extends Model
         'tag',
         'payload',
         'occurred_at',
+        'unsuppressed_at',
     ];
 
     protected $casts = [
@@ -57,6 +58,7 @@ class MailEvent extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'occurred_at' => 'datetime',
+        'unsuppressed_at' => 'datetime',
     ];
 
     public function getTable()

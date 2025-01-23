@@ -74,12 +74,27 @@ class LogMail
         ];
     }
 
+    protected function getStreamId(MessageSending|MessageSent $event): ?string
+    {
+        if ($event->data['mailer'] !== 'postmark') {
+            return null;
+        }
+
+        if (null !== $messageStream = $event->message->getHeaders()->get('x-pm-message-stream')) {
+            return $messageStream;
+        }
+
+        return config('mail.mailers.postmark.message_stream_id', 'outbound');
+    }
+
     public function getMandatoryAttributes(MessageSending|MessageSent $event): array
     {
         return [
             'uuid' => $this->getCustomUuid($event),
             // 'mail_class' => $this->getMailClassHeaderValue($event),
             'sent_at' => $event instanceof MessageSent ? now() : null,
+            'mailer' => $event->data['mailer'],
+            'stream_id' => $this->getStreamId($event),
         ];
     }
 
@@ -101,7 +116,7 @@ class LogMail
     protected function getAddressesValue(array $address): ?Collection
     {
         $addresses = collect($address)
-            ->flatMap(fn(Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
+            ->flatMap(fn (Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
 
         return $addresses->count() > 0 ? $addresses : null;
     }

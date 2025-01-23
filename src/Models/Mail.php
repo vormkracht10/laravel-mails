@@ -51,6 +51,8 @@ class Mail extends Model
 
     protected $fillable = [
         'uuid',
+        'mailer',
+        'stream_id',
         'mail_class',
         'subject',
         'html',
@@ -75,6 +77,8 @@ class Mail extends Model
     protected $casts = [
         'id' => 'integer',
         'uuid' => 'string',
+        'mailer' => 'string',
+        'stream_id' => 'string',
         'subject' => 'string',
         'from' => 'json',
         'reply_to' => 'json',

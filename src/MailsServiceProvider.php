@@ -14,12 +14,14 @@ use Vormkracht10\Mails\Commands\WebhooksMailCommand;
 use Vormkracht10\Mails\Contracts\MailProviderContract;
 use Vormkracht10\Mails\Events\MailEvent;
 use Vormkracht10\Mails\Events\MailHardBounced;
+use Vormkracht10\Mails\Events\MailUnsuppressed;
 use Vormkracht10\Mails\Listeners\AttachMailLogUuid;
 use Vormkracht10\Mails\Listeners\LogMailEvent;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
 use Vormkracht10\Mails\Listeners\NotifyOnBounce;
 use Vormkracht10\Mails\Listeners\StoreMailRelations;
+use Vormkracht10\Mails\Listeners\UnsuppressEmailAddress;
 use Vormkracht10\Mails\Managers\MailProviderManager;
 
 class MailsServiceProvider extends PackageServiceProvider
@@ -35,6 +37,8 @@ class MailsServiceProvider extends PackageServiceProvider
         $this->app['events']->listen(MailHardBounced::class, NotifyOnBounce::class);
 
         $this->app['events']->listen(MessageSending::class, StoreMailRelations::class);
+
+        $this->app['events']->listen(MailUnsuppressed::class, UnsuppressEmailAddress::class);
     }
 
     public function bootingPackage(): void
@@ -53,6 +57,7 @@ class MailsServiceProvider extends PackageServiceProvider
                 '2_create_mail_attachments_table',
                 '2_create_mail_events_table',
                 '2_create_mailables_table',
+                '3_add_unsuppressed_at_to_mail_events',
             )
             ->hasRoutes('webhooks')
             ->hasCommands(

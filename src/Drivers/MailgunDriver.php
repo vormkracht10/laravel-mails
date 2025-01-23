@@ -2,6 +2,7 @@
 
 namespace Vormkracht10\Mails\Drivers;
 
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
@@ -78,7 +79,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             return false;
         }
 
-        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'] . $payload['signature']['token'], config('services.mailgun.webhook_signing_key'));
+        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'].$payload['signature']['token'], config('services.mailgun.webhook_signing_key'));
 
         if (function_exists('hash_equals')) {
             return hash_equals($hmac, $payload['signature']['signature']);
@@ -126,5 +127,14 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             'link' => 'event-data.url',
             'tag' => 'tags',
         ];
+    }
+
+    public function unsuppressEmailAddress(string $address): Response
+    {
+        $client = Http::asJson()
+            ->withBasicAuth('api', config('services.mailgun.secret'))
+            ->baseUrl(config('services.mailgun.endpoint').'/v3/');
+
+        return $client->delete(config('services.mailgun.domain').'/unsubscribes/'.$address);
     }
 }
