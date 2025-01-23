@@ -2,13 +2,13 @@
 
 namespace Vormkracht10\Mails\Actions;
 
-use Vormkracht10\Mails\Shared\AsAction;
-use Symfony\Component\Mime\Address;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Collection;
-use Illuminate\Mail\Events\MessageSent;
-use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Mail\Events\MessageSending;
+use Illuminate\Mail\Events\MessageSent;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Mime\Address;
+use Vormkracht10\Mails\Shared\AsAction;
 
 class LogMail
 {
