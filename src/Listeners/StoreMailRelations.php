@@ -2,16 +2,12 @@
 
 namespace Vormkracht10\Mails\Listeners;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Events\MessageSending;
 use Symfony\Component\Mime\Email;
 
-class StoreMailRelations implements ShouldQueue
+class StoreMailRelations
 {
-    use Queueable;
-
     public function handle(MessageSending $event): void
     {
         $message = $event->message;
