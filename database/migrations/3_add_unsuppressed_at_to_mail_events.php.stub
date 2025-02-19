@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('mail_events', function (Blueprint $table): void {
+        Schema::table(config('mails.database.tables.events', 'mail_events'), function (Blueprint $table): void {
             $table->timestamp('unsuppressed_at')
                 ->nullable()
                 ->after('occurred_at');
         });
 
-        Schema::table('mails', function (Blueprint $table): void {
+        Schema::table(config('mails.database.tables.mails', 'mails'), function (Blueprint $table): void {
             $table->string('mailer')
                 ->after('uuid');
 
