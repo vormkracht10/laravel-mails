@@ -163,6 +163,11 @@ class Mail extends Model
         return $query->whereNotNull('hard_bounced_at');
     }
 
+    public function scopeBounced(Builder $query): Builder
+    {
+        return $query->where(fn ($query) => $query->softBounced()->orWhere(fn ($query) => $query->hardBounced()));
+    }
+
     public function scopeSent(Builder $query): Builder
     {
         return $query->whereNotNull('sent_at');
