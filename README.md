@@ -1,4 +1,4 @@
-# Keep track and view all sent emails in Laravel and get notified when something is wrong
+# Keep track of all events on sent emails in Laravel and get notified when something is wrong
 
 [![Total Downloads](https://img.shields.io/packagist/dt/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
 [![Tests](https://github.com/vormkracht10/laravel-mails/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/vormkracht10/laravel-mails/actions/workflows/run-tests.yml)
