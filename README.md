@@ -251,17 +251,17 @@ When you send emails within Laravel using the `Mail` Facade or using a `Mailable
 Depending on the mail provider, we send these events comming in from the webhooks of the email service provider.
 
 ```php
-\Vormkracht10\Mails\Events\MailAccepted::class,
-\Vormkracht10\Mails\Events\MailClicked::class,
-\Vormkracht10\Mails\Events\MailComplained::class,
-\Vormkracht10\Mails\Events\MailDelivered::class,
-\Vormkracht10\Mails\Events\MailEvent::class,
-\Vormkracht10\Mails\Events\MailEventLogged::class,
-\Vormkracht10\Mails\Events\MailHardBounced::class,
-\Vormkracht10\Mails\Events\MailOpened::class,
-\Vormkracht10\Mails\Events\MailResent::class,
-\Vormkracht10\Mails\Events\MailSoftBounced::class,
-\Vormkracht10\Mails\Events\MailUnsubscribed::class,
+Vormkracht10\Mails\Events\MailAccepted::class,
+Vormkracht10\Mails\Events\MailClicked::class,
+Vormkracht10\Mails\Events\MailComplained::class,
+Vormkracht10\Mails\Events\MailDelivered::class,
+Vormkracht10\Mails\Events\MailEvent::class,
+Vormkracht10\Mails\Events\MailEventLogged::class,
+Vormkracht10\Mails\Events\MailHardBounced::class,
+Vormkracht10\Mails\Events\MailOpened::class,
+Vormkracht10\Mails\Events\MailResent::class,
+Vormkracht10\Mails\Events\MailSoftBounced::class,
+Vormkracht10\Mails\Events\MailUnsubscribed::class,
 ```
 
 ## Testing
