@@ -24,6 +24,7 @@ use Vormkracht10\Mails\Database\Factories\MailFactory;
  * @property-read array $bcc
  * @property int $opens
  * @property int $clicks
+ * @property-read array $tags
  * @property ?Carbon $sent_at
  * @property ?Carbon $delivered_at
  * @property ?Carbon $last_opened_at
@@ -64,6 +65,7 @@ class Mail extends Model
         'bcc',
         'opens',
         'clicks',
+        'tags',
         'sent_at',
         'resent_at',
         'delivered_at',
@@ -87,6 +89,7 @@ class Mail extends Model
         'bcc' => 'json',
         'opens' => 'integer',
         'clicks' => 'integer',
+        'tags' => 'json',
         'sent_at' => 'datetime',
         'resent_at' => 'datetime',
         'accepted_at' => 'datetime',
