@@ -3,14 +3,14 @@
 namespace Vormkracht10\Mails\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Vormkracht10\Mails\Events\MailLogged;
-use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\MassPrunable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Vormkracht10\Mails\Database\Factories\MailFactory;
+use Vormkracht10\Mails\Events\MailLogged;
 
 /**
  * @property-read string $uuid
@@ -116,7 +116,6 @@ class Mail extends Model
             event(MailLogged::class, $mail);
         });
     }
-    
 
     protected static function newFactory(): Factory
     {
