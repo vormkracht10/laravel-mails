@@ -49,8 +49,8 @@ class MailsServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
-        $migrations = collect(File::allFiles(__DIR__.'/../database/migrations'))
-            ->map(fn ($file) => str_replace('.php.stub', '', $file->getFilename()))
+        $migrations = collect(File::allFiles(__DIR__ . '/../database/migrations'))
+            ->map(fn ($file) => str_replace('.php.stub', '',$file->getFilename()))
             ->toArray();
 
         $package
