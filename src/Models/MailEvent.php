@@ -2,15 +2,15 @@
 
 namespace Vormkracht10\Mails\Models;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Vormkracht10\Mails\Enums\EventType;
+use Vormkracht10\Mails\Events\MailEventLogged;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 use Vormkracht10\Mails\Database\Factories\MailEventFactory;
-use Vormkracht10\Mails\Enums\EventType;
-use Vormkracht10\Mails\Events\MailEventLogged;
 
 /**
  * @property Mail $mail

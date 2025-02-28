@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Vormkracht10\Mails\Database\Factories\MailFactory;
-use Vormkracht10\Mails\Events\MailLogged;
 
 /**
  * @property-read string $uuid
@@ -25,7 +24,6 @@ use Vormkracht10\Mails\Events\MailLogged;
  * @property-read array $bcc
  * @property int $opens
  * @property int $clicks
- * @property-read array $tags
  * @property ?Carbon $sent_at
  * @property ?Carbon $delivered_at
  * @property ?Carbon $last_opened_at
@@ -66,7 +64,6 @@ class Mail extends Model
         'bcc',
         'opens',
         'clicks',
-        'tags',
         'sent_at',
         'resent_at',
         'delivered_at',
@@ -90,7 +87,6 @@ class Mail extends Model
         'bcc' => 'json',
         'opens' => 'integer',
         'clicks' => 'integer',
-        'tags' => 'json',
         'sent_at' => 'datetime',
         'resent_at' => 'datetime',
         'accepted_at' => 'datetime',

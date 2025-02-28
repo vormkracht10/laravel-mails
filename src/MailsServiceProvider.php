@@ -4,7 +4,6 @@ namespace Vormkracht10\Mails;
 
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
-use Illuminate\Support\Facades\File;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Vormkracht10\Mails\Commands\CheckBounceRateCommand;
@@ -49,15 +48,17 @@ class MailsServiceProvider extends PackageServiceProvider
 
     public function configurePackage(Package $package): void
     {
-        $migrations = collect(File::allFiles(__DIR__.'/../database/migrations'))
-            ->map(fn ($file) => str_replace('.php.stub', '', $file->getFilename()))
-            ->toArray();
-
         $package
             ->name('laravel-mails')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigrations($migrations)
+            ->hasMigrations(
+                '1_create_mails_table',
+                '2_create_mail_attachments_table',
+                '2_create_mail_events_table',
+                '2_create_mailables_table',
+                '3_add_unsuppressed_at_to_mail_events',
+            )
             ->hasRoutes('webhooks')
             ->hasCommands(
                 MonitorMailCommand::class,
