@@ -106,6 +106,13 @@ class Mail extends Model
         return config('mails.database.tables.mails');
     }
 
+    protected static function booted(): void
+    {
+        static::created(function (Mail $mail) {
+            event(MailLogged::class, $mail);
+        });
+    }
+
     protected static function newFactory(): Factory
     {
         return MailFactory::new();
