@@ -6,6 +6,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Vormkracht10\Mails\Models\Mail;
+use Vormkracht10\Mails\Models\MailEvent;
 
 class MailLogged
 {
