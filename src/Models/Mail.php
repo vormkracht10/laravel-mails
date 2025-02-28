@@ -112,7 +112,7 @@ class Mail extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Mail $mail) {
+        static::created(function (Mail $mail) {
             event(MailLogged::class, $mail);
         });
     }
