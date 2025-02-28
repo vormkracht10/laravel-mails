@@ -71,9 +71,6 @@ class LogMail
             'bcc' => $this->getAddressesValue($event->message->getBcc()),
             'html' => $event->message->getHtmlBody(),
             'text' => $event->message->getTextBody(),
-            'tags' => collect($event->message->getHeaders()->all('X-tag'))
-                ->map(fn($tag) => $tag->getValue())
-                ->toArray(),
         ];
     }
 
@@ -119,7 +116,7 @@ class LogMail
     protected function getAddressesValue(array $address): ?Collection
     {
         $addresses = collect($address)
-            ->flatMap(fn(Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
+            ->flatMap(fn (Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
 
         return $addresses->count() > 0 ? $addresses : null;
     }
