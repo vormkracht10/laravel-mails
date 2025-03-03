@@ -7,6 +7,7 @@ use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Mime\Address;
+use Vormkracht10\Mails\Enums\Provider;
 use Vormkracht10\Mails\Shared\AsAction;
 
 class LogMail
@@ -72,14 +73,14 @@ class LogMail
             'html' => $event->message->getHtmlBody(),
             'text' => $event->message->getTextBody(),
             'tags' => collect($event->message->getHeaders()->all('X-tag'))
-            ->map(fn ($tag) => $tag->getValue())
-            ->toArray(),
+                ->map(fn ($tag) => $tag->getValue())
+                ->toArray(),
         ];
     }
 
     protected function getStreamId(MessageSending|MessageSent $event): ?string
     {
-        if ($event->data['mailer'] !== 'postmark') {
+        if ($event->data['mailer'] !== Provider::POSTMARK) {
             return null;
         }
 

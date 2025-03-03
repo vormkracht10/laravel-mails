@@ -3,10 +3,12 @@
 namespace Vormkracht10\Mails\Drivers;
 
 use Illuminate\Http\Client\Response;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
 use Vormkracht10\Mails\Contracts\MailDriverContract;
 use Vormkracht10\Mails\Enums\EventType;
+use Vormkracht10\Mails\Enums\Provider;
 
 class PostmarkDriver extends MailDriver implements MailDriverContract
 {
@@ -38,7 +40,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             ],
         ];
 
-        $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => 'postmark']);
+        $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]);
 
         $token = (string) config('services.postmark.token');
 
@@ -100,6 +102,13 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
         return true;
     }
 
+    public function attachUuidToMail(MessageSending $event, string $uuid): MessageSending
+    {
+        $event->message->getHeaders()->addTextHeader('X-PM-Metadata-'.config('mails.headers.uuid'), $uuid);
+
+        return $event;
+    }
+
     public function getUuidFromPayload(array $payload): ?string
     {
         return $payload['Metadata'][$this->uuidHeaderName] ??
@@ -150,12 +159,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             ->baseUrl('https://api.postmarkapp.com/');
 
         return $client->post('message-streams/'.$stream_id.'/suppressions/delete', [
-            'Suppressions' => [
-                [
-                    'emailAddress' => $address,
-                ],
-            ],
+            'Suppressions' => [['emailAddress' => $address]],
         ]);
-
     }
 }

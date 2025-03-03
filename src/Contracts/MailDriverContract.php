@@ -2,6 +2,7 @@
 
 namespace Vormkracht10\Mails\Contracts;
 
+use Illuminate\Mail\Events\MessageSending;
 use Vormkracht10\Mails\Models\Mail;
 
 interface MailDriverContract
@@ -9,6 +10,8 @@ interface MailDriverContract
     public function registerWebhooks($components): void;
 
     public function verifyWebhookSignature(array $payload): bool;
+
+    public function attachUuidToMail(MessageSending $event, string $uuid): MessageSending;
 
     public function getUuidFromPayload(array $payload): ?string;
 
