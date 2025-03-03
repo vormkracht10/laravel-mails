@@ -2,10 +2,12 @@
 
 namespace Vormkracht10\Mails;
 
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use SplFileInfo;
 use Vormkracht10\Mails\Commands\CheckBounceRateCommand;
 use Vormkracht10\Mails\Commands\MonitorMailCommand;
 use Vormkracht10\Mails\Commands\PruneMailCommand;
@@ -32,12 +34,10 @@ class MailsServiceProvider extends PackageServiceProvider
 
         $this->app['events']->listen(MessageSending::class, AttachMailLogUuid::class);
         $this->app['events']->listen(MessageSending::class, LogSendingMail::class);
-        $this->app['events']->listen(MessageSent::class, LogSentMail::class);
-
-        $this->app['events']->listen(MailHardBounced::class, NotifyOnBounce::class);
-
         $this->app['events']->listen(MessageSending::class, StoreMailRelations::class);
 
+        $this->app['events']->listen(MessageSent::class, LogSentMail::class);
+        $this->app['events']->listen(MailHardBounced::class, NotifyOnBounce::class);
         $this->app['events']->listen(MailUnsuppressed::class, UnsuppressEmailAddress::class);
     }
 
@@ -52,13 +52,7 @@ class MailsServiceProvider extends PackageServiceProvider
             ->name('laravel-mails')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigrations(
-                '1_create_mails_table',
-                '2_create_mail_attachments_table',
-                '2_create_mail_events_table',
-                '2_create_mailables_table',
-                '3_add_unsuppressed_at_to_mail_events',
-            )
+            ->hasMigrations($this->getMigrations())
             ->hasRoutes('webhooks')
             ->hasCommands(
                 MonitorMailCommand::class,
@@ -67,5 +61,15 @@ class MailsServiceProvider extends PackageServiceProvider
                 WebhooksMailCommand::class,
                 CheckBounceRateCommand::class,
             );
+    }
+
+    /**
+     * @return array<string>
+     */
+    protected function getMigrations(): array
+    {
+        return collect(app(Filesystem::class)->files(__DIR__.'/../database/migrations'))
+            ->map(fn (SplFileInfo $file) => str_replace('.php.stub', '', $file->getBasename()))
+            ->toArray();
     }
 }

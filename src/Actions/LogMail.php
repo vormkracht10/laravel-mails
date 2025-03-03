@@ -53,6 +53,10 @@ class LogMail
         return collect($this->getDefaultLogAttributes($event))
             ->only($this->getConfiguredAttributes())
             ->merge($this->getMandatoryAttributes($event))
+            ->merge([
+                'mailer' => $event->data['mailer'],
+                'transport' => config('mail.mailers.'.$event->data['mailer'].'.transport'),
+            ])
             ->toArray();
     }
 
@@ -72,9 +76,7 @@ class LogMail
             'bcc' => $this->getAddressesValue($event->message->getBcc()),
             'html' => $event->message->getHtmlBody(),
             'text' => $event->message->getTextBody(),
-            'tags' => collect($event->message->getHeaders()->all('X-tag'))
-                ->map(fn ($tag) => $tag->getValue())
-                ->toArray(),
+            'tags' => collect($event->message->getHeaders()->all('X-tag'))->map(fn ($tag) => $tag->getValue())->toArray(),
         ];
     }
 

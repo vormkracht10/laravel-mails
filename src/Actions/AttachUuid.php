@@ -17,6 +17,11 @@ class AttachUuid
 
         $event->message->getHeaders()->addTextHeader(config('mails.headers.uuid'), $uuid);
 
-        $event = MailProvider::with($event->data['mailer'])->attachUuidToMail($event, $uuid);
+        $event = MailProvider::with($this->getProvider($event))->attachUuidToMail($event, $uuid);
+    }
+
+    public function getProvider(MessageSending $event): string
+    {
+        return config('mail.mailers.'.$event->data['mailer'].'.transport') ?? $event->data['mailer'];
     }
 }

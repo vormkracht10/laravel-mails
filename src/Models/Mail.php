@@ -14,6 +14,8 @@ use Vormkracht10\Mails\Events\MailLogged;
 
 /**
  * @property-read string $uuid
+ * @property-read string $mailer
+ * @property-read string $transport
  * @property-read string $mail_class
  * @property-read string $subject
  * @property-read string $html
@@ -54,6 +56,7 @@ class Mail extends Model
     protected $fillable = [
         'uuid',
         'mailer',
+        'transport',
         'stream_id',
         'mail_class',
         'subject',
@@ -81,6 +84,7 @@ class Mail extends Model
         'id' => 'integer',
         'uuid' => 'string',
         'mailer' => 'string',
+        'transport' => 'string',
         'stream_id' => 'string',
         'subject' => 'string',
         'from' => 'json',

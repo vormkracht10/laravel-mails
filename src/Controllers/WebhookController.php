@@ -10,20 +10,17 @@ use Vormkracht10\Mails\Facades\MailProvider;
 
 class WebhookController
 {
-    public function __invoke(Request $request, string $driver): Response
+    public function __invoke(Request $request, string $provider): Response
     {
-        if (! in_array($driver, array_column(Provider::cases(), 'value'))) {
+        if (! in_array($provider, array_column(Provider::cases(), 'value'))) {
             return response('Unknown provider.', status: 400);
         }
 
-        if (! MailProvider::with($driver)->verifyWebhookSignature($request->all())) {
+        if (! MailProvider::with($provider)->verifyWebhookSignature($request->all())) {
             return response('Invalid signature.', status: 400);
         }
 
-        MailEvent::dispatch(
-            $driver,
-            $request->except('signature')
-        );
+        MailEvent::dispatch($provider, $request->except('signature'));
 
         return response('Event processed.', status: 202);
     }

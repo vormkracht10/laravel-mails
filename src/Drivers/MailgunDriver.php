@@ -64,7 +64,8 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             if ($response->successful()) {
                 $components->info("Created Mailgun webhook for: $event");
             } elseif ($message === 'Webhook already exists') {
-                $components->info("Mailgun webhook already exists for: $event");
+                $components->warn("A Mailgun webhook already exists for: $event");
+                $components->info("Please make sure that it is: $webhookUrl");
             } else {
                 $components->warn("Failed to create Mailgun webhook for: $event");
                 $components->error($message);
@@ -100,7 +101,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
 
     public function getUuidFromPayload(array $payload): ?string
     {
-        return $payload['event-data']['user-variables'][config('mails.headers.uuid')] ?? null;
+        return $payload['event-data']['user-variables'][$this->uuidHeaderName] ?? null;
     }
 
     protected function getTimestampFromPayload(array $payload): string

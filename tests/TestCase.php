@@ -3,8 +3,10 @@
 namespace Vormkracht10\Mails\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Filesystem\Filesystem;
 use NotificationChannels\Discord\DiscordServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use SplFileInfo;
 use Vormkracht10\Mails\MailsServiceProvider;
 
 class TestCase extends Orchestra
@@ -33,19 +35,7 @@ class TestCase extends Orchestra
             'queue.default' => 'sync',
         ]);
 
-        $migration = require __DIR__.'/../database/migrations/1_create_mails_table.php.stub';
-        $migration->up();
-
-        $migration = require __DIR__.'/../database/migrations/2_create_mail_attachments_table.php.stub';
-        $migration->up();
-
-        $migration = require __DIR__.'/../database/migrations/2_create_mail_events_table.php.stub';
-        $migration->up();
-
-        $migration = require __DIR__.'/../database/migrations/2_create_mailables_table.php.stub';
-        $migration->up();
-
-        $migration = require __DIR__.'/../database/migrations/3_add_unsuppressed_at_to_mail_events.php.stub';
-        $migration->up();
+        collect(app(Filesystem::class)->files(__DIR__.'/../database/migrations/'))
+            ->map(fn (SplFileInfo $file) => require __DIR__.'/../database/migrations/'.$file->getBasename());
     }
 }
