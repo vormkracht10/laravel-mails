@@ -9,9 +9,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table(config('mails.database.tables.mails'), function (Blueprint $table) {
-          $table->after('clicks', function (Blueprint $table) {
-              $table->json('tags')->nullable();
-          });
+            $table->after('clicks', function (Blueprint $table) {
+                $table->json('tags')->nullable();
+            });
         });
     }
 };
