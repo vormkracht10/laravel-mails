@@ -15,7 +15,7 @@ class AttachUuid
     {
         $provider = $this->getProvider($event);
 
-        if($this->shouldTrackMails($provider)) {
+        if (! $this->shouldTrackMails($provider)) {
             return;
         }
 
