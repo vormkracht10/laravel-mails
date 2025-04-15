@@ -5,6 +5,7 @@ namespace Vormkracht10\Mails\Managers;
 use Illuminate\Support\Manager;
 use Vormkracht10\Mails\Drivers\MailgunDriver;
 use Vormkracht10\Mails\Drivers\PostmarkDriver;
+use Vormkracht10\Mails\Drivers\SesDriver;
 
 class MailProviderManager extends Manager
 {
@@ -21,6 +22,11 @@ class MailProviderManager extends Manager
     protected function createMailgunDriver(): MailgunDriver
     {
         return new MailgunDriver;
+    }
+
+    protected function createSesDriver(): SesDriver
+    {
+        return new SesDriver;
     }
 
     public function getDefaultDriver(): ?string
