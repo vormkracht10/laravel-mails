@@ -2,6 +2,7 @@
 
 namespace Vormkracht10\Mails\Controllers;
 
+use Aws\Sns\Message;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Vormkracht10\Mails\Enums\Provider;
@@ -15,6 +16,8 @@ class WebhookController
         if (! in_array($provider, array_column(Provider::cases(), 'value'))) {
             return response('Unknown provider.', status: 400);
         }
+
+        file_put_contents(storage_path('logs/request.json'), json_encode($request->all(), JSON_PRETTY_PRINT));
 
         if (! MailProvider::with($provider)->verifyWebhookSignature($request->all())) {
             return response('Invalid signature.', status: 400);
