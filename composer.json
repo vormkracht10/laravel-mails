@@ -34,7 +34,13 @@
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^11.0"
+        "phpunit/phpunit": "^11.0",
+        "aws/aws-sdk-php": "^3.342",
+        "aws/aws-php-sns-message-validator": "^1.10"
+    },
+    "suggest": {
+        "aws/aws-php-sns-message-validator": "Required when using Amazon SES",
+        "aws/aws-sdk-php": "Required when using Amazon SES, also required by Laravel"
     },
     "autoload": {
         "psr-4": {
