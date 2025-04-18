@@ -27,7 +27,7 @@ class ResendDriver extends MailDriver implements MailDriverContract
         /**
          * Configuration for webhooks are only available in dashboard
          */
-        if (!class_exists('Resend\Laravel\ResendServiceProvider')) {
+        if (! class_exists('Resend\Laravel\ResendServiceProvider')) {
             throw new LaravelResendException('Unable to find Laravel Resend Package');
         }
 
@@ -86,42 +86,42 @@ class ResendDriver extends MailDriver implements MailDriverContract
 
     public function clicked(Mail $mail, string $timestamp): void
     {
-        if (!empty($this->trackingConfig['clicks']) && $this->trackingConfig['clicks']) {
+        if (! empty($this->trackingConfig['clicks']) && $this->trackingConfig['clicks']) {
             parent::clicked($mail, $timestamp);
         }
     }
 
     public function complained(Mail $mail, string $timestamp): void
     {
-        if (!empty($this->trackingConfig['complaints']) && $this->trackingConfig['complaints']) {
+        if (! empty($this->trackingConfig['complaints']) && $this->trackingConfig['complaints']) {
             parent::complained($mail, $timestamp);
         }
     }
 
     public function delivered(Mail $mail, string $timestamp): void
     {
-        if (!empty($this->trackingConfig['deliveries']) && $this->trackingConfig['deliveries']) {
+        if (! empty($this->trackingConfig['deliveries']) && $this->trackingConfig['deliveries']) {
             parent::delivered($mail, $timestamp);
         }
     }
 
     public function hardBounced(Mail $mail, string $timestamp): void
     {
-        if (!empty($this->trackingConfig['bounces']) && $this->trackingConfig['bounces']) {
+        if (! empty($this->trackingConfig['bounces']) && $this->trackingConfig['bounces']) {
             parent::hardBounced($mail, $timestamp);
         }
     }
 
     public function softBounced(Mail $mail, string $timestamp): void
     {
-        if (!empty($this->trackingConfig['bounces']) && $this->trackingConfig['bounces']) {
+        if (! empty($this->trackingConfig['bounces']) && $this->trackingConfig['bounces']) {
             parent::softBounced($mail, $timestamp);
         }
     }
 
     public function opened(Mail $mail, string $timestamp): void
     {
-        if (!empty($this->trackingConfig['opened']) && $this->trackingConfig['opened']) {
+        if (! empty($this->trackingConfig['opened']) && $this->trackingConfig['opened']) {
             parent::softBounced($mail, $timestamp);
         }
     }

@@ -54,7 +54,7 @@ class MailsServiceProvider extends PackageServiceProvider
 
     public function bootingPackage(): void
     {
-        $this->app->singleton(MailProviderContract::class, fn($app) => new MailProviderManager($app));
+        $this->app->singleton(MailProviderContract::class, fn ($app) => new MailProviderManager($app));
     }
 
     public function configurePackage(Package $package): void
@@ -79,8 +79,8 @@ class MailsServiceProvider extends PackageServiceProvider
      */
     protected function getMigrations(): array
     {
-        return collect(app(Filesystem::class)->files(__DIR__ . '/../database/migrations'))
-            ->map(fn(SplFileInfo $file) => str_replace('.php.stub', '', $file->getBasename()))
+        return collect(app(Filesystem::class)->files(__DIR__.'/../database/migrations'))
+            ->map(fn (SplFileInfo $file) => str_replace('.php.stub', '', $file->getBasename()))
             ->toArray();
     }
 }
