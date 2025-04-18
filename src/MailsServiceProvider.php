@@ -22,6 +22,7 @@ use Vormkracht10\Mails\Listeners\LogMailEvent;
 use Vormkracht10\Mails\Listeners\LogSendingMail;
 use Vormkracht10\Mails\Listeners\LogSentMail;
 use Vormkracht10\Mails\Listeners\NotifyOnBounce;
+use Vormkracht10\Mails\Listeners\ResendLogMailEvent;
 use Vormkracht10\Mails\Listeners\StoreMailRelations;
 use Vormkracht10\Mails\Listeners\UnsuppressEmailAddress;
 use Vormkracht10\Mails\Managers\MailProviderManager;
@@ -39,11 +40,21 @@ class MailsServiceProvider extends PackageServiceProvider
         $this->app['events']->listen(MessageSent::class, LogSentMail::class);
         $this->app['events']->listen(MailHardBounced::class, NotifyOnBounce::class);
         $this->app['events']->listen(MailUnsuppressed::class, UnsuppressEmailAddress::class);
+
+        if (class_exists('Resend\Laravel\ResendServiceProvider')) {
+            $this->app['events']->listen('Resend\Laravel\Events\EmailSent', ResendLogMailEvent::class);
+            $this->app['events']->listen('Resend\Laravel\Events\EmailBounced', ResendLogMailEvent::class);
+            $this->app['events']->listen('Resend\Laravel\Events\EmailClicked', ResendLogMailEvent::class);
+            $this->app['events']->listen('Resend\Laravel\Events\EmailComplained', ResendLogMailEvent::class);
+            $this->app['events']->listen('Resend\Laravel\Events\EmailDelivered', ResendLogMailEvent::class);
+            $this->app['events']->listen('Resend\Laravel\Events\EmailDeliveredDelayed ', ResendLogMailEvent::class);
+            $this->app['events']->listen('Resend\Laravel\Events\EmailOpened', ResendLogMailEvent::class);
+        }
     }
 
     public function bootingPackage(): void
     {
-        $this->app->singleton(MailProviderContract::class, fn ($app) => new MailProviderManager($app));
+        $this->app->singleton(MailProviderContract::class, fn($app) => new MailProviderManager($app));
     }
 
     public function configurePackage(Package $package): void
@@ -68,8 +79,8 @@ class MailsServiceProvider extends PackageServiceProvider
      */
     protected function getMigrations(): array
     {
-        return collect(app(Filesystem::class)->files(__DIR__.'/../database/migrations'))
-            ->map(fn (SplFileInfo $file) => str_replace('.php.stub', '', $file->getBasename()))
+        return collect(app(Filesystem::class)->files(__DIR__ . '/../database/migrations'))
+            ->map(fn(SplFileInfo $file) => str_replace('.php.stub', '', $file->getBasename()))
             ->toArray();
     }
 }
