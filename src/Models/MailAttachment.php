@@ -64,4 +64,14 @@ class MailAttachment extends Model
     {
         return Storage::disk($this->disk)->get($this->storagePath);
     }
+
+    public function downloadFileFromStorage(?string $filename = null): string
+    {
+        return Storage::disk($this->disk)
+            ->download(
+                $this->storagePath,
+                $filename ?? $this->filename, [
+                'Content-Type' => $this->mime,
+            ]);
+    }
 }
