@@ -138,7 +138,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
         ];
     }
 
-    public function unsuppressEmailAddress(string $address): Response
+    public function unsuppressEmailAddress(string $address, ?int $stream_id = null): Response
     {
         $client = Http::asJson()
             ->withBasicAuth('api', config('services.mailgun.secret'))

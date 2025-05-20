@@ -150,7 +150,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
         ];
     }
 
-    public function unsuppressEmailAddress(string $address, $stream_id): Response
+    public function unsuppressEmailAddress(string $address, ?int $stream_id = null): Response
     {
         $client = Http::asJson()
             ->withHeaders([
