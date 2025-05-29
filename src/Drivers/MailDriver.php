@@ -5,6 +5,7 @@ namespace Vormkracht10\Mails\Drivers;
 use Exception;
 use Illuminate\Support\Str;
 use Vormkracht10\Mails\Models\Mail;
+use Vormkracht10\Mails\Exceptions\UnknownEventTypeException;
 
 abstract class MailDriver
 {
@@ -56,7 +57,7 @@ abstract class MailDriver
             }
         }
 
-        throw new Exception('Unknown event type');
+        throw new UnknownEventTypeException('Unknown event type ' .  data_get($payload, 'RecordType', ''));
     }
 
     public function logMailEvent($payload): void
