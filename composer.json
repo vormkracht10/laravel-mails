@@ -1,12 +1,12 @@
 {
-    "name": "vormkracht10/laravel-mails",
+    "name": "backstagephp/laravel-mails",
     "description": "Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app.",
     "keywords": [
-        "vormkracht10",
+        "backstagephp",
         "laravel",
         "laravel-mails"
     ],
-    "homepage": "https://github.com/vormkracht10/laravel-mails",
+    "homepage": "https://github.com/backstagephp/laravel-mails",
     "license": "MIT",
     "authors": [
         {
@@ -38,13 +38,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Vormkracht10\\Mails\\": "src",
-            "Vormkracht10\\Mails\\Database\\Factories\\": "database/factories"
+            "Backstage\\Mails\\": "src",
+            "Backstage\\Mails\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Vormkracht10\\Mails\\Tests\\": "tests"
+            "Backstage\\Mails\\Tests\\": "tests"
         },
         "files": [
             "helpers.php"
@@ -68,7 +68,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Vormkracht10\\Mails\\MailsServiceProvider"
+                "Backstage\\Mails\\MailsServiceProvider"
             ]
         }
     },

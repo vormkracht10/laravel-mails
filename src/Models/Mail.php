@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Models;
+namespace Backstage\Mails\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Vormkracht10\Mails\Database\Factories\MailFactory;
-use Vormkracht10\Mails\Events\MailLogged;
+use Backstage\Mails\Database\Factories\MailFactory;
+use Backstage\Mails\Events\MailLogged;
 
 /**
  * @property-read string $uuid

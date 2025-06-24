@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Listeners;
+namespace Backstage\Mails\Listeners;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Events\MessageSending;

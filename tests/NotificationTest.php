@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Notification;
-use Vormkracht10\Mails\Models\Mail;
-use Vormkracht10\Mails\Notifications\BounceNotification;
+use Backstage\Mails\Models\Mail;
+use Backstage\Mails\Notifications\BounceNotification;
 
 beforeEach(fn () => config([
     'mails.events.bounce.notify' => [

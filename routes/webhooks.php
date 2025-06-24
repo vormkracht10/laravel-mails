@@ -2,7 +2,7 @@
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
-use Vormkracht10\Mails\Controllers\WebhookController;
+use Backstage\Mails\Controllers\WebhookController;
 
 Route::withoutMiddleware(VerifyCsrfToken::class)
     ->prefix(config('mails.webhooks.routes.prefix'))

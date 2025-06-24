@@ -1,9 +1,9 @@
 <?php
 
-namespace Vormkracht10\Mails\Database\Factories;
+namespace Backstage\Mails\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Vormkracht10\Mails\Models\Mail;
+use Backstage\Mails\Models\Mail;
 
 class MailFactory extends Factory
 {

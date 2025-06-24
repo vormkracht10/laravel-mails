@@ -1,12 +1,12 @@
 <?php
 
-namespace Vormkracht10\Mails\Controllers;
+namespace Backstage\Mails\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Vormkracht10\Mails\Enums\Provider;
-use Vormkracht10\Mails\Events\MailEvent;
-use Vormkracht10\Mails\Facades\MailProvider;
+use Backstage\Mails\Enums\Provider;
+use Backstage\Mails\Events\MailEvent;
+use Backstage\Mails\Facades\MailProvider;
 
 class WebhookController
 {

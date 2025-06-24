@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\Mails\Actions;
+namespace Backstage\Mails\Actions;
 
-use Vormkracht10\Mails\Notifications\HighBounceRateNotification;
-use Vormkracht10\Mails\Shared\AsAction;
-use Vormkracht10\Mails\Traits\SendsNotifications;
+use Backstage\Mails\Notifications\HighBounceRateNotification;
+use Backstage\Mails\Shared\AsAction;
+use Backstage\Mails\Traits\SendsNotifications;
 
 class SendHighBounceRateNotifications
 {

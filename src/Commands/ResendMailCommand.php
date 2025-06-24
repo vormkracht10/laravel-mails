@@ -1,11 +1,11 @@
 <?php
 
-namespace Vormkracht10\Mails\Commands;
+namespace Backstage\Mails\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
-use Vormkracht10\Mails\Jobs\ResendMailJob;
-use Vormkracht10\Mails\Models\Mail;
+use Backstage\Mails\Jobs\ResendMailJob;
+use Backstage\Mails\Models\Mail;
 
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\text;

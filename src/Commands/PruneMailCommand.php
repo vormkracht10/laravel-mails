@@ -1,9 +1,9 @@
 <?php
 
-namespace Vormkracht10\Mails\Commands;
+namespace Backstage\Mails\Commands;
 
 use Illuminate\Console\Command;
-use Vormkracht10\Mails\Models\Mail;
+use Backstage\Mails\Models\Mail;
 
 class PruneMailCommand extends Command
 {

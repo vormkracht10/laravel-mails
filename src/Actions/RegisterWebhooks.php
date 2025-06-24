@@ -1,11 +1,11 @@
 <?php
 
-namespace Vormkracht10\Mails\Actions;
+namespace Backstage\Mails\Actions;
 
 use Illuminate\Console\Concerns\InteractsWithIO;
 use Illuminate\Console\View\Components\Factory;
-use Vormkracht10\Mails\Facades\MailProvider;
-use Vormkracht10\Mails\Shared\AsAction;
+use Backstage\Mails\Facades\MailProvider;
+use Backstage\Mails\Shared\AsAction;
 
 class RegisterWebhooks
 {

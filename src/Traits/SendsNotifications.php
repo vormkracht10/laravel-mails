@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Traits;
+namespace Backstage\Mails\Traits;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Notification as Notifications;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Jobs;
+namespace Backstage\Mails\Jobs;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Bus\Queueable;
@@ -10,7 +10,7 @@ use Illuminate\Mail\Message;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
-use Vormkracht10\Mails\Models\Mail as Mailable;
+use Backstage\Mails\Models\Mail as Mailable;
 
 class ResendMailJob implements ShouldQueue
 {

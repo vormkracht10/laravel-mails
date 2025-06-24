@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Shared;
+namespace Backstage\Mails\Shared;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\OutputStyle;
