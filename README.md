@@ -51,7 +51,7 @@ It can show all information about the emails and events in a beautiful UI:
 First install the package via composer:
 
 ```bash
-composer require backstagephp/laravel-mails
+composer require backstage/laravel-mails
 ```
 
 Then you can publish and run the migrations with:
