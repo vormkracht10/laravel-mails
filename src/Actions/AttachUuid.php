@@ -1,11 +1,11 @@
 <?php
 
-namespace Vormkracht10\Mails\Actions;
+namespace Backstage\Mails\Actions;
 
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Str;
-use Vormkracht10\Mails\Facades\MailProvider;
-use Vormkracht10\Mails\Shared\AsAction;
+use Backstage\Mails\Facades\MailProvider;
+use Backstage\Mails\Shared\AsAction;
 
 class AttachUuid
 {
@@ -39,7 +39,7 @@ class AttachUuid
 
     public function driverExistsForProvider(string $provider): bool
     {
-        return class_exists('Vormkracht10\\Mails\\Drivers\\'.ucfirst($provider).'Driver');
+        return class_exists('Backstage\\Mails\\Drivers\\'.ucfirst($provider).'Driver');
     }
 
     public function trackingEnabled(): bool

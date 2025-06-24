@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Notifications;
+namespace Backstage\Mails\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,8 +9,8 @@ use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Telegram\TelegramMessage;
-use Vormkracht10\Mails\Models\Mail;
-use Vormkracht10\Mails\Traits\HasDynamicDrivers;
+use Backstage\Mails\Models\Mail;
+use Backstage\Mails\Traits\HasDynamicDrivers;
 
 class BounceNotification extends Notification implements ShouldQueue
 {

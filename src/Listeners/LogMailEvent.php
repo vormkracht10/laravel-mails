@@ -1,9 +1,9 @@
 <?php
 
-namespace Vormkracht10\Mails\Listeners;
+namespace Backstage\Mails\Listeners;
 
-use Vormkracht10\Mails\Events\MailEvent;
-use Vormkracht10\Mails\Facades\MailProvider;
+use Backstage\Mails\Events\MailEvent;
+use Backstage\Mails\Facades\MailProvider;
 
 class LogMailEvent
 {

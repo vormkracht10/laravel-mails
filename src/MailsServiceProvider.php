@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails;
+namespace Backstage\Mails;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Mail\Events\MessageSending;
@@ -8,23 +8,23 @@ use Illuminate\Mail\Events\MessageSent;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use SplFileInfo;
-use Vormkracht10\Mails\Commands\CheckBounceRateCommand;
-use Vormkracht10\Mails\Commands\MonitorMailCommand;
-use Vormkracht10\Mails\Commands\PruneMailCommand;
-use Vormkracht10\Mails\Commands\ResendMailCommand;
-use Vormkracht10\Mails\Commands\WebhooksMailCommand;
-use Vormkracht10\Mails\Contracts\MailProviderContract;
-use Vormkracht10\Mails\Events\MailEvent;
-use Vormkracht10\Mails\Events\MailHardBounced;
-use Vormkracht10\Mails\Events\MailUnsuppressed;
-use Vormkracht10\Mails\Listeners\AttachMailLogUuid;
-use Vormkracht10\Mails\Listeners\LogMailEvent;
-use Vormkracht10\Mails\Listeners\LogSendingMail;
-use Vormkracht10\Mails\Listeners\LogSentMail;
-use Vormkracht10\Mails\Listeners\NotifyOnBounce;
-use Vormkracht10\Mails\Listeners\StoreMailRelations;
-use Vormkracht10\Mails\Listeners\UnsuppressEmailAddress;
-use Vormkracht10\Mails\Managers\MailProviderManager;
+use Backstage\Mails\Commands\CheckBounceRateCommand;
+use Backstage\Mails\Commands\MonitorMailCommand;
+use Backstage\Mails\Commands\PruneMailCommand;
+use Backstage\Mails\Commands\ResendMailCommand;
+use Backstage\Mails\Commands\WebhooksMailCommand;
+use Backstage\Mails\Contracts\MailProviderContract;
+use Backstage\Mails\Events\MailEvent;
+use Backstage\Mails\Events\MailHardBounced;
+use Backstage\Mails\Events\MailUnsuppressed;
+use Backstage\Mails\Listeners\AttachMailLogUuid;
+use Backstage\Mails\Listeners\LogMailEvent;
+use Backstage\Mails\Listeners\LogSendingMail;
+use Backstage\Mails\Listeners\LogSentMail;
+use Backstage\Mails\Listeners\NotifyOnBounce;
+use Backstage\Mails\Listeners\StoreMailRelations;
+use Backstage\Mails\Listeners\UnsuppressEmailAddress;
+use Backstage\Mails\Managers\MailProviderManager;
 
 class MailsServiceProvider extends PackageServiceProvider
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Vormkracht10\Mails\Listeners;
+namespace Backstage\Mails\Listeners;
 
 use Illuminate\Mail\Events\MessageSent;
-use Vormkracht10\Mails\Actions\LogMail;
+use Backstage\Mails\Actions\LogMail;
 
 class LogSentMail
 {

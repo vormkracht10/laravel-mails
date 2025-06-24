@@ -1,9 +1,9 @@
 <?php
 
-namespace Vormkracht10\Mails\Listeners;
+namespace Backstage\Mails\Listeners;
 
-use Vormkracht10\Mails\Events\MailUnsuppressed;
-use Vormkracht10\Mails\Facades\MailProvider;
+use Backstage\Mails\Events\MailUnsuppressed;
+use Backstage\Mails\Facades\MailProvider;
 
 class UnsuppressEmailAddress
 {

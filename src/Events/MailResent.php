@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Events;
+namespace Backstage\Mails\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;

@@ -1,9 +1,9 @@
 <?php
 
-namespace Vormkracht10\Mails\Contracts;
+namespace Backstage\Mails\Contracts;
 
 use Illuminate\Mail\Events\MessageSending;
-use Vormkracht10\Mails\Models\Mail;
+use Backstage\Mails\Models\Mail;
 
 interface MailDriverContract
 {

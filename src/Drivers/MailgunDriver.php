@@ -1,14 +1,14 @@
 <?php
 
-namespace Vormkracht10\Mails\Drivers;
+namespace Backstage\Mails\Drivers;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
-use Vormkracht10\Mails\Contracts\MailDriverContract;
-use Vormkracht10\Mails\Enums\EventType;
-use Vormkracht10\Mails\Enums\Provider;
+use Backstage\Mails\Contracts\MailDriverContract;
+use Backstage\Mails\Enums\EventType;
+use Backstage\Mails\Enums\Provider;
 
 class MailgunDriver extends MailDriver implements MailDriverContract
 {

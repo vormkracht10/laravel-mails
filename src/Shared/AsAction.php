@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Shared;
+namespace Backstage\Mails\Shared;
 
 trait AsAction
 {

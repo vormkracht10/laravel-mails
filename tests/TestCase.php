@@ -1,13 +1,13 @@
 <?php
 
-namespace Vormkracht10\Mails\Tests;
+namespace Backstage\Mails\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Filesystem\Filesystem;
 use NotificationChannels\Discord\DiscordServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use SplFileInfo;
-use Vormkracht10\Mails\MailsServiceProvider;
+use Backstage\Mails\MailsServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -16,7 +16,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Vormkracht10\\Mails\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Backstage\\Mails\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 

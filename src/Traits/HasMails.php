@@ -1,11 +1,11 @@
 <?php
 
-namespace Vormkracht10\Mails\Traits;
+namespace Backstage\Mails\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Vormkracht10\Mails\Models\Mail;
+use Backstage\Mails\Models\Mail;
 
 /**
  * @mixin Model

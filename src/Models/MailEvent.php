@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Models;
+namespace Backstage\Mails\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Vormkracht10\Mails\Database\Factories\MailEventFactory;
-use Vormkracht10\Mails\Enums\EventType;
-use Vormkracht10\Mails\Events\MailEventLogged;
+use Backstage\Mails\Database\Factories\MailEventFactory;
+use Backstage\Mails\Enums\EventType;
+use Backstage\Mails\Events\MailEventLogged;
 
 /**
  * @property Mail $mail
@@ -96,6 +96,6 @@ class MailEvent extends Model
 
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
+        return 'Backstage\Mails\Events\Mail'.Str::studly($this->type->value);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\Mails\Commands;
+namespace Backstage\Mails\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
-use Vormkracht10\Mails\Actions\RegisterWebhooks;
+use Backstage\Mails\Actions\RegisterWebhooks;
 
 class WebhooksMailCommand extends Command implements PromptsForMissingInput
 {

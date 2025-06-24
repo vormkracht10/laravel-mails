@@ -1,13 +1,13 @@
 # Keep track of all events on sent emails in Laravel and get notified when something is wrong
 
-[![Total Downloads](https://img.shields.io/packagist/dt/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
-[![Tests](https://github.com/vormkracht10/laravel-mails/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/vormkracht10/laravel-mails/actions/workflows/run-tests.yml)
-[![PHPStan](https://github.com/vormkracht10/laravel-mails/actions/workflows/phpstan.yml/badge.svg?branch=main)](https://github.com/vormkracht10/laravel-mails/actions/workflows/phpstan.yml)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/vormkracht10/laravel-mails)
-![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/vormkracht10/laravel-mails)
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
+[![Total Downloads](https://img.shields.io/packagist/dt/backstagephp/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/backstagephp/laravel-mails)
+[![Tests](https://github.com/backstagephp/laravel-mails/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/backstagephp/laravel-mails/actions/workflows/run-tests.yml)
+[![PHPStan](https://github.com/backstagephp/laravel-mails/actions/workflows/phpstan.yml/badge.svg?branch=main)](https://github.com/backstagephp/laravel-mails/actions/workflows/phpstan.yml)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/backstagephp/laravel-mails)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/backstagephp/laravel-mails)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/backstagephp/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/backstagephp/laravel-mails)
 
-## Nice to meet you, we're [Vormkracht10](https://vormkracht10.nl)
+## Nice to meet you, we're [Backstage](https://backstagephp.com)
 
 Hi! We are a web development agency from Nijmegen in the Netherlands and we use Laravel for everything: advanced websites with a lot of bells and whitles and large web applications.
 
@@ -31,27 +31,27 @@ Laravel Mails can collect everything you might want to track about the mails tha
 -   Get quickly and automatically notified when email hard/soft bounces or the bouncerate goes too high
 -   Prune all logged emails periodically to keep the database nice and slim
 -   Resend logged emails to another recipient
--   View all sent emails in the browser using complementary package [Filament Mails](https://github.com/vormkracht10/filament-mails)
+-   View all sent emails in the browser using complementary package [Filament Mails](https://github.com/backstagephp/filament-mails)
 
 ## Upcoming features
 
 -   We can write drivers for popular email service providers like Resend, SendGrid, Amazon SES and Mailtrap.
 -   Relate emails being send in Laravel directly to Eloquent models, for example the order confirmation email attached to an Order model.
 
-## Looking for a UI? We've got your back: [Filament Mails](https://github.com/vormkracht10/filament-mails)
+## Looking for a UI? We've got your back: [Filament Mails](https://github.com/backstagephp/filament-mails)
 
-We created a Laravel [Filament](https://filamentphp.com) plugin called [Filament Mails](https://github.com/vormkracht10/filament-mails) to easily view all data collected by this Laravel Mails package.
+We created a Laravel [Filament](https://filamentphp.com) plugin called [Filament Mails](https://github.com/backstagephp/filament-mails) to easily view all data collected by this Laravel Mails package.
 
 It can show all information about the emails and events in a beautiful UI:
 
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mails-list.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mails-list.png)
 
 ## Installation
 
 First install the package via composer:
 
 ```bash
-composer require vormkracht10/laravel-mails
+composer require backstage/laravel-mails
 ```
 
 Then you can publish and run the migrations with:
@@ -251,17 +251,17 @@ When you send emails within Laravel using the `Mail` Facade or using a `Mailable
 Depending on the mail provider, we send these events comming in from the webhooks of the email service provider.
 
 ```php
-Vormkracht10\Mails\Events\MailAccepted::class,
-Vormkracht10\Mails\Events\MailClicked::class,
-Vormkracht10\Mails\Events\MailComplained::class,
-Vormkracht10\Mails\Events\MailDelivered::class,
-Vormkracht10\Mails\Events\MailEvent::class,
-Vormkracht10\Mails\Events\MailEventLogged::class,
-Vormkracht10\Mails\Events\MailHardBounced::class,
-Vormkracht10\Mails\Events\MailOpened::class,
-Vormkracht10\Mails\Events\MailResent::class,
-Vormkracht10\Mails\Events\MailSoftBounced::class,
-Vormkracht10\Mails\Events\MailUnsubscribed::class,
+Backstage\Mails\Events\MailAccepted::class,
+Backstage\Mails\Events\MailClicked::class,
+Backstage\Mails\Events\MailComplained::class,
+Backstage\Mails\Events\MailDelivered::class,
+Backstage\Mails\Events\MailEvent::class,
+Backstage\Mails\Events\MailEventLogged::class,
+Backstage\Mails\Events\MailHardBounced::class,
+Backstage\Mails\Events\MailOpened::class,
+Backstage\Mails\Events\MailResent::class,
+Backstage\Mails\Events\MailSoftBounced::class,
+Backstage\Mails\Events\MailUnsubscribed::class,
 ```
 
 ## Testing

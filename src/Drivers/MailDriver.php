@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\Mails\Drivers;
+namespace Backstage\Mails\Drivers;
 
 use Exception;
 use Illuminate\Support\Str;
-use Vormkracht10\Mails\Models\Mail;
+use Backstage\Mails\Models\Mail;
 
 abstract class MailDriver
 {
