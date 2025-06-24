@@ -54,9 +54,9 @@ jobs:
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
           if [ "${{ matrix.php }}" = "8.1" ]; then
-            composer require "larastan/larastan:^2.0" --dev --no-interaction --no-update
+            composer require "larastan/larastan:^2.0" "phpstan/phpstan-deprecation-rules:^1.0" "phpstan/phpstan-phpunit:^1.0" --dev --no-interaction --no-update
           else
-            composer require "larastan/larastan:^3.0" --dev --no-interaction --no-update
+            composer require "larastan/larastan:^3.0" "phpstan/phpstan-deprecation-rules:^2.0" "phpstan/phpstan-phpunit:^2.0" --dev --no-interaction --no-update
           fi
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
