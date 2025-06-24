@@ -22,7 +22,7 @@
         "spatie/laravel-package-tools": "^1.15.0"
     },
     "require-dev": {
-        "larastan/larastan": "^3.0",
+        "larastan/larastan": "^2.0||^3.0",
         "laravel-notification-channels/discord": "^1.6",
         "laravel-notification-channels/telegram": "^4.0 || ^5.0 || ^6.0",
         "laravel/slack-notification-channel": "^2.5 || ^3.3.2",
