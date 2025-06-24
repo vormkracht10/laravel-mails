@@ -1,5 +1,5 @@
 {
-    "name": "backstagephp/laravel-mails",
+    "name": "backstage/laravel-mails",
     "description": "Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app.",
     "keywords": [
         "backstagephp",
