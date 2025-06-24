@@ -53,6 +53,11 @@ jobs:
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
+          if [ "${{ matrix.php }}" = "8.1" ]; then
+            composer require "larastan/larastan:^2.0" --dev --no-interaction --no-update
+          else
+            composer require "larastan/larastan:^3.0" --dev --no-interaction --no-update
+          fi
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: Execute tests
