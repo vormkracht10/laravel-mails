@@ -17,7 +17,7 @@ class WebhookController
         return response('Event processed.', status: 202);
     }
 
-    public static function handle(Request $request, string $provider): void
+    protected static function handle($request,  $provider): void
     {
         if (! in_array($provider, array_column(Provider::cases(), 'value'))) {
             return;
