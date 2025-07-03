@@ -19,7 +19,6 @@ return new class extends Migration
     {
         Schema::table(config('mails.database.tables.events', 'mail_events'), function (Blueprint $table) {
             $table->string('link')->change();
-
         });
     }
 };
