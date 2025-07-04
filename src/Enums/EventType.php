@@ -13,7 +13,7 @@ enum EventType: string
     case OPENED = 'opened';
     case UNSUBSCRIBED = 'unsubscribed';
 
-        // Others, Postmark specific
+    // Others, Postmark specific
     case TRANSIENT = 'transient';
     case UNSUBSCRIBE = 'unsubscribe';
     case SUBSCRIBE = 'subscribe';
@@ -34,6 +34,6 @@ enum EventType: string
     case INBOUND_ERROR = 'inbound_error';
     case DMARC_POLICY = 'dmarc_policy';
     case TEMPLATE_RENDERING_FAILED = 'template_rendering_failed';
-    
+
     case UNKNOWN = 'unknown';
 }
