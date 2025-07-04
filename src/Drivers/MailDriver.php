@@ -38,7 +38,7 @@ abstract class MailDriver
     public function getDataFromPayload(array $payload): array
     {
         return collect($this->dataMapping())
-            ->mapWithKeys(fn ($value, $key) => [$key => data_get($payload, $value)])
+            ->mapWithKeys(fn($value, $key) => [$key => data_get($payload, $value)])
             ->filter()
             ->merge([
                 'payload' => $payload,
@@ -51,7 +51,7 @@ abstract class MailDriver
     public function getEventFromPayload(array $payload): string
     {
         foreach ($this->eventMapping() as $event => $mapping) {
-            if (collect($mapping)->every(fn ($value, $key) => data_get($payload, $key) === $value)) {
+            if (collect($mapping)->every(fn($value, $key) => data_get($payload, $key) === $value)) {
                 return $event;
             }
         }
@@ -69,11 +69,11 @@ abstract class MailDriver
 
         $data = $this->getDataFromPayload($payload);
         $method = Str::camel($data['type']);
+        
+        // log mail event
+        $mail->events()->create($data);
 
         if (method_exists($this, $method)) {
-            // log mail event
-            $mail->events()->create($data);
-
             // update mail record with timestamp
             $this->{$method}($mail, $this->getTimestampFromPayload($payload));
         }
