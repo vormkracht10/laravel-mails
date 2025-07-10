@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table(config('mails.database.tables.events', 'mail_events'), function (Blueprint $table) {
-            $table->longText('link')->change();
+            $table->longText('link')->nullable()->change();
         });
         
     }
@@ -17,7 +17,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table(config('mails.database.tables.events', 'mail_events'), function (Blueprint $table) {
-            $table->string('link')->change();
+            $table->string('link')->nullable()->change();
         });
     }
 };
