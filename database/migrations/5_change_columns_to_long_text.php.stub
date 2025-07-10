@@ -9,8 +9,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table(config('mails.database.tables.mails'), function (Blueprint $table) {
-            $table->longText('html')->change();
-            $table->longText('text')->change();
+            $table->longText('html')->nullable()->change();
+            $table->longText('text')->nullable()->change();
         });
         
     }
@@ -18,8 +18,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table(config('mails.database.tables.mails'), function (Blueprint $table) {
-            $table->text('html')->change();
-            $table->text('text')->change();
+            $table->text('html')->nullable()->change();
+            $table->text('text')->nullable()->change();
         });
     }
 };
