@@ -5,16 +5,13 @@ namespace Backstage\Mails\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Backstage\Mails\Models\MailEvent;
 
-class MailEventLogged
+class MailUnsuppressed
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(
-        public MailEvent $mailEvent
-    ) {}
+    public function __construct(public string $emailAddress, public string $mailer, public ?string $stream_id = null) {}
 }

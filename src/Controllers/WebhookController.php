@@ -1,32 +1,26 @@
 <?php
 
-namespace Vormkracht10\Mails\Controllers;
+namespace Backstage\Mails\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
-use Vormkracht10\Mails\Enums\Provider;
-use Vormkracht10\Mails\Events\MailEvent;
-use Vormkracht10\Mails\Facades\MailProvider;
+use Backstage\Mails\Enums\Provider;
+use Backstage\Mails\Events\MailEvent;
+use Backstage\Mails\Facades\MailProvider;
 
 class WebhookController
 {
-    public function __invoke(Request $request, string $driver): Response
+    public function __invoke(Request $request, string $provider): Response
     {
-        if (! in_array($driver, array_column(Provider::cases(), 'value'))) {
+        if (! in_array($provider, array_column(Provider::cases(), 'value'))) {
             return response('Unknown provider.', status: 400);
         }
 
-        if (! MailProvider::with($driver)->verifyWebhookSignature($request->all())) {
+        if (! MailProvider::with($provider)->verifyWebhookSignature($request->all())) {
             return response('Invalid signature.', status: 400);
         }
 
-        Log::channel('single')->log('info', 'Webhook received', $request->all());
-
-        MailEvent::dispatch(
-            $driver,
-            $request->except('signature')
-        );
+        MailEvent::dispatch($provider, $request->except('signature'));
 
         return response('Event processed.', status: 202);
     }

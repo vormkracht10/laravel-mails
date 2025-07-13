@@ -1,11 +1,14 @@
 <?php
 
-namespace Vormkracht10\Mails\Drivers;
+namespace Backstage\Mails\Drivers;
 
+use Illuminate\Http\Client\Response;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
-use Vormkracht10\Mails\Contracts\MailDriverContract;
-use Vormkracht10\Mails\Enums\EventType;
+use Backstage\Mails\Contracts\MailDriverContract;
+use Backstage\Mails\Enums\EventType;
+use Backstage\Mails\Enums\Provider;
 
 class MailgunDriver extends MailDriver implements MailDriverContract
 {
@@ -18,7 +21,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
         $scheme = config('services.mailgun.scheme', 'https');
         $endpoint = config('services.mailgun.endpoint', 'api.mailgun.net');
 
-        $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => 'mailgun']);
+        $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]);
 
         $events = [];
 
@@ -59,11 +62,13 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             $message = $response->json()['message'] ?? null;
 
             if ($response->successful()) {
-                $components->info("Created Mailgun webhook for: $event ($message)");
+                $components->info("Created Mailgun webhook for: $event");
             } elseif ($message === 'Webhook already exists') {
-                $components->info("Mailgun webhook already exists for: $event");
+                $components->warn("A Mailgun webhook already exists for: $event");
+                $components->info("Please make sure that it is: $webhookUrl");
             } else {
-                $components->error("Failed to create Mailgun webhook for: $event");
+                $components->warn("Failed to create Mailgun webhook for: $event");
+                $components->error($message);
             }
         }
     }
@@ -78,7 +83,7 @@ class MailgunDriver extends MailDriver implements MailDriverContract
             return false;
         }
 
-        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'] . $payload['signature']['token'], config('services.mailgun.webhook_signing_key'));
+        $hmac = hash_hmac('sha256', $payload['signature']['timestamp'].$payload['signature']['token'], config('services.mailgun.webhook_signing_key'));
 
         if (function_exists('hash_equals')) {
             return hash_equals($hmac, $payload['signature']['signature']);
@@ -87,12 +92,16 @@ class MailgunDriver extends MailDriver implements MailDriverContract
         return $hmac === $payload['signature']['signature'];
     }
 
+    public function attachUuidToMail(MessageSending $event, string $uuid): MessageSending
+    {
+        $event->message->getHeaders()->addTextHeader('X-Mailgun-Variables', json_encode([config('mails.headers.uuid') => $uuid]));
+
+        return $event;
+    }
+
     public function getUuidFromPayload(array $payload): ?string
     {
-        return $payload['event-data']['message']['headers'][$this->uuidHeaderName] ??
-            $payload['event-data']['message']['headers'][strtolower($this->uuidHeaderName)] ??
-            $payload['event-data']['message']['headers'][strtoupper($this->uuidHeaderName)] ??
-            null;
+        return $payload['event-data']['user-variables'][$this->uuidHeaderName] ?? null;
     }
 
     protected function getTimestampFromPayload(array $payload): string
@@ -117,14 +126,24 @@ class MailgunDriver extends MailDriver implements MailDriverContract
     public function dataMapping(): array
     {
         return [
-            'ip_address' => 'ip',
-            'platform' => 'client-info.device-type',
-            'os' => 'client-info.client-os',
-            'browser' => 'client-info.client-name',
-            'user_agent' => 'client-info.user-agent',
-            'country_code' => 'geolocation.region',
+            'ip_address' => 'event-data.ip',
+            'platform' => 'event-data.client-info.device-type',
+            'os' => 'event-data.client-info.client-os',
+            'browser' => 'event-data.client-info.client-name',
+            'user_agent' => 'event-data.client-info.user-agent',
+            'city' => 'event-data.geolocation.city',
+            'country_code' => 'event-data.geolocation.country',
             'link' => 'event-data.url',
-            'tag' => 'tags',
+            'tag' => 'event-data.tags',
         ];
+    }
+
+    public function unsuppressEmailAddress(string $address, ?int $stream_id = null): Response
+    {
+        $client = Http::asJson()
+            ->withBasicAuth('api', config('services.mailgun.secret'))
+            ->baseUrl(config('services.mailgun.endpoint').'/v3/');
+
+        return $client->delete(config('services.mailgun.domain').'/unsubscribes/'.$address);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Actions;
+namespace Backstage\Mails\Actions;
 
 class RelateMailToModels
 {

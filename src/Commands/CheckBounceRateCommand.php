@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\Mails\Commands;
+namespace Backstage\Mails\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
-use Vormkracht10\Mails\Actions\SendHighBounceRateNotifications;
+use Backstage\Mails\Actions\SendHighBounceRateNotifications;
 
 class CheckBounceRateCommand extends Command
 {

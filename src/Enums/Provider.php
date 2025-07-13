@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Enums;
+namespace Backstage\Mails\Enums;
 
 enum Provider: string
 {

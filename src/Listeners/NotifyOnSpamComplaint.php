@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\Mails\Listeners;
+namespace Backstage\Mails\Listeners;
 
-use Vormkracht10\Mails\Events\MailComplained;
-use Vormkracht10\Mails\Notifications\SpamComplaintNotification;
-use Vormkracht10\Mails\Traits\SendsNotifications;
+use Backstage\Mails\Events\MailComplained;
+use Backstage\Mails\Notifications\SpamComplaintNotification;
+use Backstage\Mails\Traits\SendsNotifications;
 
 class NotifyOnSpamComplaint
 {

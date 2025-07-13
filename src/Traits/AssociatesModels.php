@@ -1,13 +1,13 @@
 <?php
 
-namespace Vormkracht10\Mails\Traits;
+namespace Backstage\Mails\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Mailable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Symfony\Component\Mime\Email;
-use Vormkracht10\Mails\Contracts\HasAssociatedMails;
+use Backstage\Mails\Contracts\HasAssociatedMails;
 
 /**
  * @mixin Mailable

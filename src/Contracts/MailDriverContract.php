@@ -1,14 +1,17 @@
 <?php
 
-namespace Vormkracht10\Mails\Contracts;
+namespace Backstage\Mails\Contracts;
 
-use Vormkracht10\Mails\Models\Mail;
+use Illuminate\Mail\Events\MessageSending;
+use Backstage\Mails\Models\Mail;
 
 interface MailDriverContract
 {
     public function registerWebhooks($components): void;
 
     public function verifyWebhookSignature(array $payload): bool;
+
+    public function attachUuidToMail(MessageSending $event, string $uuid): MessageSending;
 
     public function getUuidFromPayload(array $payload): ?string;
 

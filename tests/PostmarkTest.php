@@ -3,9 +3,10 @@
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use Vormkracht10\Mails\Enums\EventType;
-use Vormkracht10\Mails\Models\Mail as MailModel;
-use Vormkracht10\Mails\Models\MailEvent;
+use Backstage\Mails\Enums\EventType;
+use Backstage\Mails\Enums\Provider;
+use Backstage\Mails\Models\Mail as MailModel;
+use Backstage\Mails\Models\MailEvent;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\post;
@@ -23,7 +24,7 @@ it('can receive incoming delivery webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]), [
         'DeliveredAt' => '2023-05-19T22:09:32Z',
         'Details' => 'Test delivery webhook details',
         'MessageID' => '00000000-0000-0000-0000-000000000000',
@@ -55,7 +56,7 @@ it('can receive incoming hard bounce webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]), [
         'BouncedAt' => '2023-05-21T02:51:39Z',
         'CanActivate' => true,
         'Content' => 'Test content',
@@ -98,7 +99,7 @@ it('can receive incoming soft bounce webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]), [
         'BouncedAt' => '2023-05-21T02:51:39Z',
         'CanActivate' => true,
         'Content' => 'Test content',
@@ -141,7 +142,7 @@ it('can receive incoming complaint webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]), [
         'BouncedAt' => '2023-05-21T02:51:39Z',
         'CanActivate' => false,
         'Content' => 'Test content',
@@ -184,7 +185,7 @@ it('can receive incoming open webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]), [
         'Client' => [
             'Company' => 'Google',
             'Family' => 'Chrome',
@@ -238,7 +239,7 @@ it('can receive incoming click webhook from postmark', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]), [
         'Client' => [
             'Company' => 'Google',
             'Family' => 'Chrome',
@@ -293,7 +294,7 @@ it('can receive incoming subscription change webhook from postmark', function ()
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'postmark']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]), [
         'ChangedAt' => '2024-12-08T06:03:20Z',
         'Metadata' => [
             config('mails.headers.uuid') => $mail?->uuid,

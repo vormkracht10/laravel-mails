@@ -1,13 +1,13 @@
 <?php
 
-namespace Vormkracht10\Mails\Models;
+namespace Backstage\Mails\Models;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
-use Vormkracht10\Mails\Database\Factories\MailAttachmentFactory;
+use Backstage\Mails\Database\Factories\MailAttachmentFactory;
 
 /**
  * @property-read string $disk
@@ -63,5 +63,15 @@ class MailAttachment extends Model
     public function getFileDataAttribute(): string
     {
         return Storage::disk($this->disk)->get($this->storagePath);
+    }
+
+    public function downloadFileFromStorage(?string $filename = null): string
+    {
+        return Storage::disk($this->disk)
+            ->download(
+                $this->storagePath,
+                $filename ?? $this->filename, [
+                'Content-Type' => $this->mime,
+            ]);
     }
 }

@@ -5,9 +5,9 @@ namespace Backstage\Mails\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Backstage\Mails\Models\MailEvent;
+use Backstage\Mails\Models\Mail;
 
-class MailEventLogged
+class MailLogged
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -15,6 +15,6 @@ class MailEventLogged
      * Create a new event instance.
      */
     public function __construct(
-        public MailEvent $mailEvent
+        public Mail $mail
     ) {}
 }

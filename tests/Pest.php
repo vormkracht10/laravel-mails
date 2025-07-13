@@ -1,5 +1,11 @@
 <?php
 
-use Vormkracht10\Mails\Tests\TestCase;
+use Illuminate\Support\Facades\Mail;
+use Backstage\Mails\Tests\TestCase;
 
-uses(TestCase::class)->in(__DIR__);
+uses(TestCase::class)
+    ->in(__DIR__);
+
+beforeEach(function () {
+    Mail::fake();
+});

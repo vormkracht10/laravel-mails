@@ -1,9 +1,9 @@
 <?php
 
-namespace Vormkracht10\Mails\Listeners;
+namespace Backstage\Mails\Listeners;
 
 use Illuminate\Mail\Events\MessageSending;
-use Vormkracht10\Mails\Actions\AttachUuid;
+use Backstage\Mails\Actions\AttachUuid;
 
 class AttachMailLogUuid
 {

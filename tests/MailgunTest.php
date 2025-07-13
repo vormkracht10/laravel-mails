@@ -3,9 +3,10 @@
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
-use Vormkracht10\Mails\Enums\EventType;
-use Vormkracht10\Mails\Models\Mail as MailModel;
-use Vormkracht10\Mails\Models\MailEvent;
+use Backstage\Mails\Enums\EventType;
+use Backstage\Mails\Enums\Provider;
+use Backstage\Mails\Models\Mail as MailModel;
+use Backstage\Mails\Models\MailEvent;
 
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\post;
@@ -23,7 +24,7 @@ it('can receive incoming delivery webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'mailgun']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]), [
         'event-data' => [
             'event' => 'delivered',
             'delivery-status' => [
@@ -54,7 +55,6 @@ it('can receive incoming delivery webhook from mailgun', function () {
                     'message-id' => '501bac24-a9c2-11ec-aa58-03210c12f2eb',
                     'date' => 'Tue, 22 Mar 2022 09:27:37 +0000',
                     'to' => 'johndoe@mailkit.com',
-                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
             ],
             'id' => 'OTk6MTA1MDI6ZGVsaXZlcmVkOjE2NDc5NDEyNTg=',
@@ -90,7 +90,7 @@ it('can receive incoming accept webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'mailgun']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]), [
         'signature' => [
             'timestamp' => 1649408311,
             'token' => 'eventtoken',
@@ -104,7 +104,9 @@ it('can receive incoming accept webhook from mailgun', function () {
             'recipient-domain' => 'omnivery.com',
             'campaigns' => [],
             'tags' => ['accepted'],
-            'user-variables' => [],
+            'user-variables' => [
+                config('mails.headers.uuid') => $mail?->uuid,
+            ],
             'flags' => [
                 'is-system-test' => false,
                 'is-test-mode' => false,
@@ -122,7 +124,6 @@ it('can receive incoming accept webhook from mailgun', function () {
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'to' => 'test@omnivery.com',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
-                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
                 'size' => 5637,
             ],
@@ -147,7 +148,7 @@ it('can receive incoming hard bounce webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'mailgun']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]), [
         'event-data' => [
             'event' => 'failed',
             'severity' => 'permanent',
@@ -166,7 +167,6 @@ it('can receive incoming hard bounce webhook from mailgun', function () {
                     'date' => 'Thu, 31 Mar 2022 11:43:57 +0000',
                     'to' => 'nosuchemail@omnivery.com',
                     'from' => '"Friendly Sender" <sender@emaildemos.com>',
-                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
             ],
             'delivery-status' => [
@@ -207,7 +207,7 @@ it('can receive incoming soft bounce webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'mailgun']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]), [
         'event-data' => [
             'event' => 'failed',
             'severity' => 'temporary',
@@ -226,7 +226,6 @@ it('can receive incoming soft bounce webhook from mailgun', function () {
                     'date' => 'Thu, 31 Mar 2022 11:43:57 +0000',
                     'to' => 'nosuchemail@omnivery.com',
                     'from' => '"Friendly Sender" <sender@emaildemos.com>',
-                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
             ],
             'delivery-status' => [
@@ -267,7 +266,7 @@ it('can receive incoming complaint webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'mailgun']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]), [
         'signature' => [
             'timestamp' => 1649408311,
             'token' => 'eventtoken',
@@ -281,7 +280,9 @@ it('can receive incoming complaint webhook from mailgun', function () {
             'recipient-domain' => 'omnivery.com',
             'campaigns' => [],
             'tags' => ['complaint', 'feedback'],
-            'user-variables' => [],
+            'user-variables' => [
+                config('mails.headers.uuid') => $mail?->uuid,
+            ],
             'flags' => [
                 'is-system-test' => false,
                 'is-test-mode' => false,
@@ -298,7 +299,6 @@ it('can receive incoming complaint webhook from mailgun', function () {
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'to' => 'test@omnivery.com',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
-                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
                 'size' => 5637,
             ],
@@ -323,7 +323,7 @@ it('can receive incoming open webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'mailgun']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]), [
         'signature' => [
             'signature' => 'secrethmacsignature',
             'token' => 'eventtoken',
@@ -342,7 +342,6 @@ it('can receive incoming open webhook from mailgun', function () {
                     'message-id' => '6d261932-b677-11ec-aa58-03210c12f2eb',
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
-                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
             ],
             'client-info' => [
@@ -385,7 +384,7 @@ it('can receive incoming click webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'mailgun']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]), [
         'signature' => [
             'timestamp' => 1649408311,
             'token' => 'eventtoken',
@@ -398,7 +397,9 @@ it('can receive incoming click webhook from mailgun', function () {
             'recipient' => 'test@omnivery.com',
             'recipient-domain' => 'omnivery.com',
             'campaigns' => [],
-            'user-variables' => [],
+            'user-variables' => [
+                config('mails.headers.uuid') => $mail?->uuid,
+            ],
             'flags' => [
                 'is-system-test' => false,
                 'is-test-mode' => false,
@@ -423,7 +424,6 @@ it('can receive incoming click webhook from mailgun', function () {
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'to' => 'test@omnivery.com',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
-                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
                 'size' => 5637,
             ],
@@ -449,7 +449,7 @@ it('can receive incoming unsubscribe webhook from mailgun', function () {
 
     $mail = MailModel::latest()->first();
 
-    post(URL::signedRoute('mails.webhook', ['provider' => 'mailgun']), [
+    post(URL::signedRoute('mails.webhook', ['provider' => Provider::MAILGUN]), [
         'signature' => [
             'timestamp' => 1649408311,
             'token' => 'eventtoken',
@@ -463,7 +463,9 @@ it('can receive incoming unsubscribe webhook from mailgun', function () {
             'recipient-domain' => 'omnivery.com',
             'campaigns' => [],
             'tags' => ['unsubscribed'],
-            'user-variables' => [],
+            'user-variables' => [
+                config('mails.headers.uuid') => $mail?->uuid,
+            ],
             'flags' => [
                 'is-system-test' => false,
                 'is-test-mode' => false,
@@ -479,7 +481,6 @@ it('can receive incoming unsubscribe webhook from mailgun', function () {
                     'from' => '"Friendly Sender" <sender@omnivery.dev>',
                     'to' => 'test@omnivery.com',
                     'date' => 'Thu, 7 Apr 2022 13:34:17 +0000',
-                    config('mails.headers.uuid') => $mail?->uuid,
                 ],
                 'size' => 5637,
             ],

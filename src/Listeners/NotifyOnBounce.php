@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\Mails\Listeners;
+namespace Backstage\Mails\Listeners;
 
-use Vormkracht10\Mails\Events\MailHardBounced;
-use Vormkracht10\Mails\Notifications\BounceNotification;
-use Vormkracht10\Mails\Traits\SendsNotifications;
+use Backstage\Mails\Events\MailHardBounced;
+use Backstage\Mails\Notifications\BounceNotification;
+use Backstage\Mails\Traits\SendsNotifications;
 
 class NotifyOnBounce
 {

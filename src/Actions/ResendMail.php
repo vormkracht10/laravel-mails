@@ -1,10 +1,10 @@
 <?php
 
-namespace Vormkracht10\Mails\Actions;
+namespace Backstage\Mails\Actions;
 
-use Vormkracht10\Mails\Jobs\ResendMailJob;
-use Vormkracht10\Mails\Models\Mail as Mailable;
-use Vormkracht10\Mails\Shared\AsAction;
+use Backstage\Mails\Jobs\ResendMailJob;
+use Backstage\Mails\Models\Mail as Mailable;
+use Backstage\Mails\Shared\AsAction;
 
 class ResendMail
 {

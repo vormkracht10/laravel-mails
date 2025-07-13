@@ -1,13 +1,13 @@
-# Keep track and view all sent emails in Laravel and get notified when something is wrong
+# Keep track of all events on sent emails in Laravel and get notified when something is wrong
 
-[![Total Downloads](https://img.shields.io/packagist/dt/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
-[![Tests](https://github.com/vormkracht10/laravel-mails/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/vormkracht10/laravel-mails/actions/workflows/run-tests.yml)
-[![PHPStan](https://github.com/vormkracht10/laravel-mails/actions/workflows/phpstan.yml/badge.svg?branch=main)](https://github.com/vormkracht10/laravel-mails/actions/workflows/phpstan.yml)
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/vormkracht10/laravel-mails)
-![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/vormkracht10/laravel-mails)
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/vormkracht10/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/vormkracht10/laravel-mails)
+[![Total Downloads](https://img.shields.io/packagist/dt/backstagephp/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/backstagephp/laravel-mails)
+[![Tests](https://github.com/backstagephp/laravel-mails/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/backstagephp/laravel-mails/actions/workflows/run-tests.yml)
+[![PHPStan](https://github.com/backstagephp/laravel-mails/actions/workflows/phpstan.yml/badge.svg?branch=main)](https://github.com/backstagephp/laravel-mails/actions/workflows/phpstan.yml)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/backstagephp/laravel-mails)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/backstagephp/laravel-mails)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/backstagephp/laravel-mails.svg?style=flat-square)](https://packagist.org/packages/backstagephp/laravel-mails)
 
-## Nice to meet you, we're [Vormkracht10](https://vormkracht10.nl)
+## Nice to meet you, we're [Backstage](https://backstagephp.com)
 
 Hi! We are a web development agency from Nijmegen in the Netherlands and we use Laravel for everything: advanced websites with a lot of bells and whitles and large web applications.
 
@@ -31,27 +31,27 @@ Laravel Mails can collect everything you might want to track about the mails tha
 -   Get quickly and automatically notified when email hard/soft bounces or the bouncerate goes too high
 -   Prune all logged emails periodically to keep the database nice and slim
 -   Resend logged emails to another recipient
--   View all sent emails in the browser using complementary package [Filament Mails](https://github.com/vormkracht10/filament-mails)
+-   View all sent emails in the browser using complementary package [Filament Mails](https://github.com/backstagephp/filament-mails)
 
 ## Upcoming features
 
 -   We can write drivers for popular email service providers like Resend, SendGrid, Amazon SES and Mailtrap.
 -   Relate emails being send in Laravel directly to Eloquent models, for example the order confirmation email attached to an Order model.
 
-## Looking for a UI? We've got your back: [Filament Mails](https://github.com/vormkracht10/filament-mails)
+## Looking for a UI? We've got your back: [Filament Mails](https://github.com/backstagephp/filament-mails)
 
-We created a Laravel [Filament](https://filamentphp.com) plugin called [Filament Mails](https://github.com/vormkracht10/filament-mails) to easily view all data collected by this Laravel Mails package.
+We created a Laravel [Filament](https://filamentphp.com) plugin called [Filament Mails](https://github.com/backstagephp/filament-mails) to easily view all data collected by this Laravel Mails package.
 
 It can show all information about the emails and events in a beautiful UI:
 
-![Filament Mails](https://raw.githubusercontent.com/vormkracht10/filament-mails/main/docs/mails-list.png)
+![Filament Mails](https://raw.githubusercontent.com/backstagephp/filament-mails/main/docs/mails-list.png)
 
 ## Installation
 
 First install the package via composer:
 
 ```bash
-composer require vormkracht10/laravel-mails
+composer require backstage/laravel-mails
 ```
 
 Then you can publish and run the migrations with:
@@ -63,19 +63,17 @@ php artisan migrate
 
 Add the API key of your email service provider to the `config/services.php` file in your Laravel project, currently we only support Postmark and Mailgun:
 
-```
-[
-    'postmark' => [
-        'token' => env('POSTMARK_TOKEN'),
-    ],
+```php
+'postmark' => [
+    'token' => env('POSTMARK_TOKEN'),
+],
 
-    'mailgun' => [
-        'domain' => env('MAILGUN_DOMAIN'),
-        'secret' => env('MAILGUN_SECRET'),
-        'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
-        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
-        'scheme' => 'https',
-    ],
+'mailgun' => [
+    'domain' => env('MAILGUN_DOMAIN'),
+    'secret' => env('MAILGUN_SECRET'),
+    'webhook_signing_key' => env('MAILGUN_WEBHOOK_SIGNING_KEY'),
+    'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+    'scheme' => 'https',
 ]
 ```
 
@@ -94,138 +92,136 @@ php artisan vendor:publish --tag="mails-config"
 This is the contents of the published config file:
 
 ```php
-return [
-    // Eloquent model to use for sent emails
+// Eloquent model to use for sent emails
 
-    'models' => [
-        'mail' => Mail::class,
-        'event' => MailEvent::class,
-        'attachment' => MailAttachment::class,
+'models' => [
+    'mail' => Mail::class,
+    'event' => MailEvent::class,
+    'attachment' => MailAttachment::class,
+],
+
+// Table names for saving sent emails and polymorphic relations to database
+
+'database' => [
+    'tables' => [
+        'mails' => 'mails',
+        'attachments' => 'mail_attachments',
+        'events' => 'mail_events',
+        'polymorph' => 'mailables',
     ],
 
-    // Table names for saving sent emails and polymorphic relations to database
+    'pruning' => [
+        'enabled' => true,
+        'after' => 30, // days
+    ],
+],
 
-    'database' => [
-        'tables' => [
-            'mails' => 'mails',
-            'attachments' => 'mail_attachments',
-            'events' => 'mail_events',
-            'polymorph' => 'mailables',
-        ],
+'headers' => [
+    'uuid' => 'X-Mails-UUID',
 
-        'pruning' => [
-            'enabled' => true,
-            'after' => 30, // days
-        ],
+    'associate' => 'X-Mails-Associated-Models',
+],
+
+'webhooks' => [
+    'routes' => [
+        'prefix' => 'webhooks/mails',
     ],
 
-    'headers' => [
-        'uuid' => 'X-Mails-UUID',
+    'queue' => env('MAILS_QUEUE_WEBHOOKS', false),
+],
 
-        'associate' => 'X-Mails-Associated-Models',
+// Logging mails
+'logging' => [
+
+    // Enable logging of all sent mails to database
+
+    'enabled' => env('MAILS_LOGGING_ENABLED', true),
+
+    // Specify attributes to log in database
+
+    'attributes' => [
+        'subject',
+        'from',
+        'to',
+        'reply_to',
+        'cc',
+        'bcc',
+        'html',
+        'text',
     ],
 
-    'webhooks' => [
-        'routes' => [
-            'prefix' => 'webhooks/mails',
-        ],
+    // Encrypt all attributes saved to database
 
-        'queue' => env('MAILS_QUEUE_WEBHOOKS', false),
+    'encrypted' => env('MAILS_ENCRYPTED', true),
+
+    // Track following events using webhooks from email provider
+
+    'tracking' => [
+        'bounces' => true,
+        'clicks' => true,
+        'complaints' => true,
+        'deliveries' => true,
+        'opens' => true,
     ],
 
-    // Logging mails
-    'logging' => [
+    // Enable saving mail attachments to disk
 
-        // Enable logging of all sent mails to database
+    'attachments' => [
+        'enabled' => env('MAILS_LOGGING_ATTACHMENTS_ENABLED', true),
+        'disk' => env('FILESYSTEM_DISK', 'local'),
+        'root' => 'mails/attachments',
+    ],
+],
 
-        'enabled' => env('MAILS_LOGGING_ENABLED', true),
+// Notifications for important mail events
 
-        // Specify attributes to log in database
-
-        'attributes' => [
-            'subject',
-            'from',
-            'to',
-            'reply_to',
-            'cc',
-            'bcc',
-            'html',
-            'text',
-        ],
-
-        // Encrypt all attributes saved to database
-
-        'encrypted' => env('MAILS_ENCRYPTED', true),
-
-        // Track following events using webhooks from email provider
-
-        'tracking' => [
-            'bounces' => true,
-            'clicks' => true,
-            'complaints' => true,
-            'deliveries' => true,
-            'opens' => true,
-        ],
-
-        // Enable saving mail attachments to disk
-
-        'attachments' => [
-            'enabled' => env('MAILS_LOGGING_ATTACHMENTS_ENABLED', true),
-            'disk' => env('FILESYSTEM_DISK', 'local'),
-            'root' => 'mails/attachments',
-        ],
+'notifications' => [
+    'mail' => [
+        'to' => ['test@example.com'],
     ],
 
-    // Notifications for important mail events
-
-    'notifications' => [
-        'mail' => [
-            'to' => ['test@example.com'],
-        ],
-
-        'discord' => [
-            // 'to' => ['1234567890'],
-        ],
-
-        'slack' => [
-            // 'to' => ['https://hooks.slack.com/services/...'],
-        ],
-
-        'telegram' => [
-            // 'to' => ['1234567890'],
-        ],
+    'discord' => [
+        // 'to' => ['1234567890'],
     ],
 
-    'events' => [
-        'soft_bounced' => [
-            'notify' => ['mail'],
-        ],
-
-        'hard_bounced' => [
-            'notify' => ['mail'],
-        ],
-
-        'bouncerate' => [
-            'notify' => [],
-
-            'retain' => 30, // days
-
-            'treshold' => 1, // %
-        ],
-
-        'deliveryrate' => [
-            'treshold' => 99,
-        ],
-
-        'complained' => [
-            //
-        ],
-
-        'unsent' => [
-            //
-        ],
+    'slack' => [
+        // 'to' => ['https://hooks.slack.com/services/...'],
     ],
-];
+
+    'telegram' => [
+        // 'to' => ['1234567890'],
+    ],
+],
+
+'events' => [
+    'soft_bounced' => [
+        'notify' => ['mail'],
+    ],
+
+    'hard_bounced' => [
+        'notify' => ['mail'],
+    ],
+
+    'bouncerate' => [
+        'notify' => [],
+
+        'retain' => 30, // days
+
+        'treshold' => 1, // %
+    ],
+
+    'deliveryrate' => [
+        'treshold' => 99,
+    ],
+
+    'complained' => [
+        //
+    ],
+
+    'unsent' => [
+        //
+    ],
+]
 ```
 
 ## Usage
@@ -255,17 +251,17 @@ When you send emails within Laravel using the `Mail` Facade or using a `Mailable
 Depending on the mail provider, we send these events comming in from the webhooks of the email service provider.
 
 ```php
-\Vormkracht10\Mails\Events\MailAccepted::class,
-\Vormkracht10\Mails\Events\MailClicked::class,
-\Vormkracht10\Mails\Events\MailComplained::class,
-\Vormkracht10\Mails\Events\MailDelivered::class,
-\Vormkracht10\Mails\Events\MailEvent::class,
-\Vormkracht10\Mails\Events\MailEventLogged::class,
-\Vormkracht10\Mails\Events\MailHardBounced::class,
-\Vormkracht10\Mails\Events\MailOpened::class,
-\Vormkracht10\Mails\Events\MailResent::class,
-\Vormkracht10\Mails\Events\MailSoftBounced::class,
-\Vormkracht10\Mails\Events\MailUnsubscribed::class,
+Backstage\Mails\Events\MailAccepted::class,
+Backstage\Mails\Events\MailClicked::class,
+Backstage\Mails\Events\MailComplained::class,
+Backstage\Mails\Events\MailDelivered::class,
+Backstage\Mails\Events\MailEvent::class,
+Backstage\Mails\Events\MailEventLogged::class,
+Backstage\Mails\Events\MailHardBounced::class,
+Backstage\Mails\Events\MailOpened::class,
+Backstage\Mails\Events\MailResent::class,
+Backstage\Mails\Events\MailSoftBounced::class,
+Backstage\Mails\Events\MailUnsubscribed::class,
 ```
 
 ## Testing

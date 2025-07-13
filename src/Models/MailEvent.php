@@ -1,15 +1,16 @@
 <?php
 
-namespace Vormkracht10\Mails\Models;
+namespace Backstage\Mails\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
-use Vormkracht10\Mails\Database\Factories\MailEventFactory;
-use Vormkracht10\Mails\Enums\EventType;
-use Vormkracht10\Mails\Events\MailEventLogged;
+use Backstage\Mails\Database\Factories\MailEventFactory;
+use Backstage\Mails\Enums\EventType;
+use Backstage\Mails\Events\MailEventLogged;
 
 /**
  * @property Mail $mail
@@ -48,6 +49,7 @@ class MailEvent extends Model
         'tag',
         'payload',
         'occurred_at',
+        'unsuppressed_at',
     ];
 
     protected $casts = [
@@ -56,6 +58,7 @@ class MailEvent extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'occurred_at' => 'datetime',
+        'unsuppressed_at' => 'datetime',
     ];
 
     public function getTable()
@@ -86,8 +89,13 @@ class MailEvent extends Model
         return $this->belongsTo(config('mails.models.mail'));
     }
 
+    public function scopeSuppressed(Builder $query): void
+    {
+        $query->where('type', EventType::HARD_BOUNCED);
+    }
+
     protected function getEventClassAttribute(): string
     {
-        return 'Vormkracht10\Mails\Events\Mail'.Str::studly($this->type->value);
+        return 'Backstage\Mails\Events\Mail'.Str::studly($this->type->value);
     }
 }

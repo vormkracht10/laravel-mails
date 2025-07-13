@@ -1,13 +1,14 @@
 <?php
 
-namespace Vormkracht10\Mails\Actions;
+namespace Backstage\Mails\Actions;
 
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Mime\Address;
-use Vormkracht10\Mails\Shared\AsAction;
+use Backstage\Mails\Enums\Provider;
+use Backstage\Mails\Shared\AsAction;
 
 class LogMail
 {
@@ -38,7 +39,7 @@ class LogMail
     }
 
     /**
-     * @return \Vormkracht10\Mails\Models\Mail
+     * @return \Backstage\Mails\Models\Mail
      */
     public function newMailModelInstance()
     {
@@ -52,6 +53,10 @@ class LogMail
         return collect($this->getDefaultLogAttributes($event))
             ->only($this->getConfiguredAttributes())
             ->merge($this->getMandatoryAttributes($event))
+            ->merge([
+                'mailer' => $event->data['mailer'],
+                'transport' => config('mail.mailers.'.$event->data['mailer'].'.transport'),
+            ])
             ->toArray();
     }
 
@@ -71,7 +76,21 @@ class LogMail
             'bcc' => $this->getAddressesValue($event->message->getBcc()),
             'html' => $event->message->getHtmlBody(),
             'text' => $event->message->getTextBody(),
+            'tags' => collect($event->message->getHeaders()->all('X-tag'))->map(fn ($tag) => $tag->getValue())->toArray(),
         ];
+    }
+
+    protected function getStreamId(MessageSending|MessageSent $event): ?string
+    {
+        if ($event->data['mailer'] !== Provider::POSTMARK) {
+            return null;
+        }
+
+        if (null !== $messageStream = $event->message->getHeaders()->get('x-pm-message-stream')) {
+            return $messageStream;
+        }
+
+        return config('mail.mailers.postmark.message_stream_id', 'outbound');
     }
 
     public function getMandatoryAttributes(MessageSending|MessageSent $event): array
@@ -80,6 +99,8 @@ class LogMail
             'uuid' => $this->getCustomUuid($event),
             // 'mail_class' => $this->getMailClassHeaderValue($event),
             'sent_at' => $event instanceof MessageSent ? now() : null,
+            'mailer' => $event->data['mailer'],
+            'stream_id' => $this->getStreamId($event),
         ];
     }
 
@@ -101,7 +122,7 @@ class LogMail
     protected function getAddressesValue(array $address): ?Collection
     {
         $addresses = collect($address)
-            ->flatMap(fn(Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
+            ->flatMap(fn (Address $address) => [$address->getAddress() => $address->getName() === '' ? null : $address->getName()]);
 
         return $addresses->count() > 0 ? $addresses : null;
     }

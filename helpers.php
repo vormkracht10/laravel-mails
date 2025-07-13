@@ -1,8 +1,8 @@
 <?php
 
-namespace Vormkracht10\Mails;
+namespace Backstage\Mails;
 
-use Vormkracht10\Mails\Shared\Terminal;
+use Backstage\Mails\Shared\Terminal;
 
 if (! function_exists('console')) {
     function console(): Terminal

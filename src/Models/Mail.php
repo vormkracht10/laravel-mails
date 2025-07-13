@@ -1,6 +1,6 @@
 <?php
 
-namespace Vormkracht10\Mails\Models;
+namespace Backstage\Mails\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Vormkracht10\Mails\Database\Factories\MailFactory;
+use Backstage\Mails\Database\Factories\MailFactory;
+use Backstage\Mails\Events\MailLogged;
 
 /**
  * @property-read string $uuid
+ * @property-read string $mailer
+ * @property-read string $transport
  * @property-read string $mail_class
  * @property-read string $subject
  * @property-read string $html
@@ -24,6 +27,7 @@ use Vormkracht10\Mails\Database\Factories\MailFactory;
  * @property-read array $bcc
  * @property int $opens
  * @property int $clicks
+ * @property-read array $tags
  * @property ?Carbon $sent_at
  * @property ?Carbon $delivered_at
  * @property ?Carbon $last_opened_at
@@ -51,6 +55,9 @@ class Mail extends Model
 
     protected $fillable = [
         'uuid',
+        'mailer',
+        'transport',
+        'stream_id',
         'mail_class',
         'subject',
         'html',
@@ -62,6 +69,7 @@ class Mail extends Model
         'bcc',
         'opens',
         'clicks',
+        'tags',
         'sent_at',
         'resent_at',
         'delivered_at',
@@ -75,6 +83,9 @@ class Mail extends Model
     protected $casts = [
         'id' => 'integer',
         'uuid' => 'string',
+        'mailer' => 'string',
+        'transport' => 'string',
+        'stream_id' => 'string',
         'subject' => 'string',
         'from' => 'json',
         'reply_to' => 'json',
@@ -83,6 +94,7 @@ class Mail extends Model
         'bcc' => 'json',
         'opens' => 'integer',
         'clicks' => 'integer',
+        'tags' => 'json',
         'sent_at' => 'datetime',
         'resent_at' => 'datetime',
         'accepted_at' => 'datetime',
@@ -100,6 +112,13 @@ class Mail extends Model
     public function getTable()
     {
         return config('mails.database.tables.mails');
+    }
+
+    protected static function booted(): void
+    {
+        static::created(function (Mail $mail) {
+            event(MailLogged::class, $mail);
+        });
     }
 
     protected static function newFactory(): Factory
@@ -157,6 +176,11 @@ class Mail extends Model
     public function scopeHardBounced(Builder $query): Builder
     {
         return $query->whereNotNull('hard_bounced_at');
+    }
+
+    public function scopeBounced(Builder $query): Builder
+    {
+        return $query->where(fn ($query) => $query->softBounced()->orWhere(fn ($query) => $query->hardBounced()));
     }
 
     public function scopeSent(Builder $query): Builder

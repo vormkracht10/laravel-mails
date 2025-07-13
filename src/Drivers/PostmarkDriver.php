@@ -1,11 +1,14 @@
 <?php
 
-namespace Vormkracht10\Mails\Drivers;
+namespace Backstage\Mails\Drivers;
 
+use Illuminate\Http\Client\Response;
+use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\URL;
-use Vormkracht10\Mails\Contracts\MailDriverContract;
-use Vormkracht10\Mails\Enums\EventType;
+use Backstage\Mails\Contracts\MailDriverContract;
+use Backstage\Mails\Enums\EventType;
+use Backstage\Mails\Enums\Provider;
 
 class PostmarkDriver extends MailDriver implements MailDriverContract
 {
@@ -37,7 +40,7 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             ],
         ];
 
-        $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => 'postmark']);
+        $webhookUrl = URL::signedRoute('mails.webhook', ['provider' => Provider::POSTMARK]);
 
         $token = (string) config('services.postmark.token');
 
@@ -99,6 +102,13 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
         return true;
     }
 
+    public function attachUuidToMail(MessageSending $event, string $uuid): MessageSending
+    {
+        $event->message->getHeaders()->addTextHeader('X-PM-Metadata-'.config('mails.headers.uuid'), $uuid);
+
+        return $event;
+    }
+
     public function getUuidFromPayload(array $payload): ?string
     {
         return $payload['Metadata'][$this->uuidHeaderName] ??
@@ -138,5 +148,18 @@ class PostmarkDriver extends MailDriver implements MailDriverContract
             'tag' => 'Tag',
             'user_agent' => 'UserAgent',
         ];
+    }
+
+    public function unsuppressEmailAddress(string $address, ?int $stream_id = null): Response
+    {
+        $client = Http::asJson()
+            ->withHeaders([
+                'X-Postmark-Server-Token' => config('services.postmark.token'),
+            ])
+            ->baseUrl('https://api.postmarkapp.com/');
+
+        return $client->post('message-streams/'.$stream_id.'/suppressions/delete', [
+            'Suppressions' => [['emailAddress' => $address]],
+        ]);
     }
 }

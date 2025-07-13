@@ -1,11 +1,10 @@
 <?php
 
-namespace Vormkracht10\Mails\Managers;
+namespace Backstage\Mails\Managers;
 
 use Illuminate\Support\Manager;
-use Vormkracht10\Mails\Drivers\MailgunDriver;
-use Vormkracht10\Mails\Drivers\PostmarkDriver;
-use Vormkracht10\Mails\Drivers\ResendDriver;
+use Backstage\Mails\Drivers\MailgunDriver;
+use Backstage\Mails\Drivers\PostmarkDriver;
 
 class MailProviderManager extends Manager
 {
