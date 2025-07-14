@@ -1,5 +1,5 @@
 {
-    "name": "backstage/laravel-mails",
+    "name": "danielhe4rt/laravel-mails-resend",
     "description": "Laravel Mails can collect everything you might want to track about the mails that has been sent by your Laravel app.",
     "keywords": [
         "backstagephp",
@@ -10,8 +10,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Mark van Eijk",
-            "email": "mark@vormkracht10.nl",
+            "name": "Daniel Reis",
+            "email": "danielhe4rt@gmail.com",
             "role": "Developer"
         }
     ],
