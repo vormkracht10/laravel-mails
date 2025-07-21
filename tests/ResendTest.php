@@ -1,12 +1,11 @@
 <?php
 
-use Illuminate\Mail\Message;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 use Backstage\Mails\Enums\EventType;
 use Backstage\Mails\Models\Mail as MailModel;
 use Backstage\Mails\Models\MailEvent;
-
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\URL;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\post;
 
@@ -27,7 +26,13 @@ it('can receive incoming delivery webhook from resend', function () {
         'created_at' => '2023-05-19T22:09:32Z',
         'data' => [
             'created_at' => '2025-01-09 14:17:29.059104+00',
-            'email_id' => $mail->uuid,
+            'email_id' => 'dummy-id',
+            'headers' => [
+                [
+                    'name' => config('mails.headers.uuid'),
+                    'value' => $mail->uuid
+                ]
+            ],
             'from' => 'local@computer.nl',
             'subject' => 'Test',
             'to' => ['hey@danielhe4rt.com'],
@@ -59,8 +64,14 @@ it('can receive incoming hard bounce webhook from resend', function () {
         'created_at' => '2023-05-19T22:09:32Z',
         'data' => [
             'created_at' => '2025-01-09 14:17:29.059104+00',
-            'email_id' => $mail->uuid,
+            'email_id' => 'dummy-id',
             'from' => 'local@computer.nl',
+            'headers' => [
+                [
+                    'name' => config('mails.headers.uuid'),
+                    'value' => $mail->uuid
+                ]
+            ],
             'subject' => 'Test',
             'to' => ['hey@danielhe4rt.com'],
             'cc' => ['az1ru@basementdevs.cc'],
@@ -91,7 +102,13 @@ it('can receive incoming soft bounce webhook from resend', function () {
         'created_at' => '2023-05-19T22:09:32Z',
         'data' => [
             'created_at' => '2025-01-09 14:17:29.059104+00',
-            'email_id' => $mail->uuid,
+            'email_id' => 'dummy-id',
+            'headers' => [
+                [
+                    'name' => config('mails.headers.uuid'),
+                    'value' => $mail->uuid
+                ]
+            ],
             'from' => 'local@computer.nl',
             'subject' => 'Test',
             'to' => ['hey@danielhe4rt.com'],
@@ -123,7 +140,13 @@ it('can receive incoming complaint webhook from resend', function () {
         'created_at' => '2023-05-19T22:09:32Z',
         'data' => [
             'created_at' => '2025-01-09 14:17:29.059104+00',
-            'email_id' => $mail->uuid,
+            'email_id' => 'dummy-id',
+            'headers' => [
+                [
+                    'name' => config('mails.headers.uuid'),
+                    'value' => $mail->uuid
+                ]
+            ],
             'from' => 'local@computer.nl',
             'subject' => 'Test',
             'to' => ['hey@danielhe4rt.com'],
@@ -155,8 +178,14 @@ it('can receive incoming open webhook from resend', function () {
         'created_at' => '2023-05-19T22:09:32Z',
         'data' => [
             'created_at' => '2025-01-09 14:17:29.059104+00',
-            'email_id' => $mail->uuid,
+            'email_id' => 'dummy-id',
             'from' => 'local@computer.nl',
+            'headers' => [
+                [
+                    'name' => config('mails.headers.uuid'),
+                    'value' => $mail->uuid
+                ]
+            ],
             'subject' => 'Test',
             'to' => ['hey@danielhe4rt.com'],
             'cc' => ['az1ru@basementdevs.cc'],
@@ -187,9 +216,15 @@ it('can receive incoming click webhook from resend', function () {
         'created_at' => '2023-05-19T22:09:32Z',
         'data' => [
             'created_at' => '2025-01-09 14:17:29.059104+00',
-            'email_id' => $mail->uuid,
+            'email_id' => 'dummy-id',
             'from' => 'local@computer.nl',
             'subject' => 'Test',
+            'headers' => [
+                [
+                    'name' => config('mails.headers.uuid'),
+                    'value' => $mail->uuid
+                ]
+            ],
             'to' => ['hey@danielhe4rt.com'],
             'cc' => ['az1ru@basementdevs.cc'],
             'bcc' => ['dev_vidal@basementdevs.cc'],
